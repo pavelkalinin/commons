@@ -1,0 +1,19 @@
+# Package Files
+*.jar
+*.war
+*.ear
+
+# IntelliJ
+*.iml
+/out/
+.idea/
+
+# Maven
+/target/
+
+# Log4j
+# log4j.properties
+
+# Private
+access.properties
+# Demo.java

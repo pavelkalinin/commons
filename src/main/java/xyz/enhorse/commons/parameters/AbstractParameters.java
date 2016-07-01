@@ -1,0 +1,172 @@
+package xyz.enhorse.commons.parameters;
+
+import xyz.enhorse.commons.Validate;
+import xyz.enhorse.commons.errors.AbsentException;
+import xyz.enhorse.commons.errors.DuplicateException;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * @author <a href="mailto:pavel13kalinin@gmail.com">Pavel Kalinin</a>
+ *         23.06.2016.
+ */
+public abstract class AbstractParameters implements Parameters {
+
+    private final Map<String, Object> content;
+
+
+    public AbstractParameters(Map<String, Object> map) {
+        content = Validate.notNull("map", map);
+    }
+
+
+    public AbstractParameters(Map<String, Object> map, String parameters) {
+        this(map);
+        parseParameters(parameters);
+    }
+
+
+    public AbstractParameters(Map<String, Object> map, Parameters parameters) {
+        this(map);
+        copyParameters(parameters);
+    }
+
+    private static String extractParameterName(final String parameter) {
+        String temp = Validate.defaultIfNull(parameter, "");
+
+        int delimiter = temp.indexOf(PARAMETER_VALUE_SEPARATOR);
+        return delimiter > -1 ? temp.substring(0, delimiter) : temp;
+    }
+
+    private static String extractParameterValue(final String parameter) {
+        String temp = Validate.defaultIfNull(parameter, "");
+
+        int delimiter = temp.indexOf(PARAMETER_VALUE_SEPARATOR);
+        return delimiter > -1 ? temp.substring(delimiter + 1) : "";
+    }
+
+    @Override
+    public Parameters add(final String parameter, final Object value) {
+        if (isExists(parameter)) {
+            throw new DuplicateException("Parameter", parameter);
+        }
+
+        content.put(Validate.isIdentifier("parameter", parameter), Validate.notNull("value", value));
+        return this;
+    }
+
+    @Override
+    public Parameters put(final String parameter, final Object value) {
+        if (isExists(parameter)) {
+            delete(parameter);
+        }
+
+        return add(parameter, value);
+    }
+
+    @Override
+    public Parameters replace(final String parameter, final Object newValue) {
+        if (!isExists(parameter)) {
+            throw new AbsentException("Parameter", parameter);
+        }
+
+        return put(parameter, newValue);
+    }
+
+    @Override
+    public Parameters delete(final String parameter) {
+        content.remove(parameter);
+        return this;
+    }
+
+    @Override
+    public Object get(final String parameter) {
+        if (!isExists(parameter)) {
+            throw new AbsentException();
+        }
+
+        return content.get(parameter);
+    }
+
+    @Override
+    public boolean isExists(final String parameter) {
+        return content.containsKey(Validate.notNull("parameter", parameter));
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return content.isEmpty();
+    }
+
+    @Override
+    public int size() {
+        return content.size();
+    }
+
+    @Override
+    public List<String> list() {
+        return new ArrayList<>(content.keySet());
+    }
+
+    @Override
+    public Iterator<String> iterator() {
+        return content.keySet().iterator();
+    }
+
+    @Override
+    public int hashCode() {
+        return content.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        AbstractParameters other = (AbstractParameters) o;
+
+        return content.equals(other.content);
+    }
+
+    @Override
+    public String toString() {
+        if (isEmpty()) {
+            return "";
+        }
+
+        StringBuilder options = new StringBuilder();
+        for (Map.Entry<String, Object> entry : content.entrySet()) {
+            options.append(entry.getKey()).append('=').append(entry.getValue()).append('&');
+        }
+        options.setLength(options.length() - 1);
+
+        return options.toString();
+    }
+
+    private void parseParameters(final String parameters) {
+        if ((parameters != null) && (!parameters.trim().isEmpty())) {
+            for (String parameter : parameters.split(String.valueOf(PARAMETERS_SEPARATOR))) {
+                String name = extractParameterName(parameter);
+                if (!name.trim().isEmpty()) {
+                    put(extractParameterName(parameter), extractParameterValue(parameter));
+                }
+            }
+        }
+    }
+
+    private void copyParameters(final Parameters parameters) {
+        if (parameters != null) {
+            for (String parameter : parameters) {
+                add(parameter, parameters.get(parameter));
+            }
+        }
+    }
+}
