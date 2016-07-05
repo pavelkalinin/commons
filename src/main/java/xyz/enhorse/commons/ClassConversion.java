@@ -48,7 +48,7 @@ public class ClassConversion {
             return boolean.class;
         }
 
-        throw new IllegalStateException(CONTENT.toString() + " cannot be unboxed to primitive size");
+        throw new IllegalStateException(CONTENT.toString() + " cannot be unboxed into primitive");
     }
 
 

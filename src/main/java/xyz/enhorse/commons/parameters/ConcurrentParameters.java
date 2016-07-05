@@ -6,19 +6,19 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author <a href="mailto:pavel13kalinin@gmail.com">Pavel Kalinin</a>
  *         27.04.2016
  */
-public class ConcurrentParameters extends AbstractParameters {
+public class ConcurrentParameters extends AbstractParameters<ConcurrentHashMap> {
 
     public ConcurrentParameters() {
-        super(new ConcurrentHashMap<>());
+        super(ConcurrentHashMap.class);
     }
 
 
     public ConcurrentParameters(final String parameters) {
-        super(new ConcurrentHashMap<>(), parameters);
+        super(ConcurrentHashMap.class, parameters);
     }
 
 
     public ConcurrentParameters(final Parameters parameters) {
-        super(new ConcurrentHashMap<>(), parameters);
+        super(ConcurrentHashMap.class, parameters);
     }
 }

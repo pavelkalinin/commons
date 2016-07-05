@@ -4,16 +4,16 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Modifier;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @SuppressWarnings("unused")
-public interface ClassPath {
+public class ClassPath {
+
+    private ClassPath() {
+    }
+
+
     /**
      * Scans all instantiable classes accessible from the context class loader which have the certain superclass.
      *
@@ -23,7 +23,7 @@ public interface ClassPath {
      * @throws IOException
      */
     @SuppressWarnings("unchecked")
-    static <T> List<Class<? extends T>> findAllInstantiableClasses(Class<T> toFind)
+    public static <T> List<Class<? extends T>> findAllInstantiableClasses(Class<T> toFind)
             throws ClassNotFoundException, IOException {
 
         if (toFind == null) {
@@ -45,14 +45,14 @@ public interface ClassPath {
      * @throws IOException
      */
     @SuppressWarnings("unchecked")
-    static <T> List<Class<? extends T>> findAllAssignable(Class<T> toFind)
+    public static <T> List<Class<? extends T>> findAllAssignable(Class<T> toFind)
             throws ClassNotFoundException, IOException {
 
         if (toFind == null) {
             return Collections.emptyList();
         }
 
-        return getAll().stream().filter(toFind::isAssignableFrom).map(clazz ->
+        return getAllAvailableClasses().stream().filter(toFind::isAssignableFrom).map(clazz ->
                 (Class<? extends T>) clazz).collect(Collectors.toList());
     }
 
@@ -64,7 +64,7 @@ public interface ClassPath {
      * @throws ClassNotFoundException
      * @throws IOException
      */
-    static Set<Class<?>> getAll()
+    public static Set<Class<?>> getAllAvailableClasses()
             throws ClassNotFoundException, IOException {
 
         Package[] ps = Package.getPackages();
@@ -85,7 +85,7 @@ public interface ClassPath {
      * @throws ClassNotFoundException
      * @throws IOException
      */
-    static List<Class<?>> getAllFromPackage(String packageName)
+    public static List<Class<?>> getAllFromPackage(String packageName)
             throws ClassNotFoundException, IOException {
 
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
@@ -116,7 +116,7 @@ public interface ClassPath {
      * @return The classes
      * @throws ClassNotFoundException
      */
-    static List<Class<?>> findAllInDirectory(File directory, String packageName)
+    private static List<Class<?>> findAllInDirectory(File directory, String packageName)
             throws ClassNotFoundException {
 
         List<Class<?>> classes = new ArrayList<>();
