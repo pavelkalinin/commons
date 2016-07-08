@@ -4,10 +4,7 @@ import xyz.enhorse.commons.Validate;
 import xyz.enhorse.commons.errors.AbsentException;
 import xyz.enhorse.commons.errors.DuplicateException;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author <a href="mailto:pavel13kalinin@gmail.com">Pavel Kalinin</a>
@@ -41,34 +38,45 @@ public abstract class AbstractParameters<T extends Map> implements Parameters {
             throw new DuplicateException("Parameter", parameter);
         }
 
-        content.put(Validate.isIdentifier("parameter", parameter), Validate.notNull("value", value));
+        content.put(parameter, value);
         return this;
     }
 
 
     @Override
     public Parameters put(final String parameter, final Object value) {
-        if (isExists(parameter)) {
-            delete(parameter);
-        }
-
-        return add(parameter, value);
+        content.put(Validate.isIdentifier("parameter", parameter), value);
+        return this;
     }
 
 
     @Override
     public Parameters replace(final String parameter, final Object newValue) {
-        if (!isExists(parameter)) {
-            throw new AbsentException("Parameter", parameter);
-        }
+        return delete(parameter).add(parameter, newValue);
+    }
 
-        return put(parameter, newValue);
+
+    @Override
+    public Parameters remove(final String parameter) {
+        content.remove(Validate.isIdentifier("parameter", parameter));
+        return this;
     }
 
 
     @Override
     public Parameters delete(final String parameter) {
+        if (!isExists(parameter)) {
+            throw new AbsentException("Parameter", parameter);
+        }
+
         content.remove(parameter);
+        return this;
+    }
+
+
+    @Override
+    public Parameters clear() {
+        content.clear();
         return this;
     }
 
@@ -76,7 +84,7 @@ public abstract class AbstractParameters<T extends Map> implements Parameters {
     @Override
     public Object get(final String parameter) {
         if (!isExists(parameter)) {
-            throw new AbsentException();
+            throw new AbsentException("Parameter", parameter);
         }
 
         return content.get(parameter);
@@ -85,7 +93,7 @@ public abstract class AbstractParameters<T extends Map> implements Parameters {
 
     @Override
     public boolean isExists(final String parameter) {
-        return content.containsKey(Validate.notNull("parameter", parameter));
+        return content.containsKey(Validate.isIdentifier("parameter", parameter));
     }
 
 
@@ -104,6 +112,12 @@ public abstract class AbstractParameters<T extends Map> implements Parameters {
     @Override
     public List<String> list() {
         return new ArrayList<>(content.keySet());
+    }
+
+
+    @Override
+    public Map toMap() {
+        return new HashMap<>(content);
     }
 
 
@@ -151,6 +165,15 @@ public abstract class AbstractParameters<T extends Map> implements Parameters {
     }
 
 
+    private void copyParameters(final Parameters parameters) {
+        if (parameters != null) {
+            for (String parameter : parameters) {
+                add(parameter, parameters.get(parameter));
+            }
+        }
+    }
+
+
     private void parseParameters(final String parameters) {
         if ((parameters != null) && (!parameters.trim().isEmpty())) {
             for (String parameter : parameters.split(String.valueOf(PARAMETERS_SEPARATOR))) {
@@ -158,15 +181,6 @@ public abstract class AbstractParameters<T extends Map> implements Parameters {
                 if (!name.trim().isEmpty()) {
                     put(extractParameterName(parameter), extractParameterValue(parameter));
                 }
-            }
-        }
-    }
-
-
-    private void copyParameters(final Parameters parameters) {
-        if (parameters != null) {
-            for (String parameter : parameters) {
-                add(parameter, parameters.get(parameter));
             }
         }
     }

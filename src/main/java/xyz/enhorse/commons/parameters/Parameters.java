@@ -1,6 +1,7 @@
 package xyz.enhorse.commons.parameters;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author <a href="mailto:pavel13kalinin@gmail.com">Pavel Kalinin</a>
@@ -20,7 +21,13 @@ public interface Parameters extends Iterable<String> {
     Parameters replace(final String parameter, final Object newValue);
 
 
+    Parameters remove(final String parameter);
+
+
     Parameters delete(final String parameter);
+
+
+    Parameters clear();
 
 
     Object get(final String parameter);
@@ -36,4 +43,10 @@ public interface Parameters extends Iterable<String> {
 
 
     List<String> list();
+
+
+    String toString();
+
+
+    Map toMap();
 }
