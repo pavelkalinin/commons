@@ -1,11 +1,13 @@
 package xyz.enhorse.commons;
 
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
+import java.lang.reflect.Constructor;
 import java.util.Collection;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * @author <a href="mailto:pavel13kalinin@gmail.com">Pavel Kalinin</a>
@@ -13,20 +15,45 @@ import static org.junit.Assert.assertTrue;
  */
 public class ClassPathTest {
 
+    @Rule
+    public final ExpectedException exception = ExpectedException.none();
+
+
     @Test
-    public void testFindClassesMatchingType_ExistClass() throws Exception {
+    public void constructor_DefaultIsExist() throws Exception {
+        Constructor<ClassPath> constructor = ClassPath.class.getDeclaredConstructor();
+        constructor.setAccessible(true);
+
+        assertNotNull(constructor.newInstance());
+
+        constructor.setAccessible(false);
+    }
+
+
+    @Test
+    public void constructor_DefaultIsPrivate() throws Exception {
+        Constructor<ClassPath> constructor = ClassPath.class.getDeclaredConstructor();
+        exception.expect(IllegalAccessException.class);
+        exception.expectMessage("private");
+
+        assertNull(constructor.newInstance());
+    }
+
+
+    @Test
+    public void findAllInstantiableClasses_existingClass() throws Exception {
         assertNotNull(ClassPath.findAllInstantiableClasses(String.class));
     }
 
 
     @Test
-    public void testFindClassesMatchingType_ExistInterface() throws Exception {
+    public void findAllInstantiableClasses_existingInterface() throws Exception {
         assertNotNull(ClassPath.findAllInstantiableClasses(Collection.class));
     }
 
 
     @Test
-    public void testFindClassesMatchingType_Null() throws Exception {
+    public void findAllInstantiableClasses_null() throws Exception {
         assertTrue(ClassPath.findAllInstantiableClasses(null).size() == 0);
     }
 
@@ -48,4 +75,9 @@ public class ClassPathTest {
 
     }
 
+
+    @Test
+    public void findAllAssignable_null() throws Exception {
+        assertNotNull(ClassPath.findAllAssignable(null));
+    }
 }
