@@ -730,6 +730,23 @@ class AbstractHandyPath implements Path {
 
 
     @Override
+    public int hashCode() {
+        return source.hashCode();
+    }
+
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        AbstractHandyPath paths = (AbstractHandyPath) o;
+
+        return source.equals(paths.source);
+    }
+
+
+    @Override
     public String toString() {
         return source.toString();
     }
