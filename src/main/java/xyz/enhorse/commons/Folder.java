@@ -5,12 +5,13 @@ import java.io.IOException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static xyz.enhorse.commons.HandyPath.EXTENSION_SEPARATOR;
+import static xyz.enhorse.commons.HandyPath.*;
 
 /**
  * @author <a href="mailto:pavel13kalinin@gmail.com">Pavel Kalinin</a>
@@ -38,8 +39,8 @@ public class Folder {
 
         if (path != null) {
             File temp = new File(path);
-            if (!temp.isDirectory()) {
-                result = new File(new HandyPath(temp).pathname());
+            if (temp.isDirectory()) {
+                result = temp;
             }
         }
 
@@ -49,8 +50,8 @@ public class Folder {
     }
 
 
-    private File folder() {
-        return folder;
+    public Path path() {
+        return Paths.get(folder.getAbsolutePath());
     }
 
 
@@ -61,9 +62,7 @@ public class Folder {
 
     private List<File> fileList(FileFilter filter) {
         List<File> result = new ArrayList<>();
-        HandyPath current = new HandyPath(folder());
-        System.out.println(current);
-        System.out.println(filter);
+        Path current = path();
 
         try (DirectoryStream<Path> directoryStream = (filter != null)
                 ? Files.newDirectoryStream(current, filter)
@@ -73,7 +72,7 @@ public class Folder {
                     result.add(path.toFile());
             }
         } catch (IOException ex) {
-            throw new IllegalStateException("Listing error on the folder \'" + folder() + '\'', ex);
+            throw new IllegalStateException("Listing error on the path \'" + path() + '\'', ex);
         }
 
         return result;
