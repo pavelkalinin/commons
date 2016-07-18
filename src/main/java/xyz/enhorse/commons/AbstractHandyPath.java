@@ -22,6 +22,11 @@ class AbstractHandyPath implements Path {
     }
 
 
+    protected Path source() {
+        return source;
+    }
+
+
     /**
      * Returns the file system that created this object.
      *
@@ -29,7 +34,7 @@ class AbstractHandyPath implements Path {
      */
     @Override
     public FileSystem getFileSystem() {
-        return null;
+        return source.getFileSystem();
     }
 
 
