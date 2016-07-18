@@ -35,6 +35,31 @@ public class HandyPath extends AbstractHandyPath {
     }
 
 
+    public boolean exists() {
+        return source().toFile().exists();
+    }
+
+
+    public boolean isDirectory() {
+        return source().toFile().isDirectory();
+    }
+
+
+    public boolean isExistingDirectory() {
+        return isDirectory() && exists();
+    }
+
+
+    public boolean isFile() {
+        return source().toFile().isFile();
+    }
+
+
+    public boolean isExistingFile() {
+        return isFile() && exists();
+    }
+
+
     public String name() {
         String filename = toFile().getName();
         int separator = filename.indexOf(EXTENSION_SEPARATOR);
