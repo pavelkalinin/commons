@@ -1,13 +1,14 @@
 package xyz.enhorse.commons;
 
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import static org.junit.Assert.*;
 
@@ -26,9 +27,9 @@ public class HandyPathTest {
     public TemporaryFolder tmp = new TemporaryFolder();
 
 
-    private File file() {
+    private File existingFile() {
         try {
-            File result = new File(path() + filename);
+            File result = new File(existingDirectory() + filename);
             return (result.exists()) ? result : tmp.newFile(name + HandyPath.EXTENSION_SEPARATOR + extension);
         } catch (IOException ex) {
             throw new IllegalStateException(ex);
@@ -36,14 +37,36 @@ public class HandyPathTest {
     }
 
 
-    private String path() {
+    private File absentFile() {
+        try {
+            File result = new File(existingDirectory() + filename);
+            Files.deleteIfExists(result.toPath());
+            return result;
+        } catch (IOException ex) {
+            throw new IllegalStateException(ex);
+        }
+    }
+
+
+    private String existingDirectory() {
         return tmp.getRoot().toString() + HandyPath.PATH_SEPARATOR;
+    }
+
+
+    private String absentDirectory() {
+        try {
+            String result = existingDirectory() + name + HandyPath.PATH_SEPARATOR;
+            Files.deleteIfExists(Paths.get(result));
+            return result;
+        } catch (IOException ex) {
+            throw new IllegalStateException();
+        }
     }
 
 
     @Test
     public void createFromFile() throws Exception {
-        assertNotNull(new HandyPath(file()));
+        assertNotNull(new HandyPath(existingFile()));
     }
 
 
@@ -63,7 +86,7 @@ public class HandyPathTest {
 
     @Test
     public void createFromPath() throws Exception {
-        assertNotNull(new HandyPath(file().toPath()));
+        assertNotNull(new HandyPath(existingFile().toPath()));
     }
 
 
@@ -76,7 +99,7 @@ public class HandyPathTest {
 
     @Test
     public void createFromString() throws Exception {
-        assertNotNull(new HandyPath(file().getAbsoluteFile()));
+        assertNotNull(new HandyPath(existingFile().getAbsoluteFile()));
     }
 
 
@@ -95,103 +118,278 @@ public class HandyPathTest {
 
     @Test
     public void pathname() throws Exception {
-        assertEquals(path(), new HandyPath(file()).pathname());
+        assertEquals(existingDirectory(), new HandyPath(existingFile()).pathname());
     }
 
 
     @Test
     public void name() throws Exception {
-        assertEquals(name, new HandyPath(file()).name());
+        assertEquals(name, new HandyPath(existingFile()).name());
     }
 
 
     @Test
     public void extension() throws Exception {
-        assertEquals(extension, new HandyPath(file()).extension());
+        assertEquals(extension, new HandyPath(existingFile()).extension());
     }
 
 
     @Test
     public void filename() throws Exception {
-        assertEquals(filename, new HandyPath(file()).filename());
+        assertEquals(filename, new HandyPath(existingFile()).filename());
     }
 
 
     @Test
     public void changeName() throws Exception {
-        HandyPath original = new HandyPath(file());
+        HandyPath original = new HandyPath(existingFile());
         String newName = "new" + name;
         HandyPath changed = original.changeName(newName);
 
-        assertEquals("name wasn't changed", newName, changed.name());
-        assertEquals("immutability was broken", name, original.name());
+        assertEquals(newName, changed.name());
+    }
+
+
+    @Test
+    public void changeName_immutable() throws Exception {
+        HandyPath original = new HandyPath(existingFile());
+        String newName = "new" + name;
+        original.changeName(newName);
+
+        assertEquals(name, original.name());
     }
 
 
     @Test
     public void changeExtension_withoutSeparator() throws Exception {
-        HandyPath original = new HandyPath(file());
+        HandyPath original = new HandyPath(existingFile());
         String newExtension = "new" + extension;
         HandyPath changed = original.changeExtension(newExtension);
 
-        assertEquals("extension wasn't changed", newExtension, changed.extension());
-        assertEquals("immutability was broken", extension, original.extension());
+        assertEquals(newExtension, changed.extension());
+    }
+
+
+    @Test
+    public void changeExtension_withoutSeparator_immutable() throws Exception {
+        HandyPath original = new HandyPath(existingFile());
+        String newExtension = "new" + extension;
+        original.changeExtension(newExtension);
+
+        assertEquals(extension, original.extension());
     }
 
 
     @Test
     public void changePathname_withoutSeparator() throws Exception {
-        HandyPath original = new HandyPath(file());
-        String newPathname = path() + "new";
+        HandyPath original = new HandyPath(existingFile());
+        String newPathname = existingDirectory() + "new";
         HandyPath changed = original.changePathname(newPathname);
 
-        assertEquals("pathname wasn't changed", newPathname + HandyPath.PATH_SEPARATOR, changed.pathname());
-        assertEquals("immutability was broken", path(), original.pathname());
+        assertEquals(newPathname + HandyPath.PATH_SEPARATOR, changed.pathname());
+    }
+
+
+    @Test
+    public void changePathname_withoutSeparator_immutable() throws Exception {
+        HandyPath original = new HandyPath(existingFile());
+        String newPathname = existingDirectory() + "new";
+        original.changePathname(newPathname);
+
+        assertEquals(existingDirectory(), original.pathname());
     }
 
 
     @Test
     public void changeExtension_withSeparator() throws Exception {
-        HandyPath original = new HandyPath(file());
+        HandyPath original = new HandyPath(existingFile());
         String newExtension = HandyPath.EXTENSION_SEPARATOR + "new" + extension;
         HandyPath changed = original.changeExtension(newExtension);
 
-        assertEquals("extension wasn't changed", newExtension, HandyPath.EXTENSION_SEPARATOR + changed.extension());
-        assertEquals("immutability was broken", extension, original.extension());
+        assertEquals(newExtension, HandyPath.EXTENSION_SEPARATOR + changed.extension());
+    }
+
+
+    @Test
+    public void changeExtension_withSeparator_immutable() throws Exception {
+        HandyPath original = new HandyPath(existingFile());
+        String newExtension = HandyPath.EXTENSION_SEPARATOR + "new" + extension;
+        original.changeExtension(newExtension);
+
+        assertEquals(extension, original.extension());
     }
 
 
     @Test
     public void changePathname_withSeparator() throws Exception {
-        HandyPath original = new HandyPath(file());
-        String newPathname = path() + "new" + HandyPath.PATH_SEPARATOR;
+        HandyPath original = new HandyPath(existingFile());
+        String newPathname = existingDirectory() + "new" + HandyPath.PATH_SEPARATOR;
         HandyPath changed = original.changePathname(newPathname);
 
-        assertEquals("pathname wasn't changed", newPathname, changed.pathname());
-        assertEquals("immutability was broken", path(), original.pathname());
+        assertEquals(newPathname, changed.pathname());
     }
 
 
-    @Ignore
-    @Test(expected = IllegalArgumentException.class)
-    public void changeName_weird() throws Exception {
-        HandyPath f = new HandyPath(file()).changeName(weird);
-        System.out.println(f);
+    @Test
+    public void changePathname_withSeparator_immutable() throws Exception {
+        HandyPath original = new HandyPath(existingFile());
+        String newPathname = existingDirectory() + "new" + HandyPath.PATH_SEPARATOR;
+        original.changePathname(newPathname);
+
+        assertEquals(existingDirectory(), original.pathname());
     }
 
 
-    @Ignore
-    @Test(expected = IllegalArgumentException.class)
-    public void changeExtension_weird() throws Exception {
-        HandyPath f = new HandyPath(file()).changeExtension(weird);
-        System.out.println(f);
+    @Test
+    public void exists_existingFile() throws Exception {
+        HandyPath file = new HandyPath(existingFile());
+        assertTrue(file.exists());
     }
 
 
-    @Ignore
-    @Test(expected = IllegalArgumentException.class)
-    public void changePathname_weird() throws Exception {
-        HandyPath f = new HandyPath(file()).changePathname(weird);
-        System.out.println(f);
+    @Test
+    public void exists_absentFile() throws Exception {
+        HandyPath file = new HandyPath(absentFile());
+        assertFalse(file.exists());
+    }
+
+
+    @Test
+    public void exists_existingDirectory() throws Exception {
+        HandyPath directory = new HandyPath(existingDirectory());
+        assertTrue(directory.exists());
+    }
+
+
+    @Test
+    public void exists_absentDirectory() throws Exception {
+        HandyPath directory = new HandyPath(absentDirectory());
+        assertFalse(directory.exists());
+    }
+
+
+    @Test
+    public void isFile_existingFile() throws Exception {
+        HandyPath file = new HandyPath(existingFile());
+        assertTrue(file.isFile());
+    }
+
+
+    @Test
+    public void isFile_absentFile() throws Exception {
+        HandyPath file = new HandyPath(absentFile());
+        assertFalse(file.isFile());
+    }
+
+
+    @Test
+    public void isFile_existingDirectory() throws Exception {
+        HandyPath directory = new HandyPath(existingDirectory());
+        assertFalse(directory.isFile());
+    }
+
+
+    @Test
+    public void isFile_absentDirectory() throws Exception {
+        HandyPath directory = new HandyPath(absentDirectory());
+        assertFalse(directory.isFile());
+    }
+
+
+    @Test
+    public void isDirectory_existingDirectory() throws Exception {
+        HandyPath directory = new HandyPath(existingDirectory());
+        assertTrue(directory.isDirectory());
+    }
+
+
+    @Test
+    public void isDirectory_absentDirectory() throws Exception {
+        HandyPath directory = new HandyPath(absentDirectory());
+        assertFalse(directory.isDirectory());
+    }
+
+
+    @Test
+    public void isDirectory_existingFile() throws Exception {
+        HandyPath file = new HandyPath(existingFile());
+        assertFalse(file.isDirectory());
+    }
+
+
+    @Test
+    public void isDirectory_absentFile() throws Exception {
+        HandyPath file = new HandyPath(absentFile());
+        assertFalse(file.isDirectory());
+    }
+
+
+    @Test
+    public void isSymlink_existingFile() throws Exception {
+        HandyPath file = new HandyPath(existingFile());
+        assertFalse(file.isSymlink());
+    }
+
+
+    @Test
+    public void isSymlink_absentFile() throws Exception {
+        HandyPath file = new HandyPath(absentFile());
+        assertFalse(file.isSymlink());
+    }
+
+
+    @Test
+    public void isExistingFile_existingFile() throws Exception {
+        HandyPath file = new HandyPath(existingFile());
+        assertTrue(file.isExistingFile());
+    }
+
+
+    @Test
+    public void isExistingFile_absentFile() throws Exception {
+        HandyPath file = new HandyPath(absentFile());
+        assertFalse(file.isExistingFile());
+    }
+
+
+    @Test
+    public void isExistingFile_existingDirectory() throws Exception {
+        HandyPath file = new HandyPath(existingDirectory());
+        assertFalse(file.isExistingFile());
+    }
+
+
+    @Test
+    public void isExistingFile_absentDirectory() throws Exception {
+        HandyPath file = new HandyPath(absentDirectory());
+        assertFalse(file.isExistingFile());
+    }
+
+
+    @Test
+    public void isExistingDirectory_existingDirectory() throws Exception {
+        HandyPath file = new HandyPath(existingDirectory());
+        assertTrue(file.isExistingDirectory());
+    }
+
+
+    @Test
+    public void isExistingDirectory_absentDirectory() throws Exception {
+        HandyPath file = new HandyPath(absentDirectory());
+        assertFalse(file.isExistingDirectory());
+    }
+
+
+    @Test
+    public void isExistingDirectory_existingFile() throws Exception {
+        HandyPath file = new HandyPath(existingFile());
+        assertFalse(file.isExistingDirectory());
+    }
+
+
+    @Test
+    public void isExistingDirectory_absentFile() throws Exception {
+        HandyPath file = new HandyPath(absentFile());
+        assertFalse(file.isExistingDirectory());
     }
 }

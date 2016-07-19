@@ -1,6 +1,7 @@
 package xyz.enhorse.commons;
 
 import java.io.File;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -41,7 +42,7 @@ public class HandyPath extends AbstractHandyPath {
 
 
     public boolean isDirectory() {
-        return source().toFile().isDirectory();
+        return Files.isDirectory(source());
     }
 
 
@@ -51,12 +52,17 @@ public class HandyPath extends AbstractHandyPath {
 
 
     public boolean isFile() {
-        return source().toFile().isFile();
+        return Files.isRegularFile(source());
     }
 
 
     public boolean isExistingFile() {
         return isFile() && exists();
+    }
+
+
+    public boolean isSymlink() {
+        return Files.isSymbolicLink(source());
     }
 
 
