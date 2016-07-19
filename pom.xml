@@ -26,7 +26,6 @@
 
         <junit.version>4.12</junit.version>
         <mockito.version>1.10.19</mockito.version>
-        <jmh.version>1.0</jmh.version>
         <slf4j.version>1.7.13</slf4j.version>
 
     </properties>
@@ -43,17 +42,6 @@
             <artifactId>mockito-core</artifactId>
             <version>${mockito.version}</version>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.openjdk.jmh</groupId>
-            <artifactId>jmh-core</artifactId>
-            <version>${jmh.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.openjdk.jmh</groupId>
-            <artifactId>jmh-generator-annprocess</artifactId>
-            <version>${jmh.version}</version>
-            <scope>provided</scope>
         </dependency>
         <!-- Logging -->
         <dependency>
