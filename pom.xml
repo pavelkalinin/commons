@@ -8,7 +8,7 @@
     <packaging>jar</packaging>
 
     <name>commons</name>
-    <url>https://enhorse.xyz</url>
+    <url>https://github.com/pavelkalinin/commons</url>
 
     <properties>
         <start-class>xyz.enhorse.commons.Demo</start-class>
