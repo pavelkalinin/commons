@@ -7,11 +7,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.Collections;
 import java.util.List;
-import java.util.Set;
-
-import static xyz.enhorse.commons.HandyPath.*;
 
 /**
  * @author <a href="mailto:pavel13kalinin@gmail.com">Pavel Kalinin</a>
@@ -19,7 +16,7 @@ import static xyz.enhorse.commons.HandyPath.*;
  */
 public class Folder {
 
-    private final File folder;
+    private final HandyPath folder;
 
 
     public Folder(final String directory) {
@@ -27,84 +24,91 @@ public class Folder {
     }
 
 
-    public List<File> getContents(final String... extensions) {
-        return (extensions != null)
-                ? fileList(new FileFilter(extensions))
-                : fileList(null);
+    public List<Path> list() {
+        return list(BaseFilters.ALL);
     }
 
 
-    private File validateDirectory(String path) {
-        File result = null;
+    public List<Path> listFolders() {
+        return list(BaseFilters.DIRECTORIES_ONLY);
+    }
 
-        if (path != null) {
-            File temp = new File(path);
-            if (temp.isDirectory()) {
-                result = temp;
-            }
+
+    public List<Path> listFiles(final String... extensions) {
+        if (!exists()) {
+            return Collections.emptyList();
         }
 
-        return result != null
-                ? result
-                : currentDirectory();
+        return isAnyFile(extensions)
+                ? list(BaseFilters.FILES_ONLY)
+                : list(new FileExtensionFilter(extensions));
     }
 
 
-    public Path path() {
-        return Paths.get(folder.getAbsolutePath());
+    private boolean isNullOrEmpty(final String[] array) {
+        return array == null
+                || (array.length == 0)
+                || ((array.length == 1) && (array[0] == null));
     }
 
 
-    private File currentDirectory() {
-        return new File("");
-    }
+    private boolean isAnyFile(final String[] array) {
+        boolean result = false;
 
-
-    private List<File> fileList(FileFilter filter) {
-        List<File> result = new ArrayList<>();
-        Path current = path();
-
-        try (DirectoryStream<Path> directoryStream = (filter != null)
-                ? Files.newDirectoryStream(current, filter)
-                : Files.newDirectoryStream(current)) {
-            for (Path path : directoryStream) {
-                if (!Files.isDirectory(path))
-                    result.add(path.toFile());
+        if (isNullOrEmpty(array)) {
+            result = true;
+        } else {
+            if (array.length == 1) {
+                String extension = array[0].trim();
+                if (extension.isEmpty() || (extension.equals("*"))) {
+                    result = true;
+                }
             }
-        } catch (IOException ex) {
-            throw new IllegalStateException("Listing error on the path \'" + path() + '\'', ex);
         }
 
         return result;
     }
 
 
-    private class FileFilter implements DirectoryStream.Filter<Path> {
+    private HandyPath validateDirectory(String path) {
+        HandyPath result = new HandyPath(path);
 
-        private final Set<String> suitable = new HashSet<>();
+        return (result.isDirectory())
+                ? result
+                : new HandyPath(result.pathname());
+    }
 
 
-        FileFilter(final String... extensions) {
-            fillSuitable(extensions);
-        }
+    public Path path() {
+        return Paths.get(folder.toUri());
+    }
 
 
-        private void fillSuitable(final String... extensions) {
-            for (String extension : extensions) {
-                extension = extension.trim();
-                if (!extension.isEmpty()) {
-                    if (extension.charAt(0) == EXTENSION_SEPARATOR) {
-                        extension = extension.replace(EXTENSION_SEPARATOR, '\0');
-                    }
-                    suitable.add(extension);
-                }
+    private List<Path> list(DirectoryStream.Filter<? super Path> filter) {
+        List<Path> result = new ArrayList<>();
+
+        if (folder.exists()) {
+            try (DirectoryStream<Path> directoryStream = (filter == BaseFilters.ALL)
+                    ? Files.newDirectoryStream(path())
+                    : Files.newDirectoryStream(path(), filter)) {
+                directoryStream.forEach(result::add);
+            } catch (IOException ex) {
+                throw new IllegalStateException("Listing error on the path \'" + path() + '\'' +
+                        " with the filter \'" + filter + '\'', ex);
             }
         }
 
+        return result;
+    }
 
-        @Override
-        public boolean accept(Path entry) throws IOException {
-            return suitable.contains(new HandyPath(entry).extension());
-        }
+
+    public boolean exists() {
+        return folder.toFile().exists();
+    }
+
+
+    @Override
+    public String toString() {
+        return folder.toString() + File.separator;
     }
 }
