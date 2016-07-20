@@ -37,7 +37,7 @@ public class HandyPath extends AbstractHandyPath {
 
 
     public boolean exists() {
-        return source().toFile().exists();
+        return Files.exists(source());
     }
 
 
