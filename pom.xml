@@ -19,7 +19,7 @@
         <maven.deploy.version>2.8.2</maven.deploy.version>
         <maven.github-plugin>0.12</maven.github-plugin>
 
-        <github.global.server>github</github.global.server>
+        <github.global.server>github.com-pavelkalinin</github.global.server>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
