@@ -87,7 +87,7 @@ public class Folder {
     private List<Path> list(DirectoryStream.Filter<? super Path> filter) {
         List<Path> result = new ArrayList<>();
 
-        if (folder.exists()) {
+        if (folder.isExisting()) {
             try (DirectoryStream<Path> directoryStream = (filter == BaseFilters.ALL)
                     ? Files.newDirectoryStream(path())
                     : Files.newDirectoryStream(path(), filter)) {
