@@ -1,6 +1,7 @@
 package xyz.enhorse.commons;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -36,7 +37,7 @@ public class HandyPath extends AbstractHandyPath {
     }
 
 
-    public boolean exists() {
+    public boolean isExisting() {
         return Files.exists(source());
     }
 
@@ -46,23 +47,47 @@ public class HandyPath extends AbstractHandyPath {
     }
 
 
-    public boolean isExistingDirectory() {
-        return isDirectory() && exists();
-    }
-
-
     public boolean isFile() {
         return Files.isRegularFile(source());
     }
 
 
+    public boolean isExistingDirectory() {
+        return isDirectory() && isExisting();
+    }
+
+
     public boolean isExistingFile() {
-        return isFile() && exists();
+        return isFile() && isExisting();
     }
 
 
     public boolean isSymlink() {
         return Files.isSymbolicLink(source());
+    }
+
+
+    public boolean isWritable() {
+        return Files.isWritable(source());
+    }
+
+
+    public boolean isReadable() {
+        return Files.isReadable(source());
+    }
+
+
+    public boolean isExecutable() {
+        return Files.isExecutable(source());
+    }
+
+
+    public boolean isHidden() {
+        try {
+            return Files.isHidden(source());
+        } catch (IOException ex) {
+            throw new IllegalStateException("Cannot check attribute \'hidden\' of \'" + source() + "\'", ex);
+        }
     }
 
 

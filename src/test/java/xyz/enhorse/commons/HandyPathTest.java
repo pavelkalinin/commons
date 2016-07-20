@@ -247,30 +247,30 @@ public class HandyPathTest {
 
 
     @Test
-    public void exists_existingFile() throws Exception {
+    public void isExisting_existingFile() throws Exception {
         HandyPath file = new HandyPath(existingFile());
-        assertTrue(file.exists());
+        assertTrue(file.isExisting());
     }
 
 
     @Test
-    public void exists_absentFile() throws Exception {
+    public void isExisting_absentFile() throws Exception {
         HandyPath file = new HandyPath(absentFile());
-        assertFalse(file.exists());
+        assertFalse(file.isExisting());
     }
 
 
     @Test
-    public void exists_existingDirectory() throws Exception {
+    public void isExisting_existingDirectory() throws Exception {
         HandyPath directory = new HandyPath(existingDirectory());
-        assertTrue(directory.exists());
+        assertTrue(directory.isExisting());
     }
 
 
     @Test
-    public void exists_absentDirectory() throws Exception {
+    public void isExisting_absentDirectory() throws Exception {
         HandyPath directory = new HandyPath(absentDirectory());
-        assertFalse(directory.exists());
+        assertFalse(directory.isExisting());
     }
 
 
@@ -397,5 +397,61 @@ public class HandyPathTest {
     public void isExistingDirectory_absentFile() throws Exception {
         HandyPath file = new HandyPath(absentFile());
         assertFalse(file.isExistingDirectory());
+    }
+
+
+    @Test
+    public void isWritable_existingDirectory() throws Exception {
+        HandyPath file = new HandyPath(existingDirectory());
+        assertTrue(file.isWritable());
+    }
+
+
+    @Test
+    public void isWritable_existingFile() throws Exception {
+        HandyPath file = new HandyPath(existingFile());
+        assertTrue(file.isWritable());
+    }
+
+
+    @Test
+    public void isExecutable_existingDirectory() throws Exception {
+        HandyPath file = new HandyPath(existingDirectory());
+        assertTrue(file.isExecutable());
+    }
+
+
+    @Test
+    public void isExecutable_existingFile() throws Exception {
+        HandyPath file = new HandyPath(existingFile());
+        assertTrue(file.isExecutable());
+    }
+
+
+    @Test
+    public void isHidden_existingDirectory() throws Exception {
+        HandyPath file = new HandyPath(existingDirectory());
+        assertFalse(file.isHidden());
+    }
+
+
+    @Test
+    public void isHidden_existingFile() throws Exception {
+        HandyPath file = new HandyPath(existingFile());
+        assertFalse(file.isHidden());
+    }
+
+
+    @Test
+    public void isReadable_existingDirectory() throws Exception {
+        HandyPath file = new HandyPath(existingDirectory());
+        assertTrue(file.isReadable());
+    }
+
+
+    @Test
+    public void isReadable_existingFile() throws Exception {
+        HandyPath file = new HandyPath(existingFile());
+        assertTrue(file.isReadable());
     }
 }
