@@ -87,7 +87,9 @@ public class HandyPath extends AbstractHandyPath {
 
 
     public String pathname() {
-        final File parent = toFile().getParentFile();
+        final File parent = !isDirectory()
+                ? toFile().getParentFile()
+                : toFile();
 
         return (parent != null)
                 ? parent.getAbsolutePath() + File.separator

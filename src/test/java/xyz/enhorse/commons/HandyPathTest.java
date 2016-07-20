@@ -117,8 +117,14 @@ public class HandyPathTest {
 
 
     @Test
-    public void pathname() throws Exception {
+    public void pathname_existingFile() throws Exception {
         assertEquals(existingDirectory(), new HandyPath(existingFile()).pathname());
+    }
+
+
+    @Test
+    public void pathname_existingDirectory() throws Exception {
+        assertEquals(existingDirectory(), new HandyPath(existingDirectory()).pathname());
     }
 
 
