@@ -19,8 +19,28 @@ public class Folder {
     private final HandyPath folder;
 
 
+    public Folder() {
+        folder = new HandyPath();
+    }
+
+
+    public Folder(final Path path) {
+        folder = normalize(path);
+    }
+
+
+    public Folder(final File file) {
+        this(new HandyPath(file));
+    }
+
+
     public Folder(final String directory) {
-        folder = validateDirectory(directory);
+        this(new HandyPath(directory));
+    }
+
+
+    public Folder(final HandyPath path) {
+        this(Validate.defaultIfNull(path, new HandyPath()).source());
     }
 
 
@@ -70,17 +90,17 @@ public class Folder {
     }
 
 
-    private HandyPath validateDirectory(String path) {
+    private HandyPath normalize(Path path) {
         HandyPath result = new HandyPath(path);
 
-        return (result.isDirectory())
+        return (!result.isExisting()) || (result.isDirectory())
                 ? result
                 : new HandyPath(result.pathname());
     }
 
 
     public Path path() {
-        return Paths.get(folder.toUri());
+        return Paths.get(folder.toString());
     }
 
 
@@ -109,6 +129,6 @@ public class Folder {
 
     @Override
     public String toString() {
-        return folder.toString() + File.separator;
+        return folder.toString();
     }
 }

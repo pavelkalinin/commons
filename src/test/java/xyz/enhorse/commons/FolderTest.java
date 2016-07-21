@@ -10,7 +10,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
 
 /**
@@ -18,6 +17,8 @@ import static org.junit.Assert.assertNotNull;
  *         16/07/16
  */
 public class FolderTest {
+
+    private static final Path CURRENT_DIRECTORY = new HandyPath();
 
     private static final String TYPE_1 = ".java";
     private static final String TYPE_2 = ".tmp";
@@ -32,34 +33,157 @@ public class FolderTest {
     private static String directory;
 
 
+/*
+        Constructors
+*/
+
+
     @Test
-    public void create_emptyString() throws Exception {
-        assertNotNull(new Folder(""));
+    public void createString_emptyString() throws Exception {
+        assertEquals(CURRENT_DIRECTORY.toString(), new Folder("").path().toString());
     }
 
 
     @Test
-    public void create_existingFolder() throws Exception {
+    public void createString_existingDirectory() throws Exception {
         assertEquals(Paths.get(directory), new Folder(directory).path());
     }
 
 
     @Test
-    public void create_existingFile() throws Exception {
+    public void createString_existingFile() throws Exception {
         assertEquals(Paths.get(directory), new Folder(directory + FILES[0]).path());
     }
 
 
     @Test
-    public void create_absentFile() throws Exception {
-        assertEquals(Paths.get(directory), new Folder(directory + FILES[0] + TYPE_1).path());
+    public void createString_absent() throws Exception {
+        String name = directory + FILES[0] + TYPE_1;
+        assert !(new File(name).exists());
+
+        assertEquals(Paths.get(name), new Folder(name).path());
     }
 
 
     @Test
-    public void create_absentDirectory() throws Exception {
-        assertNotNull(new Folder(absentDirectory()));
+    public void createString_null() throws Exception {
+        String name = null;
+
+        assertEquals(CURRENT_DIRECTORY.toString(), new Folder(name).toString());
     }
+
+
+    @Test
+    public void createPath_existingDirectory() throws Exception {
+        Path path = Paths.get(directory);
+
+        assertEquals(path, new Folder(path).path());
+    }
+
+
+    @Test
+    public void createPath_existingFile() throws Exception {
+        Path path = Paths.get(directory + FILES[0]);
+
+        assertEquals(Paths.get(directory), new Folder(path).path());
+    }
+
+
+    @Test
+    public void createPath_absent() throws Exception {
+        String name = directory + FILES[0] + TYPE_1;
+        assert !(new File(name).exists());
+        Path path = Paths.get(name);
+
+        assertEquals(Paths.get(name), new Folder(path).path());
+    }
+
+
+    @Test
+    public void createPath_null() throws Exception {
+        Path path = null;
+
+        assertEquals(CURRENT_DIRECTORY.toString(), new Folder(path).toString());
+    }
+
+
+    @Test
+    public void createFile_existingDirectory() throws Exception {
+        File file = new File(directory);
+
+        assertEquals(file.toPath(), new Folder(file).path());
+    }
+
+
+    @Test
+    public void createFile_existingFile() throws Exception {
+        File file = new File(directory + FILES[0]);
+
+        assertEquals(Paths.get(directory), new Folder(file).path());
+    }
+
+
+    @Test
+    public void createFile_absent() throws Exception {
+        String name = directory + FILES[0] + TYPE_1;
+        File file = new File(name);
+        assert !(file.exists());
+
+        assertEquals(file.toPath(), new Folder(file).path());
+    }
+
+
+    @Test
+    public void createFile_null() throws Exception {
+        File file = null;
+
+        assertEquals(CURRENT_DIRECTORY.toString(), new Folder(file).toString());
+    }
+
+
+    @Test
+    public void createHandyPath_existingDirectory() throws Exception {
+        HandyPath path = new HandyPath(directory);
+
+        assertEquals(path.toString(), new Folder(path).path().toString());
+    }
+
+
+    @Test
+    public void createHandyPath_existingFile() throws Exception {
+        HandyPath path = new HandyPath(directory + FILES[0]);
+
+        assertEquals(path.getParent(), new Folder(path).path());
+    }
+
+
+    @Test
+    public void createHAndyPath_absent() throws Exception {
+        String name = directory + FILES[0] + TYPE_1;
+        HandyPath path = new HandyPath(name);
+        assert !(path.isExisting());
+
+        assertEquals(path.toString(), new Folder(path).path().toString());
+    }
+
+
+    @Test
+    public void createHandyPath_null() throws Exception {
+        HandyPath path = null;
+
+        assertEquals(CURRENT_DIRECTORY.toString(), new Folder(path).path().toString());
+    }
+
+
+    @Test
+    public void createDefaultConstructor() throws Exception {
+        assertEquals(CURRENT_DIRECTORY.toString(), new Folder().toString());
+    }
+
+
+/*
+    listFiles()
+*/
 
 
     @Test
@@ -103,7 +227,7 @@ public class FolderTest {
 
 
     @Test
-    public void listFiles_onlySpace() throws Exception {
+    public void listFiles_onlyOneSpace() throws Exception {
         Folder folder = new Folder(directory);
         String extension = " ";
         assertEquals(FILES.length, folder.listFiles(extension).size());
@@ -138,6 +262,11 @@ public class FolderTest {
     }
 
 
+/*
+    listFolders()
+*/
+
+
     @Test
     public void listFolders_existing() throws Exception {
         Folder folder = new Folder(directory);
@@ -152,6 +281,11 @@ public class FolderTest {
     }
 
 
+/*
+    list()
+*/
+
+
     @Test
     public void list_existing() throws Exception {
         Folder folder = new Folder(directory);
@@ -164,6 +298,11 @@ public class FolderTest {
         Folder folder = new Folder(absentDirectory());
         assertEquals(0, folder.list().size());
     }
+
+
+/*
+    TEST SUPPORT
+*/
 
 
     @BeforeClass
