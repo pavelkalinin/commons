@@ -18,49 +18,18 @@ import static org.junit.Assert.*;
  */
 public class HandyPathTest {
 
+    public static final String CURRENT_DIRECTORY = System.getProperty("user.dir");
     private static final String name = "test";
     private static final String extension = "tst";
     private static final String filename = name + HandyPath.EXTENSION_SEPARATOR + extension;
     private static final String weird = "j ::: */ _%%%+\'\"??? ;^";
-
     @Rule
     public TemporaryFolder tmp = new TemporaryFolder();
 
 
-    private File existingFile() {
-        try {
-            File result = new File(existingDirectory() + filename);
-            return (result.exists()) ? result : tmp.newFile(name + HandyPath.EXTENSION_SEPARATOR + extension);
-        } catch (IOException ex) {
-            throw new IllegalStateException(ex);
-        }
-    }
-
-
-    private File absentFile() {
-        try {
-            File result = new File(existingDirectory() + filename);
-            Files.deleteIfExists(result.toPath());
-            return result;
-        } catch (IOException ex) {
-            throw new IllegalStateException(ex);
-        }
-    }
-
-
-    private String existingDirectory() {
-        return tmp.getRoot().toString() + HandyPath.PATH_SEPARATOR;
-    }
-
-
-    private String absentDirectory() {
-        try {
-            String result = existingDirectory() + name + HandyPath.PATH_SEPARATOR;
-            Files.deleteIfExists(Paths.get(result));
-            return result;
-        } catch (IOException ex) {
-            throw new IllegalStateException();
-        }
+    @Test
+    public void createDefaultConstructor() throws Exception {
+        assertNotNull(new HandyPath());
     }
 
 
@@ -104,7 +73,7 @@ public class HandyPathTest {
 
 
     @Test
-    public void createFromString_string() throws Exception {
+    public void createFromString_null() throws Exception {
         String string = null;
         assertNotNull(new HandyPath(string));
     }
@@ -113,6 +82,39 @@ public class HandyPathTest {
     @Test
     public void createFromString_weird() throws Exception {
         assertNotNull(new HandyPath(weird));
+    }
+
+
+    @Test
+    public void createDefaultConstructor_givesCurrentFolder() throws Exception {
+        assertEquals(CURRENT_DIRECTORY, new HandyPath().toString());
+    }
+
+
+    @Test
+    public void createFromString_nullGivesCurrentFolder() throws Exception {
+        String string = null;
+        assertEquals(CURRENT_DIRECTORY, new HandyPath(string).toString());
+    }
+
+
+    @Test
+    public void createFromString_emptyGivesCurrentFolder() throws Exception {
+        assertEquals(CURRENT_DIRECTORY, new HandyPath("").toString());
+    }
+
+
+    @Test
+    public void createFromPath_nullGivesCurrentFolder() throws Exception {
+        Path path = null;
+        assertEquals(CURRENT_DIRECTORY, new HandyPath(path).toString());
+    }
+
+
+    @Test
+    public void createFromFile_nullGivesCurrentFolder() throws Exception {
+        File file = null;
+        assertEquals(CURRENT_DIRECTORY, new HandyPath(file).toString());
     }
 
 
@@ -453,5 +455,42 @@ public class HandyPathTest {
     public void isReadable_existingFile() throws Exception {
         HandyPath file = new HandyPath(existingFile());
         assertTrue(file.isReadable());
+    }
+
+
+    private File existingFile() {
+        try {
+            File result = new File(existingDirectory() + filename);
+            return (result.exists()) ? result : tmp.newFile(name + HandyPath.EXTENSION_SEPARATOR + extension);
+        } catch (IOException ex) {
+            throw new IllegalStateException(ex);
+        }
+    }
+
+
+    private File absentFile() {
+        try {
+            File result = new File(existingDirectory() + filename);
+            Files.deleteIfExists(result.toPath());
+            return result;
+        } catch (IOException ex) {
+            throw new IllegalStateException(ex);
+        }
+    }
+
+
+    private String existingDirectory() {
+        return tmp.getRoot().toString() + HandyPath.PATH_SEPARATOR;
+    }
+
+
+    private String absentDirectory() {
+        try {
+            String result = existingDirectory() + name + HandyPath.PATH_SEPARATOR;
+            Files.deleteIfExists(Paths.get(result));
+            return result;
+        } catch (IOException ex) {
+            throw new IllegalStateException();
+        }
     }
 }

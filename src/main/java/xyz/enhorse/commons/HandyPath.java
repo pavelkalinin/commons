@@ -14,11 +14,16 @@ public class HandyPath extends AbstractHandyPath {
     public static final char EXTENSION_SEPARATOR = '.';
     public static final char PATH_SEPARATOR = File.separatorChar;
 
-    private static final String DEFAULT = "";
+    private static final Path DEFAULT_PATH = Paths.get(".").toAbsolutePath().normalize();
+
+
+    public HandyPath() {
+        this(DEFAULT_PATH);
+    }
 
 
     public HandyPath(final Path path) {
-        super(Validate.defaultIfNull(path, Paths.get(DEFAULT)));
+        super(Validate.defaultIfNull(path, DEFAULT_PATH));
     }
 
 
@@ -158,9 +163,9 @@ public class HandyPath extends AbstractHandyPath {
 
     private static Path stringToPath(final String string) {
         try {
-            return Paths.get(string);
+            return Paths.get(string).toAbsolutePath().normalize();
         } catch (Exception ex) {
-            return Paths.get(DEFAULT);
+            return DEFAULT_PATH;
         }
     }
 
@@ -169,7 +174,7 @@ public class HandyPath extends AbstractHandyPath {
         try {
             return Validate.notNull("file", file).toPath();
         } catch (Exception ex) {
-            return Paths.get(DEFAULT);
+            return DEFAULT_PATH;
         }
     }
 
