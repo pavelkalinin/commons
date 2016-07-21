@@ -91,7 +91,7 @@ public class HandyPath extends AbstractHandyPath {
         try {
             return Files.isHidden(source());
         } catch (IOException ex) {
-            throw new IllegalStateException("Cannot check attribute \'hidden\' of \'" + source() + "\'", ex);
+            return isExisting();
         }
     }
 
@@ -102,17 +102,19 @@ public class HandyPath extends AbstractHandyPath {
 
         return (separator > 0)
                 ? filename.substring(0, separator)
-                : "";
+                : filename;
     }
 
 
     public String extension() {
-        String filename = toFile().getName();
-        int separator = filename.indexOf(EXTENSION_SEPARATOR);
-
-        return ((separator > 0) && (separator < filename.length() - 1))
-                ? filename.substring(separator + 1)
-                : "";
+        if (!isDirectory()) {
+            String filename = toFile().getName();
+            int separator = filename.indexOf(EXTENSION_SEPARATOR);
+            if (separator > 0) {
+                return filename.substring(separator + 1);
+            }
+        }
+        return "";
     }
 
 
@@ -122,13 +124,15 @@ public class HandyPath extends AbstractHandyPath {
                 : toFile();
 
         return (parent != null)
-                ? parent.getAbsolutePath() + File.separator
+                ? parent.getAbsolutePath()
                 : "";
     }
 
 
     public String filename() {
-        return name() + EXTENSION_SEPARATOR + extension();
+        return (!isDirectory())
+                ? name() + normalizeExtension(extension())
+                : "";
     }
 
 
@@ -148,7 +152,7 @@ public class HandyPath extends AbstractHandyPath {
 
 
     private static String normalizeExtension(final String extension) {
-        return extension.charAt(0) == EXTENSION_SEPARATOR
+        return (extension.length() == 0) || (extension.charAt(0) == EXTENSION_SEPARATOR)
                 ? extension
                 : EXTENSION_SEPARATOR + extension;
     }
@@ -172,7 +176,7 @@ public class HandyPath extends AbstractHandyPath {
 
     private static Path fileToPath(final File file) {
         try {
-            return Validate.notNull("file", file).toPath();
+            return file.toPath();
         } catch (Exception ex) {
             return DEFAULT_PATH;
         }

@@ -17,14 +17,21 @@ import static org.junit.Assert.*;
  *         14/07/16
  */
 public class HandyPathTest {
-
     public static final String CURRENT_DIRECTORY = System.getProperty("user.dir");
+
     private static final String name = "test";
     private static final String extension = "tst";
     private static final String filename = name + HandyPath.EXTENSION_SEPARATOR + extension;
     private static final String weird = "j ::: */ _%%%+\'\"??? ;^";
+
+
     @Rule
     public TemporaryFolder tmp = new TemporaryFolder();
+
+
+/*
+    Constructors
+*/
 
 
     @Test
@@ -118,43 +125,153 @@ public class HandyPathTest {
     }
 
 
+/*
+    pathname()
+*/
+
+
     @Test
     public void pathname_existingFile() throws Exception {
-        assertEquals(existingDirectory(), new HandyPath(existingFile()).pathname());
+        assertEquals(existingFile().getParent(), new HandyPath(existingFile()).pathname());
     }
 
 
     @Test
     public void pathname_existingDirectory() throws Exception {
-        assertEquals(existingDirectory(), new HandyPath(existingDirectory()).pathname());
+        assertEquals(existingDirectory().toString(), new HandyPath(existingDirectory()).pathname());
     }
 
 
     @Test
-    public void name() throws Exception {
+    public void pathname_absentFile() throws Exception {
+        assertEquals(absentFile().getParent(), new HandyPath(absentFile()).pathname());
+    }
+
+
+    @Test
+    public void pathname_absentDirectory() throws Exception {
+        assertEquals(absentDirectory().getParent(), new HandyPath(absentDirectory()).pathname());
+    }
+
+
+    @Test
+    public void pathname_absentSubDirectoryInAbsentDirectory() throws Exception {
+        File file = absentSubDirectoryInAbsentDirectory();
+        assertEquals(file.getParent(), new HandyPath(file).pathname());
+    }
+
+
+/*
+    name()
+*/
+
+
+    @Test
+    public void name_existingFile() throws Exception {
         assertEquals(name, new HandyPath(existingFile()).name());
     }
 
 
     @Test
-    public void extension() throws Exception {
-        assertEquals(extension, new HandyPath(existingFile()).extension());
+    public void name_absentFile() throws Exception {
+        assertEquals(name, new HandyPath(absentFile()).name());
     }
 
 
     @Test
-    public void filename() throws Exception {
+    public void name_existingDirectory() throws Exception {
+        assertEquals(existingDirectory().getName(), new HandyPath(existingDirectory()).name());
+    }
+
+
+    @Test
+    public void name_absentDirectory() throws Exception {
+        assertEquals(absentDirectory().getName(), new HandyPath(absentDirectory()).name());
+    }
+
+
+/*
+    extension()
+*/
+
+
+    @Test
+    public void extension_existingFile_withExtensionSeparator() throws Exception {
+        assertEquals("txt", new HandyPath(tmp.newFile("test_file.txt")).extension());
+    }
+
+
+    @Test
+    public void extension_existingFile_withoutExtensionSeparator() throws Exception {
+        assertEquals("", new HandyPath(tmp.newFile("test_file")).extension());
+    }
+
+
+    @Test
+    public void extension_absentFile() throws Exception {
+        assertEquals(extension, new HandyPath(absentFile()).extension());
+    }
+
+
+    @Test
+    public void extension_existingDirectory() throws Exception {
+        assertEquals("", new HandyPath(existingDirectory()).extension());
+    }
+
+
+    @Test
+    public void extension_existingDirectory_withExtensionSeparator() throws Exception {
+
+        assertEquals("", new HandyPath(tmp.newFolder("test.folder")).extension());
+    }
+
+
+    @Test
+    public void extension_absentDirectory() throws Exception {
+        assertEquals("", new HandyPath(absentDirectory()).extension());
+    }
+
+
+/*
+    filename()
+*/
+
+
+    @Test
+    public void filename_existingFile() throws Exception {
         assertEquals(filename, new HandyPath(existingFile()).filename());
     }
+
+
+    @Test
+    public void filename_absentFile() throws Exception {
+        assertEquals(filename, new HandyPath(absentFile()).filename());
+    }
+
+
+    @Test
+    public void filename_existingDirectory() throws Exception {
+        assertEquals("", new HandyPath(existingDirectory()).filename());
+    }
+
+
+    @Test
+    public void filename_absentDirectory() throws Exception {
+        assertEquals(absentDirectory().getName(), new HandyPath(absentDirectory()).filename());
+    }
+
+
+/*
+    changeName()
+*/
 
 
     @Test
     public void changeName() throws Exception {
         HandyPath original = new HandyPath(existingFile());
         String newName = "new" + name;
-        HandyPath changed = original.changeName(newName);
 
-        assertEquals(newName, changed.name());
+        assertEquals(newName, original.changeName(newName).name());
     }
 
 
@@ -162,59 +279,22 @@ public class HandyPathTest {
     public void changeName_immutable() throws Exception {
         HandyPath original = new HandyPath(existingFile());
         String newName = "new" + name;
-        original.changeName(newName);
 
-        assertEquals(name, original.name());
+        assertNotEquals(original.changeName(newName).name(), original.name());
     }
 
 
-    @Test
-    public void changeExtension_withoutSeparator() throws Exception {
-        HandyPath original = new HandyPath(existingFile());
-        String newExtension = "new" + extension;
-        HandyPath changed = original.changeExtension(newExtension);
-
-        assertEquals(newExtension, changed.extension());
-    }
-
-
-    @Test
-    public void changeExtension_withoutSeparator_immutable() throws Exception {
-        HandyPath original = new HandyPath(existingFile());
-        String newExtension = "new" + extension;
-        original.changeExtension(newExtension);
-
-        assertEquals(extension, original.extension());
-    }
-
-
-    @Test
-    public void changePathname_withoutSeparator() throws Exception {
-        HandyPath original = new HandyPath(existingFile());
-        String newPathname = existingDirectory() + "new";
-        HandyPath changed = original.changePathname(newPathname);
-
-        assertEquals(newPathname + HandyPath.PATH_SEPARATOR, changed.pathname());
-    }
-
-
-    @Test
-    public void changePathname_withoutSeparator_immutable() throws Exception {
-        HandyPath original = new HandyPath(existingFile());
-        String newPathname = existingDirectory() + "new";
-        original.changePathname(newPathname);
-
-        assertEquals(existingDirectory(), original.pathname());
-    }
+/*
+    changeExtension()
+*/
 
 
     @Test
     public void changeExtension_withSeparator() throws Exception {
         HandyPath original = new HandyPath(existingFile());
         String newExtension = HandyPath.EXTENSION_SEPARATOR + "new" + extension;
-        HandyPath changed = original.changeExtension(newExtension);
 
-        assertEquals(newExtension, HandyPath.EXTENSION_SEPARATOR + changed.extension());
+        assertEquals(newExtension, HandyPath.EXTENSION_SEPARATOR + original.changeExtension(newExtension).extension());
     }
 
 
@@ -222,30 +302,73 @@ public class HandyPathTest {
     public void changeExtension_withSeparator_immutable() throws Exception {
         HandyPath original = new HandyPath(existingFile());
         String newExtension = HandyPath.EXTENSION_SEPARATOR + "new" + extension;
-        original.changeExtension(newExtension);
 
-        assertEquals(extension, original.extension());
+        assertNotEquals(original.changeExtension(newExtension).extension(), original.extension());
+    }
+
+
+    @Test
+    public void changeExtension_withoutSeparator() throws Exception {
+        HandyPath original = new HandyPath(existingFile());
+        String newExtension = "new" + extension;
+
+        assertEquals(newExtension, original.changeExtension(newExtension).extension());
+    }
+
+
+    @Test
+    public void changeExtension_withoutSeparator_immutable() throws Exception {
+        HandyPath original = new HandyPath(existingFile());
+        String newExtension = "new" + extension;
+
+        assertNotEquals(original.changeExtension(newExtension).extension(), original.extension());
+    }
+
+
+/*
+    changePathname()
+*/
+
+
+    @Test
+    public void changePathname_withoutSeparator() throws Exception {
+        HandyPath original = new HandyPath(existingFile());
+        String newPathname = existingDirectory() + "new";
+
+        assertEquals(newPathname, original.changePathname(newPathname).pathname());
+    }
+
+
+    @Test
+    public void changePathname_withoutSeparator_immutable() throws Exception {
+        HandyPath original = new HandyPath(existingFile());
+        String newPathname = existingDirectory() + "new";
+
+        assertNotEquals(original.changePathname(newPathname).pathname(), original.pathname());
     }
 
 
     @Test
     public void changePathname_withSeparator() throws Exception {
         HandyPath original = new HandyPath(existingFile());
-        String newPathname = existingDirectory() + "new" + HandyPath.PATH_SEPARATOR;
-        HandyPath changed = original.changePathname(newPathname);
+        String newPathname = existingDirectory() + "new";
 
-        assertEquals(newPathname, changed.pathname());
+        assertEquals(newPathname, original.changePathname(newPathname + HandyPath.PATH_SEPARATOR).pathname());
     }
 
 
     @Test
     public void changePathname_withSeparator_immutable() throws Exception {
         HandyPath original = new HandyPath(existingFile());
-        String newPathname = existingDirectory() + "new" + HandyPath.PATH_SEPARATOR;
-        original.changePathname(newPathname);
+        String newPathname = existingDirectory() + "new";
 
-        assertEquals(existingDirectory(), original.pathname());
+        assertNotEquals(original.changePathname(newPathname + HandyPath.PATH_SEPARATOR).pathname(), original.pathname());
     }
+
+
+/*
+    isExisting()
+*/
 
 
     @Test
@@ -276,6 +399,11 @@ public class HandyPathTest {
     }
 
 
+/*
+    isFile()
+*/
+
+
     @Test
     public void isFile_existingFile() throws Exception {
         HandyPath file = new HandyPath(existingFile());
@@ -302,6 +430,11 @@ public class HandyPathTest {
         HandyPath directory = new HandyPath(absentDirectory());
         assertFalse(directory.isFile());
     }
+
+
+/*
+    isDirectory()
+*/
 
 
     @Test
@@ -332,6 +465,11 @@ public class HandyPathTest {
     }
 
 
+/*
+    isSymlink()
+*/
+
+
     @Test
     public void isSymlink_existingFile() throws Exception {
         HandyPath file = new HandyPath(existingFile());
@@ -344,6 +482,11 @@ public class HandyPathTest {
         HandyPath file = new HandyPath(absentFile());
         assertFalse(file.isSymlink());
     }
+
+
+/*
+    isExistingFile()
+*/
 
 
     @Test
@@ -374,6 +517,11 @@ public class HandyPathTest {
     }
 
 
+/*
+    isExistingDirectory()
+*/
+
+
     @Test
     public void isExistingDirectory_existingDirectory() throws Exception {
         HandyPath file = new HandyPath(existingDirectory());
@@ -402,6 +550,11 @@ public class HandyPathTest {
     }
 
 
+/*
+    isWritable()
+*/
+
+
     @Test
     public void isWritable_existingDirectory() throws Exception {
         HandyPath file = new HandyPath(existingDirectory());
@@ -414,6 +567,11 @@ public class HandyPathTest {
         HandyPath file = new HandyPath(existingFile());
         assertTrue(file.isWritable());
     }
+
+
+/*
+    isExecutable()
+*/
 
 
     @Test
@@ -430,6 +588,11 @@ public class HandyPathTest {
     }
 
 
+/*
+    isHidden()
+*/
+
+
     @Test
     public void isHidden_existingDirectory() throws Exception {
         HandyPath file = new HandyPath(existingDirectory());
@@ -442,6 +605,23 @@ public class HandyPathTest {
         HandyPath file = new HandyPath(existingFile());
         assertFalse(file.isHidden());
     }
+
+
+    public void isHidden_absentDirectory() throws Exception {
+        HandyPath file = new HandyPath(absentDirectory());
+        assertFalse(file.isHidden());
+    }
+
+
+    @Test
+    public void isHidden_absentFile() throws Exception {
+        HandyPath file = new HandyPath(absentFile());
+        assertFalse(file.isHidden());
+    }
+
+/*
+    isReadable()
+*/
 
 
     @Test
@@ -458,10 +638,31 @@ public class HandyPathTest {
     }
 
 
+    @Test
+    public void isReadable_absentDirectory() throws Exception {
+        HandyPath file = new HandyPath(absentDirectory());
+        assertFalse(file.isReadable());
+    }
+
+
+    @Test
+    public void isReadable_absentFile() throws Exception {
+        HandyPath file = new HandyPath(absentFile());
+        assertFalse(file.isReadable());
+    }
+
+
+/*
+        TEST SUPPORT
+*/
+
+
     private File existingFile() {
         try {
-            File result = new File(existingDirectory() + filename);
-            return (result.exists()) ? result : tmp.newFile(name + HandyPath.EXTENSION_SEPARATOR + extension);
+            File result = new File(existingDirectory().toString() + HandyPath.PATH_SEPARATOR + filename);
+            return (result.exists())
+                    ? result
+                    : tmp.newFile(filename);
         } catch (IOException ex) {
             throw new IllegalStateException(ex);
         }
@@ -470,7 +671,7 @@ public class HandyPathTest {
 
     private File absentFile() {
         try {
-            File result = new File(existingDirectory() + filename);
+            File result = new File(existingDirectory().toString() + HandyPath.PATH_SEPARATOR + filename);
             Files.deleteIfExists(result.toPath());
             return result;
         } catch (IOException ex) {
@@ -479,16 +680,27 @@ public class HandyPathTest {
     }
 
 
-    private String existingDirectory() {
-        return tmp.getRoot().toString() + HandyPath.PATH_SEPARATOR;
+    private File existingDirectory() {
+        return new File(tmp.getRoot().toString());
     }
 
 
-    private String absentDirectory() {
+    private File absentDirectory() {
         try {
-            String result = existingDirectory() + name + HandyPath.PATH_SEPARATOR;
+            String result = existingDirectory() + name;
             Files.deleteIfExists(Paths.get(result));
-            return result;
+            return new File(result);
+        } catch (IOException ex) {
+            throw new IllegalStateException();
+        }
+    }
+
+
+    private File absentSubDirectoryInAbsentDirectory() {
+        try {
+            String result = absentDirectory().toString() + HandyPath.PATH_SEPARATOR + name;
+            Files.deleteIfExists(Paths.get(result));
+            return new File(result);
         } catch (IOException ex) {
             throw new IllegalStateException();
         }
