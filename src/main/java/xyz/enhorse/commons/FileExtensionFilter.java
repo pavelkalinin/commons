@@ -15,26 +15,30 @@ import static xyz.enhorse.commons.HandyPath.EXTENSION_SEPARATOR;
 public class FileExtensionFilter implements PathFilter {
 
 
-    private final Set<String> suitable = new HashSet<>();
+    private final Set<String> extensions = new HashSet<>();
 
 
     public FileExtensionFilter(final String... extensions) {
-        fillSuitable(extensions);
+        collect(extensions);
     }
 
 
-    private void fillSuitable(final String... extensions) {
-        for (String extension : extensions) {
-            suitable.add((extension.charAt(0) == EXTENSION_SEPARATOR)
-                    ? extension.substring(1)
-                    : extension);
+    private void collect(final String... extension) {
+        for (String ext : extension) {
+            extensions.add(normalize(ext));
         }
+    }
+
+
+    private boolean isMatched(final HandyPath path) {
+        return extensions.contains(normalize(path.extension()));
     }
 
 
     @Override
     public boolean accept(Path entry) throws IOException {
-        return BaseFilters.FILES_ONLY.accept(entry) && suitable.contains(new HandyPath(entry).extension());
+        HandyPath path = new HandyPath(entry);
+        return path.isFile() && isMatched(path);
     }
 
 
@@ -42,9 +46,17 @@ public class FileExtensionFilter implements PathFilter {
     public String toString() {
         StringJoiner result = new StringJoiner(",");
 
-        suitable.forEach(result::add);
+        extensions.forEach(result::add);
 
         return "[" + result.toString() + "]";
+    }
+
+
+    private static String normalize(final String string) {
+        return (!string.isEmpty() && (string.charAt(0) == EXTENSION_SEPARATOR)
+                ? string.substring(1)
+                : string)
+                .toLowerCase();
     }
 }
 
