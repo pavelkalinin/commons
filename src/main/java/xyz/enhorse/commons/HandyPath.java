@@ -111,7 +111,7 @@ public class HandyPath extends AbstractHandyPath {
             String filename = toFile().getName();
             int separator = filename.indexOf(EXTENSION_SEPARATOR);
             if (separator > 0) {
-                return filename.substring(separator + 1);
+                return filename.substring(separator);
             }
         }
         return "";
@@ -124,7 +124,7 @@ public class HandyPath extends AbstractHandyPath {
                 : toFile();
 
         return (parent != null)
-                ? parent.getAbsolutePath()
+                ? parent.getAbsolutePath() + PATH_SEPARATOR
                 : "";
     }
 
