@@ -72,16 +72,8 @@ public class Validate {
     }
 
 
+    //isLess
     public static byte isLess(String parameter, byte value, byte boundary) {
-        if (value >= boundary) {
-            throw new IllegalArgumentException("\"" + parameter + "\"=" + value + "=\"" + value + " is not less than " + boundary);
-        }
-
-        return value;
-    }
-
-
-    public static int isLess(String parameter, int value, int boundary) {
         if (value >= boundary) {
             throw new IllegalArgumentException("\"" + parameter + "\"=" + value + " is not less than " + boundary);
         }
@@ -91,6 +83,15 @@ public class Validate {
 
 
     public static short isLess(String parameter, short value, short boundary) {
+        if (value >= boundary) {
+            throw new IllegalArgumentException("\"" + parameter + "\"=" + value + " is not less than " + boundary);
+        }
+
+        return value;
+    }
+
+
+    public static int isLess(String parameter, int value, int boundary) {
         if (value >= boundary) {
             throw new IllegalArgumentException("\"" + parameter + "\"=" + value + " is not less than " + boundary);
         }
@@ -126,6 +127,7 @@ public class Validate {
     }
 
 
+    //isGreater
     public static byte isGreater(String parameter, byte value, byte boundary) {
         if (value <= boundary) {
             throw new IllegalArgumentException("\"" + parameter + "\"=" + value + " is not greater than " + boundary);
@@ -135,7 +137,7 @@ public class Validate {
     }
 
 
-    public static int isGreater(String parameter, int value, int boundary) {
+    public static short isGreater(String parameter, short value, short boundary) {
         if (value <= boundary) {
             throw new IllegalArgumentException("\"" + parameter + "\"=" + value + " is not greater than " + boundary);
         }
@@ -144,7 +146,7 @@ public class Validate {
     }
 
 
-    public static short isGreater(String parameter, short value, short boundary) {
+    public static int isGreater(String parameter, int value, int boundary) {
         if (value <= boundary) {
             throw new IllegalArgumentException("\"" + parameter + "\"=" + value + " is not greater than " + boundary);
         }
@@ -180,7 +182,8 @@ public class Validate {
     }
 
 
-    public static byte isLessOrEqual(String parameter, byte value, byte boundary) {
+    //isLessOrEquals
+    public static byte isLessOrEquals(String parameter, byte value, byte boundary) {
         if (value > boundary) {
             throw new IllegalArgumentException("\"" + parameter + "\"=" + value + " is greater than " + boundary);
         }
@@ -189,7 +192,7 @@ public class Validate {
     }
 
 
-    public static int isLessOrEqual(String parameter, int value, int boundary) {
+    public static short isLessOrEquals(String parameter, short value, short boundary) {
         if (value > boundary) {
             throw new IllegalArgumentException("\"" + parameter + "\"=" + value + " is greater than " + boundary);
         }
@@ -198,7 +201,7 @@ public class Validate {
     }
 
 
-    public static short isLessOrEqual(String parameter, short value, short boundary) {
+    public static int isLessOrEquals(String parameter, int value, int boundary) {
         if (value > boundary) {
             throw new IllegalArgumentException("\"" + parameter + "\"=" + value + " is greater than " + boundary);
         }
@@ -207,7 +210,7 @@ public class Validate {
     }
 
 
-    public static long isLessOrEqual(String parameter, long value, long boundary) {
+    public static long isLessOrEquals(String parameter, long value, long boundary) {
         if (value > boundary) {
             throw new IllegalArgumentException("\"" + parameter + "\"=" + value + " is greater than " + boundary);
         }
@@ -216,7 +219,7 @@ public class Validate {
     }
 
 
-    public static double isLessOrEqual(String parameter, float value, float boundary) {
+    public static double isLessOrEquals(String parameter, float value, float boundary) {
         if (Float.compare(value, boundary) > 0) {
             throw new IllegalArgumentException("\"" + parameter + "\"=" + value + " is not greater than " + boundary);
         }
@@ -225,7 +228,7 @@ public class Validate {
     }
 
 
-    public static double isLessOrEqual(String parameter, double value, double boundary) {
+    public static double isLessOrEquals(String parameter, double value, double boundary) {
         if (Double.compare(value, boundary) > 0) {
             throw new IllegalArgumentException("\"" + parameter + "\"=" + value + " is not greater than " + boundary);
         }
@@ -234,7 +237,8 @@ public class Validate {
     }
 
 
-    public static byte isGreaterOrEqual(String parameter, byte value, byte boundary) {
+    //isGreaterOrEquals
+    public static byte isGreaterOrEquals(String parameter, byte value, byte boundary) {
         if (value < boundary) {
             throw new IllegalArgumentException("\"" + parameter + "\"=" + value + " is less than " + boundary);
         }
@@ -243,7 +247,7 @@ public class Validate {
     }
 
 
-    public static int isGreaterOrEqual(String parameter, int value, int boundary) {
+    public static short isGreaterOrEquals(String parameter, short value, short boundary) {
         if (value < boundary) {
             throw new IllegalArgumentException("\"" + parameter + "\"=" + value + " is less than " + boundary);
         }
@@ -252,7 +256,7 @@ public class Validate {
     }
 
 
-    public static short isGreaterOrEqual(String parameter, short value, short boundary) {
+    public static int isGreaterOrEquals(String parameter, int value, int boundary) {
         if (value < boundary) {
             throw new IllegalArgumentException("\"" + parameter + "\"=" + value + " is less than " + boundary);
         }
@@ -261,7 +265,7 @@ public class Validate {
     }
 
 
-    public static long isGreaterOrEqual(String parameter, long value, long boundary) {
+    public static long isGreaterOrEquals(String parameter, long value, long boundary) {
         if (value < boundary) {
             throw new IllegalArgumentException("\"" + parameter + "\"=" + value + " is less than " + boundary);
         }
@@ -270,7 +274,7 @@ public class Validate {
     }
 
 
-    public static double isGreaterOrEqual(String parameter, float value, float boundary) {
+    public static double isGreaterOrEquals(String parameter, float value, float boundary) {
         if (Float.compare(value, boundary) < 0) {
             throw new IllegalArgumentException("\"" + parameter + "\"=" + value + " is not greater than " + boundary);
         }
@@ -279,10 +283,109 @@ public class Validate {
     }
 
 
-    public static double isGreaterOrEqual(String parameter, double value, double boundary) {
+    public static double isGreaterOrEquals(String parameter, double value, double boundary) {
         if (Double.compare(value, boundary) < 0) {
             throw new IllegalArgumentException("\"" + parameter + "\"=" + value + " is not greater than " + boundary);
         }
+
+        return value;
+    }
+
+
+    //isBetween
+    public static byte isBetween(String parameter, byte value, byte min, byte max) {
+        Validate.isLess(parameter, value, max);
+        Validate.isGreater(parameter, value, min);
+
+        return value;
+    }
+
+
+    public static short isBetween(String parameter, short value, short min, short max) {
+        Validate.isLess(parameter, value, max);
+        Validate.isGreater(parameter, value, min);
+
+        return value;
+    }
+
+
+    public static int isBetween(String parameter, int value, int min, int max) {
+        Validate.isLess(parameter, value, max);
+        Validate.isGreater(parameter, value, min);
+
+        return value;
+    }
+
+
+    public static long isBetween(String parameter, long value, long min, long max) {
+        Validate.isLess(parameter, value, max);
+        Validate.isGreater(parameter, value, min);
+
+        return value;
+    }
+
+
+    public static double isBetween(String parameter, float value, float min, float max) {
+        Validate.isLessOrEquals("minimum", min, max);
+        Validate.isLess(parameter, value, max);
+        Validate.isGreater(parameter, value, min);
+
+        return value;
+    }
+
+
+    public static double isBetween(String parameter, double value, double min, double max) {
+        Validate.isLess(parameter, value, max);
+        Validate.isGreater(parameter, value, min);
+
+        return value;
+    }
+
+
+    //isBetweenOrEqual
+    public static byte isBetweenOrEquals(String parameter, byte value, byte min, byte max) {
+        Validate.isLessOrEquals(parameter, value, max);
+        Validate.isGreaterOrEquals(parameter, value, min);
+
+        return value;
+    }
+
+
+    public static short isBetweenOrEquals(String parameter, short value, short min, short max) {
+        Validate.isLessOrEquals(parameter, value, max);
+        Validate.isGreaterOrEquals(parameter, value, min);
+
+        return value;
+    }
+
+
+    public static int isBetweenOrEquals(String parameter, int value, int min, int max) {
+        Validate.isLessOrEquals(parameter, value, max);
+        Validate.isGreaterOrEquals(parameter, value, min);
+
+        return value;
+    }
+
+
+    public static long isBetweenOrEquals(String parameter, long value, long min, long max) {
+        Validate.isLessOrEquals(parameter, value, max);
+        Validate.isGreaterOrEquals(parameter, value, min);
+
+        return value;
+    }
+
+
+    public static double isBetweenOrEquals(String parameter, float value, float min, float max) {
+        Validate.isLessOrEquals(parameter, value, max);
+        Validate.isGreaterOrEquals(parameter, value, min);
+
+        return value;
+    }
+
+
+    public static double isBetweenOrEquals(String parameter, double value, double min, double max) {
+        Validate.isLessOrEquals(parameter, value, max);
+        Validate.isGreaterOrEquals(parameter, value, min);
 
         return value;
     }

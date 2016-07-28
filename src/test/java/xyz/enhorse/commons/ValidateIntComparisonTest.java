@@ -9,7 +9,7 @@ import static xyz.enhorse.commons.Validate.*;
  * @author <a href="mailto:pavel13kalinin@gmail.com">Pavel Kalinin</a>
  *         11.07.2016
  */
-public class ValidateLongComparisonTest {
+public class ValidateIntComparisonTest {
 
 
     // isLess
@@ -17,72 +17,72 @@ public class ValidateLongComparisonTest {
 
     @Test
     public void isLess_positive() throws Exception {
-        long value = 1;
-        long boundary = 2;
+        int value = 1;
+        int boundary = 2;
         assertEquals(value, isLess("test value", value, boundary));
     }
 
 
     @Test
     public void isLess_negative() throws Exception {
-        long value = -2;
-        long boundary = -1;
+        int value = -2;
+        int boundary = -1;
         assertEquals(value, isLess("test value", value, boundary));
     }
 
 
     @Test
     public void isLess_zero() throws Exception {
-        long value = 0;
-        long boundary = 1;
+        int value = 0;
+        int boundary = 1;
         assertEquals(value, isLess("test value", value, boundary));
     }
 
 
     @Test
     public void isLess_maximumBoundary() throws Exception {
-        long value = 0;
-        long boundary = Long.MAX_VALUE;
+        int value = 0;
+        int boundary = Integer.MAX_VALUE;
         assertEquals(value, isLess("test value", value, boundary));
     }
 
 
     @Test
     public void isLess_minimum() throws Exception {
-        long value = Long.MIN_VALUE;
-        long boundary = 0;
+        int value = Integer.MIN_VALUE;
+        int boundary = 0;
         assertEquals(value, isLess("test value", value, boundary));
     }
 
 
     @Test(expected = IllegalArgumentException.class)
     public void isLess_greater() throws Exception {
-        long value = 1;
-        long boundary = 0;
+        int value = 1;
+        int boundary = 0;
         isLess("test value", value, boundary);
     }
 
 
     @Test(expected = IllegalArgumentException.class)
     public void isLess_equalsToBoundary() throws Exception {
-        long value = 1;
-        long boundary = 1;
+        int value = 1;
+        int boundary = 1;
         isLess("test value", value, boundary);
     }
 
 
     @Test(expected = IllegalArgumentException.class)
     public void isLess_minimums() throws Exception {
-        long value = Long.MIN_VALUE;
-        long boundary = Long.MIN_VALUE;
+        int value = Integer.MIN_VALUE;
+        int boundary = Integer.MIN_VALUE;
         isLess("test value", value, boundary);
     }
 
 
     @Test(expected = IllegalArgumentException.class)
     public void isLess_maximums() throws Exception {
-        long value = Long.MAX_VALUE;
-        long boundary = Long.MAX_VALUE;
+        int value = Integer.MAX_VALUE;
+        int boundary = Integer.MAX_VALUE;
         isLess("test value", value, boundary);
     }
 
@@ -92,72 +92,72 @@ public class ValidateLongComparisonTest {
 
     @Test
     public void isLessOrEquals_positive() throws Exception {
-        long value = 1;
-        long boundary = 2;
+        int value = 1;
+        int boundary = 2;
         assertEquals(value, isLessOrEquals("test value", value, boundary));
     }
 
 
     @Test
     public void isLessOrEquals_negative() throws Exception {
-        long value = -2;
-        long boundary = -1;
+        int value = -2;
+        int boundary = -1;
         assertEquals(value, isLessOrEquals("test value", value, boundary));
     }
 
 
     @Test
     public void isLessOrEquals_zero() throws Exception {
-        long value = 0;
-        long boundary = 1;
+        int value = 0;
+        int boundary = 1;
         assertEquals(value, isLessOrEquals("test value", value, boundary));
     }
 
 
     @Test
     public void isLessOrEquals_maximumBoundary() throws Exception {
-        long value = 0;
-        long boundary = Long.MAX_VALUE;
+        int value = 0;
+        int boundary = Integer.MAX_VALUE;
         assertEquals(value, isLessOrEquals("test value", value, boundary));
     }
 
 
     @Test
     public void isLessOrEquals_minimum() throws Exception {
-        long value = Long.MIN_VALUE;
-        long boundary = 0;
+        int value = Integer.MIN_VALUE;
+        int boundary = 0;
         assertEquals(value, isLessOrEquals("test value", value, boundary));
     }
 
 
     @Test(expected = IllegalArgumentException.class)
     public void isLessOrEquals_greater() throws Exception {
-        long value = 1;
-        long boundary = 0;
+        int value = 1;
+        int boundary = 0;
         isLessOrEquals("test value", value, boundary);
     }
 
 
     @Test
     public void isLessOrEqual_equals() throws Exception {
-        long value = 1;
-        long boundary = 1;
+        int value = 1;
+        int boundary = 1;
         isLessOrEquals("test value", value, boundary);
     }
 
 
     @Test
     public void isLessOrEquals_equalsMinimums() throws Exception {
-        long value = Long.MIN_VALUE;
-        long boundary = Long.MIN_VALUE;
+        int value = Integer.MIN_VALUE;
+        int boundary = Integer.MIN_VALUE;
         isGreaterOrEquals("test value", value, boundary);
     }
 
 
     @Test
     public void isLessOrEquals_equalsMaximums() throws Exception {
-        long value = Long.MAX_VALUE;
-        long boundary = Long.MAX_VALUE;
+        int value = Integer.MAX_VALUE;
+        int boundary = Integer.MAX_VALUE;
         isGreaterOrEquals("test value", value, boundary);
     }
 
@@ -167,72 +167,72 @@ public class ValidateLongComparisonTest {
 
     @Test
     public void isGreater_positive() throws Exception {
-        long value = 2;
-        long boundary = 1;
+        int value = 2;
+        int boundary = 1;
         assertEquals(value, isGreater("test value", value, boundary));
     }
 
 
     @Test
     public void isGreater_negative() throws Exception {
-        long value = -1;
-        long boundary = -2;
+        int value = -1;
+        int boundary = -2;
         assertEquals(value, isGreater("test value", value, boundary));
     }
 
 
     @Test
     public void isGreater_zero() throws Exception {
-        long value = 1;
-        long boundary = 0;
+        int value = 1;
+        int boundary = 0;
         assertEquals(value, isGreater("test value", value, boundary));
     }
 
 
     @Test
     public void isGreater_maximumBoundary() throws Exception {
-        long value = 0;
-        long boundary = Long.MIN_VALUE;
+        int value = 0;
+        int boundary = Integer.MIN_VALUE;
         assertEquals(value, isGreater("test value", value, boundary));
     }
 
 
     @Test
     public void isGreater_maximum() throws Exception {
-        long value = Long.MAX_VALUE;
-        long boundary = 0;
+        int value = Integer.MAX_VALUE;
+        int boundary = 0;
         assertEquals(value, isGreater("test value", value, boundary));
     }
 
 
     @Test(expected = IllegalArgumentException.class)
     public void isGreater_less() throws Exception {
-        long value = 0;
-        long boundary = 1;
+        int value = 0;
+        int boundary = 1;
         isGreater("test value", value, boundary);
     }
 
 
     @Test(expected = IllegalArgumentException.class)
     public void isGreater_equals() throws Exception {
-        long value = 1;
-        long boundary = 1;
+        int value = 1;
+        int boundary = 1;
         isGreater("test value", value, boundary);
     }
 
 
     @Test(expected = IllegalArgumentException.class)
     public void isGreater_minimums() throws Exception {
-        long value = Long.MIN_VALUE;
-        long boundary = Long.MIN_VALUE;
+        int value = Integer.MIN_VALUE;
+        int boundary = Integer.MIN_VALUE;
         isLess("test value", value, boundary);
     }
 
 
     @Test(expected = IllegalArgumentException.class)
     public void isGreater_maximums() throws Exception {
-        long value = Long.MAX_VALUE;
-        long boundary = Long.MAX_VALUE;
+        int value = Integer.MAX_VALUE;
+        int boundary = Integer.MAX_VALUE;
         isLess("test value", value, boundary);
     }
 
@@ -242,72 +242,72 @@ public class ValidateLongComparisonTest {
 
     @Test
     public void isGreaterOrEquals_positive() throws Exception {
-        long value = 2;
-        long boundary = 1;
+        int value = 2;
+        int boundary = 1;
         assertEquals(value, isGreaterOrEquals("test value", value, boundary));
     }
 
 
     @Test
     public void isGreaterOrEquals_negative() throws Exception {
-        long value = -1;
-        long boundary = -2;
+        int value = -1;
+        int boundary = -2;
         assertEquals(value, isGreaterOrEquals("test value", value, boundary));
     }
 
 
     @Test
     public void isGreaterOrEquals_zero() throws Exception {
-        long value = 1;
-        long boundary = 0;
+        int value = 1;
+        int boundary = 0;
         assertEquals(value, isGreaterOrEquals("test value", value, boundary));
     }
 
 
     @Test
     public void isGreaterOrEquals_minimumBoundary() throws Exception {
-        long value = 0;
-        long boundary = Long.MIN_VALUE;
+        int value = 0;
+        int boundary = Integer.MIN_VALUE;
         assertEquals(value, isGreaterOrEquals("test value", value, boundary));
     }
 
 
     @Test
     public void isGreaterOrEquals_maximum() throws Exception {
-        long value = Long.MAX_VALUE;
-        long boundary = 0;
+        int value = Integer.MAX_VALUE;
+        int boundary = 0;
         assertEquals(value, isGreaterOrEquals("test value", value, boundary));
     }
 
 
     @Test(expected = IllegalArgumentException.class)
     public void isGreaterOrEquals_greater() throws Exception {
-        long value = 0;
-        long boundary = 1;
+        int value = 0;
+        int boundary = 1;
         isGreaterOrEquals("test value", value, boundary);
     }
 
 
     @Test
     public void isGreaterOrEquals_equals() throws Exception {
-        long value = 1;
-        long boundary = 1;
+        int value = 1;
+        int boundary = 1;
         isGreaterOrEquals("test value", value, boundary);
     }
 
 
     @Test
     public void isGreaterOrEquals_minimums() throws Exception {
-        long value = Long.MIN_VALUE;
-        long boundary = Long.MIN_VALUE;
+        int value = Integer.MIN_VALUE;
+        int boundary = Integer.MIN_VALUE;
         isGreaterOrEquals("test value", value, boundary);
     }
 
 
     @Test
     public void isGreaterOrEquals_maximums() throws Exception {
-        long value = Long.MAX_VALUE;
-        long boundary = Long.MAX_VALUE;
+        int value = Integer.MAX_VALUE;
+        int boundary = Integer.MAX_VALUE;
         isGreaterOrEquals("test value", value, boundary);
     }
 
@@ -317,126 +317,126 @@ public class ValidateLongComparisonTest {
 
     @Test
     public void isBetween_positive() throws Exception {
-        long value = 2;
-        long min = 1;
-        long max = 3;
+        int value = 2;
+        int min = 1;
+        int max = 3;
         assertEquals(value, isBetween("test value", value, min, max));
     }
 
 
     @Test
     public void isBetween_negative() throws Exception {
-        long value = -2;
-        long min = -3;
-        long max = -1;
+        int value = -2;
+        int min = -3;
+        int max = -1;
         assertEquals(value, isBetween("test value", value, min, max));
     }
 
 
     @Test
     public void isBetween_zero() throws Exception {
-        long value = 0;
-        long min = -1;
-        long max = 1;
+        int value = 0;
+        int min = -1;
+        int max = 1;
         assertEquals(value, isBetween("test value", value, min, max));
     }
 
 
     @Test
     public void isBetween_minIsZero() throws Exception {
-        long value = 1;
-        long min = 0;
-        long max = 2;
+        int value = 1;
+        int min = 0;
+        int max = 2;
         assertEquals(value, isBetween("test value", value, min, max));
     }
 
 
     @Test
     public void isBetween_maxIsZero() throws Exception {
-        long value = -1;
-        long min = -2;
-        long max = 0;
+        int value = -1;
+        int min = -2;
+        int max = 0;
         assertEquals(value, isBetween("test value", value, min, max));
     }
 
 
     @Test
     public void isBetween_cornerBoundaries() throws Exception {
-        long value = 0;
-        long min = Long.MIN_VALUE;
-        long max = Long.MAX_VALUE;
+        int value = 0;
+        int min = Integer.MIN_VALUE;
+        int max = Integer.MAX_VALUE;
         assertEquals(value, isBetween("test value", value, min, max));
     }
 
 
     @Test(expected = IllegalArgumentException.class)
     public void isBetween_greaterThanMax() throws Exception {
-        long value = 3;
-        long min = 1;
-        long max = 2;
+        int value = 3;
+        int min = 1;
+        int max = 2;
         isBetween("test value", value, min, max);
     }
 
 
     @Test(expected = IllegalArgumentException.class)
     public void isBetween_equalMax() throws Exception {
-        long value = 2;
-        long min = 1;
-        long max = 2;
+        int value = 2;
+        int min = 1;
+        int max = 2;
         isBetween("test value", value, min, max);
     }
 
 
     @Test(expected = IllegalArgumentException.class)
     public void isBetween_lessThanMin() throws Exception {
-        long value = 3;
-        long min = 1;
-        long max = 2;
+        int value = 3;
+        int min = 1;
+        int max = 2;
         isBetween("test value", value, min, max);
     }
 
 
     @Test(expected = IllegalArgumentException.class)
     public void isBetween_equalMin() throws Exception {
-        long value = 1;
-        long min = 1;
-        long max = 2;
+        int value = 1;
+        int min = 1;
+        int max = 2;
         isBetween("test value", value, min, max);
     }
 
 
     @Test(expected = IllegalArgumentException.class)
     public void isBetween_equalMinimalMin() throws Exception {
-        long value = Long.MIN_VALUE;
-        long min = Long.MIN_VALUE;
-        long max = 0;
+        int value = Integer.MIN_VALUE;
+        int min = Integer.MIN_VALUE;
+        int max = 0;
         isBetween("test value", value, min, max);
     }
 
 
     @Test(expected = IllegalArgumentException.class)
     public void isBetween_equalMaximalMax() throws Exception {
-        long value = Long.MAX_VALUE;
-        long min = 0;
-        long max = Long.MAX_VALUE;
+        int value = Integer.MAX_VALUE;
+        int min = 0;
+        int max = Integer.MAX_VALUE;
         isBetween("test value", value, min, max);
     }
 
 
     @Test(expected = IllegalArgumentException.class)
     public void isBetween_maxEqualsMin() throws Exception {
-        long value = 0;
-        long min = 1;
-        long max = 1;
+        int value = 0;
+        int min = 1;
+        int max = 1;
         isBetween("test value", value, min, max);
     }
 
 
     @Test(expected = IllegalArgumentException.class)
     public void isBetween_maxLessThanMin() throws Exception {
-        long value = 0;
-        long min = 2;
-        long max = 1;
+        int value = 0;
+        int min = 2;
+        int max = 1;
         isBetween("test value", value, min, max);
     }
 
@@ -445,135 +445,135 @@ public class ValidateLongComparisonTest {
 
     @Test
     public void isBetweenOrEquals_positive() throws Exception {
-        long value = 2;
-        long min = 1;
-        long max = 3;
+        int value = 2;
+        int min = 1;
+        int max = 3;
         assertEquals(value, isBetweenOrEquals("test value", value, min, max));
     }
 
 
     @Test
     public void isBetweenOrEquals_negative() throws Exception {
-        long value = -2;
-        long min = -3;
-        long max = -1;
+        int value = -2;
+        int min = -3;
+        int max = -1;
         assertEquals(value, isBetweenOrEquals("test value", value, min, max));
     }
 
 
     @Test
     public void isBetweenOrEquals_zero() throws Exception {
-        long value = 0;
-        long min = -1;
-        long max = 1;
+        int value = 0;
+        int min = -1;
+        int max = 1;
         assertEquals(value, isBetweenOrEquals("test value", value, min, max));
     }
 
 
     @Test
     public void isBetweenOrEquals_minIsZero() throws Exception {
-        long value = 1;
-        long min = 0;
-        long max = 2;
+        int value = 1;
+        int min = 0;
+        int max = 2;
         assertEquals(value, isBetweenOrEquals("test value", value, min, max));
     }
 
 
     @Test
     public void isBetweenOrEquals_maxIsZero() throws Exception {
-        long value = -1;
-        long min = -2;
-        long max = 0;
+        int value = -1;
+        int min = -2;
+        int max = 0;
         assertEquals(value, isBetweenOrEquals("test value", value, min, max));
     }
 
 
     @Test
     public void isBetweenOrEquals_cornerBoundaries() throws Exception {
-        long value = 0;
-        long min = Long.MIN_VALUE;
-        long max = Long.MAX_VALUE;
+        int value = 0;
+        int min = Integer.MIN_VALUE;
+        int max = Integer.MAX_VALUE;
         assertEquals(value, isBetweenOrEquals("test value", value, min, max));
     }
 
 
     @Test(expected = IllegalArgumentException.class)
     public void isBetweenOrEquals_greaterThanMax() throws Exception {
-        long value = 3;
-        long min = 1;
-        long max = 2;
+        int value = 3;
+        int min = 1;
+        int max = 2;
         isBetweenOrEquals("test value", value, min, max);
     }
 
 
     @Test
     public void isBetweenOrEquals_equalsMax() throws Exception {
-        long value = 2;
-        long min = 1;
-        long max = 2;
+        int value = 2;
+        int min = 1;
+        int max = 2;
         isBetweenOrEquals("test value", value, min, max);
     }
 
 
     @Test(expected = IllegalArgumentException.class)
     public void isBetweenOrEquals_lessThanMin() throws Exception {
-        long value = 3;
-        long min = 1;
-        long max = 2;
+        int value = 3;
+        int min = 1;
+        int max = 2;
         isBetweenOrEquals("test value", value, min, max);
     }
 
 
     @Test
     public void isBetweenOrEquals_equalsMin() throws Exception {
-        long value = 1;
-        long min = 1;
-        long max = 2;
+        int value = 1;
+        int min = 1;
+        int max = 2;
         isBetweenOrEquals("test value", value, min, max);
     }
 
 
     @Test
     public void isBetweenOrEquals_equalsMinimalMin() throws Exception {
-        long value = Long.MIN_VALUE;
-        long min = Long.MIN_VALUE;
-        long max = 0;
+        int value = Integer.MIN_VALUE;
+        int min = Integer.MIN_VALUE;
+        int max = 0;
         isBetweenOrEquals("test value", value, min, max);
     }
 
 
     @Test
     public void isBetweenOrEquals_equalsMaximalMax() throws Exception {
-        long value = Long.MAX_VALUE;
-        long min = 0;
-        long max = Long.MAX_VALUE;
+        int value = Integer.MAX_VALUE;
+        int min = 0;
+        int max = Integer.MAX_VALUE;
         isBetweenOrEquals("test value", value, min, max);
     }
 
 
     @Test(expected = IllegalArgumentException.class)
     public void isBetweenOrEquals_maxEqualsMin() throws Exception {
-        long value = 0;
-        long min = 1;
-        long max = 1;
+        int value = 0;
+        int min = 1;
+        int max = 1;
         isBetweenOrEquals("test value", value, min, max);
     }
 
 
     @Test(expected = IllegalArgumentException.class)
     public void isBetweenOrEquals_maxLessThanMin() throws Exception {
-        long value = 0;
-        long min = 2;
-        long max = 1;
+        int value = 0;
+        int min = 2;
+        int max = 1;
         isBetweenOrEquals("test value", value, min, max);
     }
 
 
     @Test
     public void isBetweenOrEquals_equalsBoundaries() throws Exception {
-        long value = 1;
-        long min = 1;
-        long max = 1;
+        int value = 1;
+        int min = 1;
+        int max = 1;
         isBetweenOrEquals("test value", value, min, max);
     }
 }
