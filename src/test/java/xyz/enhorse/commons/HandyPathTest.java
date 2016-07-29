@@ -11,14 +11,14 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import static org.junit.Assert.*;
-import static xyz.enhorse.commons.HandyPath.EXTENSION_SEPARATOR;
-import static xyz.enhorse.commons.HandyPath.PATH_SEPARATOR;
+import static xyz.enhorse.commons.HandyPath.*;
 
 /**
  * @author <a href="mailto:pavel13kalinin@gmail.com">Pavel Kalinin</a>
  *         14/07/16
  */
 public class HandyPathTest {
+
     public static final String CURRENT_DIRECTORY = System.getProperty("user.dir");
 
     private static final String name = "test";
@@ -586,7 +586,11 @@ public class HandyPathTest {
     @Test
     public void isExecutable_existingFile() throws Exception {
         HandyPath file = new HandyPath(existingFile());
-        assertTrue(file.isExecutable());
+        if (OperatingSystem.isWindows()) {
+            assertTrue(file.isExecutable());
+        } else {
+            assertFalse(file.isExecutable());
+        }
     }
 
 
