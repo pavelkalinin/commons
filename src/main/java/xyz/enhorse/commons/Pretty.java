@@ -12,7 +12,12 @@ public class Pretty {
     public static final String KEY_VALUE_DELIMITER = "=";
     public static final String DELIMITER = "; ";
     public static final String GROUP_START = "[";
-    public static final String GROUP_END = "[";
+    public static final String GROUP_END = "]";
+
+
+    private Pretty(){
+
+    }
 
 
     public static String format(final Map<Object, Object> map) {
@@ -24,7 +29,7 @@ public class Pretty {
 
             Object value = entry.getValue();
             builder.append(format(value))
-                    .append(DELIMITER + " ");
+                    .append(DELIMITER);
         }
 
         return "" + GROUP_START + trimTailDelimiter(builder) + GROUP_END;
@@ -36,7 +41,7 @@ public class Pretty {
     }
 
 
-    public static StringBuilder trimTailDelimiter(StringBuilder builder) {
+    private static StringBuilder trimTailDelimiter(StringBuilder builder) {
         int length = Validate.defaultIfNull(builder, new StringBuilder()).length();
 
         if (length >= DELIMITER.length()) {
