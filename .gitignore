@@ -1,7 +1,5 @@
 # Package Files
 *.jar
-*.war
-*.ear
 
 # IntelliJ
 *.iml
@@ -11,9 +9,6 @@
 # Maven
 /target/
 
-# Log4j
-# log4j.properties
-
-# Private
-access.properties
-# Demo.java
+# Release
+/src/test/
+/src/main/resources/
