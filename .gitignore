@@ -1,7 +1,5 @@
 # Package Files
 *.jar
-*.war
-*.ear
 
 # IntelliJ
 *.iml
@@ -14,6 +12,3 @@
 # Log4j
 # log4j.properties
 
-# Private
-access.properties
-# Demo.java
