@@ -9,7 +9,7 @@ import java.nio.file.Paths;
 /**
  * 09.12.2015.
  */
-public class HandyPath extends AbstractHandyPath {
+public class PathEx extends AbstractHandyPath {
 
     public static final char EXTENSION_SEPARATOR = '.';
     public static final char PATH_SEPARATOR = File.separatorChar;
@@ -17,27 +17,27 @@ public class HandyPath extends AbstractHandyPath {
     private static final Path DEFAULT_PATH = Paths.get(".").toAbsolutePath().normalize();
 
 
-    public HandyPath() {
+    public PathEx() {
         this(DEFAULT_PATH);
     }
 
 
-    public HandyPath(final Path path) {
+    public PathEx(final Path path) {
         super(Validate.defaultIfNull(path, DEFAULT_PATH));
     }
 
 
-    public HandyPath(final File file) {
+    public PathEx(final File file) {
         this(fileToPath(file));
     }
 
 
-    public HandyPath(String filename) {
+    public PathEx(String filename) {
         this(stringToPath(filename));
     }
 
 
-    private HandyPath(String path, String name, String extension) {
+    private PathEx(String path, String name, String extension) {
         this(normalizePathname(path) + name + normalizeExtension(extension));
     }
 
@@ -136,18 +136,18 @@ public class HandyPath extends AbstractHandyPath {
     }
 
 
-    public HandyPath changeName(final String name) {
-        return new HandyPath(pathname(), validate(name), extension());
+    public PathEx changeName(final String name) {
+        return new PathEx(pathname(), validate(name), extension());
     }
 
 
-    public HandyPath changePathname(final String pathname) {
-        return new HandyPath(validate(pathname), name(), extension());
+    public PathEx changePathname(final String pathname) {
+        return new PathEx(validate(pathname), name(), extension());
     }
 
 
-    public HandyPath changeExtension(final String extension) {
-        return new HandyPath(pathname(), name(), validate(extension));
+    public PathEx changeExtension(final String extension) {
+        return new PathEx(pathname(), name(), validate(extension));
     }
 
 
