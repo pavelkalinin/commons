@@ -16,11 +16,11 @@ import java.util.List;
  */
 public class Folder {
 
-    private final HandyPath folder;
+    private final PathEx folder;
 
 
     public Folder() {
-        folder = new HandyPath();
+        folder = new PathEx();
     }
 
 
@@ -30,17 +30,17 @@ public class Folder {
 
 
     public Folder(final File file) {
-        this(new HandyPath(file));
+        this(new PathEx(file));
     }
 
 
     public Folder(final String directory) {
-        this(new HandyPath(directory));
+        this(new PathEx(directory));
     }
 
 
-    public Folder(final HandyPath path) {
-        this(Validate.defaultIfNull(path, new HandyPath()).source());
+    public Folder(final PathEx path) {
+        this(Validate.defaultIfNull(path, new PathEx()).source());
     }
 
 
@@ -90,12 +90,12 @@ public class Folder {
     }
 
 
-    private HandyPath normalize(Path path) {
-        HandyPath result = new HandyPath(path);
+    private PathEx normalize(Path path) {
+        PathEx result = new PathEx(path);
 
         return (!result.isExisting()) || (result.isDirectory())
                 ? result
-                : new HandyPath(result.pathname());
+                : new PathEx(result.pathname());
     }
 
 

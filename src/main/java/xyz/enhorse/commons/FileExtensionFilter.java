@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.StringJoiner;
 
-import static xyz.enhorse.commons.HandyPath.EXTENSION_SEPARATOR;
+import static xyz.enhorse.commons.PathEx.EXTENSION_SEPARATOR;
 
 /**
  * @author <a href="mailto:pavel13kalinin@gmail.com">Pavel Kalinin</a>
@@ -30,14 +30,14 @@ public class FileExtensionFilter implements PathFilter {
     }
 
 
-    private boolean isMatched(final HandyPath path) {
+    private boolean isMatched(final PathEx path) {
         return extensions.contains(normalize(path.extension()));
     }
 
 
     @Override
     public boolean accept(Path entry) throws IOException {
-        HandyPath path = new HandyPath(entry);
+        PathEx path = new PathEx(entry);
         return path.isFile() && isMatched(path);
     }
 

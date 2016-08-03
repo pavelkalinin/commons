@@ -27,7 +27,7 @@ public class FolderTest {
 
     private static final Random RANDOM = new Random(10000);
 
-    private static final Path CURRENT_DIRECTORY = new HandyPath();
+    private static final Path CURRENT_DIRECTORY = new PathEx();
     private static final String NAME = "file";
     private static final String TYPE_1 = ".java";
     private static final String TYPE_2 = ".tmp";
@@ -149,7 +149,7 @@ public class FolderTest {
 
     @Test
     public void createHandyPath_existingDirectory() throws Exception {
-        HandyPath path = new HandyPath(DIRECTORY);
+        PathEx path = new PathEx(DIRECTORY);
 
         assertEquals(path.toString(), new Folder(path).path().toString());
     }
@@ -157,7 +157,7 @@ public class FolderTest {
 
     @Test
     public void createHandyPath_existingFile() throws Exception {
-        HandyPath path = new HandyPath(DIRECTORY + FILES[0]);
+        PathEx path = new PathEx(DIRECTORY + FILES[0]);
 
         assertEquals(path.getParent(), new Folder(path).path());
     }
@@ -166,7 +166,7 @@ public class FolderTest {
     @Test
     public void createHAndyPath_absent() throws Exception {
         String name = DIRECTORY + FILES[0] + TYPE_1;
-        HandyPath path = new HandyPath(name);
+        PathEx path = new PathEx(name);
         assert !(path.isExisting());
 
         assertEquals(path.toString(), new Folder(path).path().toString());
@@ -175,7 +175,7 @@ public class FolderTest {
 
     @Test
     public void createHandyPath_null() throws Exception {
-        HandyPath path = null;
+        PathEx path = null;
 
         assertEquals(CURRENT_DIRECTORY.toString(), new Folder(path).path().toString());
     }
