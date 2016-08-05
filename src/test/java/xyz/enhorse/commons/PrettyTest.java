@@ -9,6 +9,8 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import static org.junit.Assert.*;
+import static xyz.enhorse.commons.Pretty.GROUP_END;
+import static xyz.enhorse.commons.Pretty.GROUP_START;
 
 /**
  * @author <a href="mailto:pavel13kalinin@gmail.com">Pavel Kalinin</a>
@@ -66,15 +68,24 @@ public class PrettyTest {
 
 
     @Test
-    public void format_null() throws Exception {
-        assertEquals("[]", Pretty.format(null));
+    public void format_nullObject() throws Exception {
+        Object object = null;
+        assertEquals("null", Pretty.format(object));
+    }
+
+
+    @SuppressWarnings("unchecked")
+    @Test
+    public void format_nullMap() throws Exception {
+        Map map = null;
+        assertEquals(GROUP_START + GROUP_END, Pretty.format(map));
     }
 
 
     @Test
     public void format_map_empty() throws Exception {
         Map<Object, Object> map = new HashMap<>();
-        assertEquals("[]", Pretty.format(map));
+        assertEquals(GROUP_START + GROUP_END, Pretty.format(map));
     }
 
 
@@ -87,5 +98,25 @@ public class PrettyTest {
         map.put("boolean", true);
         map.put("date", date);
         assertEquals("[integer=1; string=\"test\"; boolean=true; date=" + date.toString() + "]", Pretty.format(map));
+    }
+
+
+    @Test
+    public void format_thrownThrowable() throws Exception {
+        try {
+            throw new IllegalArgumentException("test exception");
+        } catch (Throwable ex) {
+            String actual = Pretty.format(ex);
+            String expected = "java.lang.IllegalArgumentException: test exception";
+            assertTrue("starts with thrown exception", actual.startsWith(expected));
+            assertTrue("has more than one element at the stacktrace", actual.length() > expected.length());
+        }
+    }
+
+
+    @Test
+    public void format_nullThrowable() throws Exception {
+        Throwable throwable = null;
+        assertEquals(GROUP_START + GROUP_END, Pretty.format(throwable));
     }
 }

@@ -1,5 +1,7 @@
 package xyz.enhorse.commons;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,8 +17,26 @@ public class Pretty {
     public static final String GROUP_END = "]";
 
 
-    private Pretty(){
+    private Pretty() {
 
+    }
+
+
+    public static String format(final Throwable throwable) {
+        String stacktrace;
+
+        try (StringWriter writer = new StringWriter();
+             PrintWriter printer = new PrintWriter(writer, true)) {
+
+            throwable.printStackTrace(printer);
+            writer.flush();
+            stacktrace = writer.toString();
+
+        } catch (Exception ex) {
+            stacktrace = GROUP_START + GROUP_END;
+        }
+
+        return stacktrace;
     }
 
 
