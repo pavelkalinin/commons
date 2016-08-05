@@ -12,12 +12,12 @@ import java.util.function.Consumer;
 /**
  * 09.12.2015.
  */
-class AbstractHandyPath implements Path {
+class AbstractPathEx implements Path {
 
     private final Path source;
 
 
-    AbstractHandyPath(final Path path) {
+    AbstractPathEx(final Path path) {
         source = path;
     }
 
@@ -745,7 +745,7 @@ class AbstractHandyPath implements Path {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        AbstractHandyPath paths = (AbstractHandyPath) o;
+        AbstractPathEx paths = (AbstractPathEx) o;
 
         return source.equals(paths.source);
     }

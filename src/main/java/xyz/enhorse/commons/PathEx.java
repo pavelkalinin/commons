@@ -9,7 +9,7 @@ import java.nio.file.Paths;
 /**
  * 09.12.2015.
  */
-public class PathEx extends AbstractHandyPath {
+public class PathEx extends AbstractPathEx {
 
     public static final char EXTENSION_SEPARATOR = '.';
     public static final char PATH_SEPARATOR = File.separatorChar;
