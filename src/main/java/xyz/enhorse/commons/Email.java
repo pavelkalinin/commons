@@ -72,10 +72,15 @@ public final class Email {
 
 
     public static Email parse(final String address) {
-        if ((address != null) && (PATTERN.matcher(address).matches())) {
+        if ((address != null) && (isValid(address))) {
             return new Email(address);
         }
         String message = String.format("\"%s\" isn't a correct email address.", address);
         throw new IllegalArgumentException(message);
+    }
+
+
+    public static boolean isValid(final String address) {
+        return PATTERN.matcher(address).matches();
     }
 }

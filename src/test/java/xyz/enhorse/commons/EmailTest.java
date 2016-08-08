@@ -3,7 +3,8 @@ package xyz.enhorse.commons;
 
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 /**
  * @author <a href="mailto:pavel13kalinin@gmail.com">Pavel Kalinin</a>
@@ -207,78 +208,78 @@ public class EmailTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void parse_withoutAt() throws Exception {
-        assertNull(Email.parse("postbox.zone"));
+        Email.parse("postbox.zone");
     }
 
 
     @Test(expected = IllegalArgumentException.class)
     public void parse_manyAts() throws Exception {
-        assertNull(Email.parse("postbox@zone@zone"));
+        Email.parse("postbox@zone@zone");
     }
 
 
     @Test(expected = IllegalArgumentException.class)
     public void parse_tailedAt() throws Exception {
-        assertNull(Email.parse("postbox@"));
+        Email.parse("postbox@");
     }
 
 
     @Test(expected = IllegalArgumentException.class)
     public void parse_startsWithAt() throws Exception {
-        assertNull(Email.parse("@postbox"));
+        Email.parse("@postbox");
     }
 
 
     @Test(expected = IllegalArgumentException.class)
     public void parse_empty() throws Exception {
-        assertNull(Email.parse(""));
+        Email.parse("");
     }
 
 
     @Test(expected = IllegalArgumentException.class)
     public void parse_justOneSpace() throws Exception {
-        assertNull(Email.parse(" "));
+        Email.parse(" ");
     }
 
 
     @Test(expected = IllegalArgumentException.class)
     public void parse_justSomeSpaces() throws Exception {
-        assertNull(Email.parse("  "));
+        Email.parse("  ");
     }
 
 
     @Test(expected = IllegalArgumentException.class)
     public void parse_spaceIntoPostbox() throws Exception {
-        assertNull(Email.parse("post box@domain.zone"));
+        Email.parse("post box@domain.zone");
     }
 
 
     @Test(expected = IllegalArgumentException.class)
     public void parse_spaceIntoDomain() throws Exception {
-        assertNull(Email.parse("postbox@sub domain.zone"));
+        Email.parse("postbox@sub domain.zone");
     }
 
 
     @Test(expected = IllegalArgumentException.class)
     public void parse_spaceIntoZone() throws Exception {
-        assertNull(Email.parse("postbox@subdomain.zo ne"));
+        Email.parse("postbox@subdomain.zo ne");
     }
 
 
     @Test(expected = IllegalArgumentException.class)
     public void parse_tailedSpace() throws Exception {
-        assertNull(Email.parse("postbox@domain.zone "));
+        Email.parse("postbox@domain.zone ");
     }
 
 
     @Test(expected = IllegalArgumentException.class)
     public void parse_startsWithSpace() throws Exception {
-        assertNull(Email.parse(" postbox@domain.zone"));
+        Email.parse(" postbox@domain.zone");
     }
 
 
     @Test(expected = IllegalArgumentException.class)
     public void parse_null() throws Exception {
-        assertNull(Email.parse(null));
+        Email.parse(null);
     }
 }
