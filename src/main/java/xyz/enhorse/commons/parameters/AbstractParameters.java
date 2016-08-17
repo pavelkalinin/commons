@@ -1,16 +1,17 @@
 package xyz.enhorse.commons.parameters;
 
-import xyz.enhorse.commons.PathEx;
 import xyz.enhorse.commons.StringPair;
 import xyz.enhorse.commons.Validate;
 import xyz.enhorse.commons.errors.AbsentException;
 import xyz.enhorse.commons.errors.DuplicateException;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.*;
+import java.io.Reader;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Spliterator;
 import java.util.function.Consumer;
 
 /**
@@ -96,28 +97,22 @@ public abstract class AbstractParameters<T extends Map> implements Parameters {
 
 
     @Override
-    public Parameters load(final File file) {
-        if (!(new PathEx(file)).isExistingFile()) {
+    public Parameters load(final Reader reader) {
+        if (reader == null) {
             return this;
         }
 
         clear();
-        return append(file);
+        return append(reader);
     }
 
 
     @Override
-    public Parameters append(final File file) {
-        PathEx path = new PathEx(file);
-
-        if (path.isExistingFile()) {
-            try (InputStream in = new FileInputStream(file)) {
-                ParametersLoader loader = new ParametersLoader(in);
-                for (StringPair pair : loader.load()) {
-                    put(pair.key(), pair.value());
-                }
-            } catch (IOException ex) {
-                throw new IllegalStateException("Error loading parameters from \'" + file + "\'");
+    public Parameters append(final Reader reader) {
+        if (reader != null) {
+            ParametersLoader loader = new ParametersLoader(reader);
+            for (StringPair pair : loader.load()) {
+                put(pair.key(), pair.value());
             }
         }
 
@@ -137,7 +132,7 @@ public abstract class AbstractParameters<T extends Map> implements Parameters {
 
     @Override
     public Parameters put(final String parameter, final Object value) {
-        content.put(Validate.isIdentifier("parameter", parameter), value);
+        content.put(Validate.urlSafe("parameter", parameter), value);
         return this;
     }
 
@@ -150,7 +145,7 @@ public abstract class AbstractParameters<T extends Map> implements Parameters {
 
     @Override
     public Parameters remove(final String parameter) {
-        content.remove(Validate.isIdentifier("parameter", parameter));
+        content.remove(parameter);
         return this;
     }
 

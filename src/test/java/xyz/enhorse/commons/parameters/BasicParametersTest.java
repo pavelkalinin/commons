@@ -87,8 +87,7 @@ public class BasicParametersTest {
 
     @Test
     public void createFromString_oneParameter_withoutValueAndSeparator() throws Exception {
-        String string = NAME;
-        Parameters parameters = new BasicParameters(string);
+        Parameters parameters = new BasicParameters(NAME);
 
         assertEquals("", parameters.get(NAME));
     }
@@ -459,14 +458,14 @@ public class BasicParametersTest {
     }
 
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void remove_null() throws Exception {
         Parameters parameters = new BasicParameters(ONE_PARAMETER);
         parameters.remove(null);
     }
 
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void remove_weird() throws Exception {
         Parameters parameters = new BasicParameters(ONE_PARAMETER);
         parameters.remove(WEIRD_STRING);
@@ -693,18 +692,17 @@ public class BasicParametersTest {
 
 
     @Test
-    @SuppressWarnings("always")
     public void equals_null() throws Exception {
-        Parameters parameters1 = new BasicParameters(ONE_PARAMETER);
-        Parameters parameters2 = null;
+        Parameters parameters = new BasicParameters(ONE_PARAMETER);
 
-        assertFalse(parameters1.equals(parameters2));
+        assertNotEquals(parameters, null);
     }
 
 
     @Test
     public void equals_differentClasses() throws Exception {
-        Parameters parameters1 = new BasicParameters(ONE_PARAMETER);
-        assertFalse(parameters1.equals(9));
+        Parameters parameters = new BasicParameters(ONE_PARAMETER);
+        
+        assertNotEquals(parameters, 9);
     }
 }

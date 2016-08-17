@@ -1,6 +1,6 @@
 package xyz.enhorse.commons.parameters;
 
-import java.io.File;
+import java.io.Reader;
 import java.util.List;
 import java.util.Map;
 
@@ -15,10 +15,10 @@ public interface Parameters extends Iterable<String> {
     String COMMENT_MARK = "//";
 
 
-    Parameters load(final File file);
+    Parameters load(final Reader reader);
 
 
-    Parameters append(final File file);
+    Parameters append(final Reader reader);
 
 
     Parameters add(final String parameter, final Object value);
