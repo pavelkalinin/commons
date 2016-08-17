@@ -39,6 +39,40 @@ public class URLString {
     }
 
 
+    @Override
+    public int hashCode() {
+        int result = plain.hashCode();
+        result = 31 * result + encoded.hashCode();
+        result = 31 * result + charset.hashCode();
+        return result;
+    }
+
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        URLString urlString = (URLString) o;
+
+        return plain.equals(urlString.plain)
+                && encoded.equals(urlString.encoded)
+                && charset.equals(urlString.charset);
+
+    }
+
+
+    @Override
+    public String toString() {
+        return plain() + "->[" + charset().name() + "]->" + encoded();
+    }
+
+
     public static URLString encodeUTF(final String string) {
         return encode(string, Charset.forName("UTF-8"));
     }

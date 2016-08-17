@@ -319,7 +319,7 @@ public class BasicParametersTest {
     }
 
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = AbsentException.class)
     public void replace_nullParameter() throws Exception {
         Parameters parameters = new BasicParameters();
         parameters.replace(null, VALUE);
@@ -336,7 +336,7 @@ public class BasicParametersTest {
     }
 
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = AbsentException.class)
     public void replace_illegalParameter() throws Exception {
         Parameters parameters = new BasicParameters();
         parameters.replace(WEIRD_STRING, null);
@@ -367,14 +367,14 @@ public class BasicParametersTest {
     }
 
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = AbsentException.class)
     public void get_null() throws Exception {
         Parameters parameters = new BasicParameters();
         parameters.get(null);
     }
 
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = AbsentException.class)
     public void get_invalid() throws Exception {
         Parameters parameters = new BasicParameters();
         parameters.get(WEIRD_STRING);
@@ -427,14 +427,14 @@ public class BasicParametersTest {
     }
 
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void isExists_null() throws Exception {
         Parameters parameters = new BasicParameters(ONE_PARAMETER);
         assertFalse(parameters.isExists(null));
     }
 
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void isExists_weird() throws Exception {
         Parameters parameters = new BasicParameters(ONE_PARAMETER);
         assertFalse(parameters.isExists(WEIRD_STRING));
@@ -509,14 +509,14 @@ public class BasicParametersTest {
     }
 
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = AbsentException.class)
     public void delete_null() throws Exception {
         Parameters parameters = new BasicParameters(ONE_PARAMETER);
         parameters.delete(null);
     }
 
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = AbsentException.class)
     public void delete_weird() throws Exception {
         Parameters parameters = new BasicParameters(ONE_PARAMETER);
         parameters.delete(WEIRD_STRING);

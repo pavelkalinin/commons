@@ -1,5 +1,6 @@
 package xyz.enhorse.commons.parameters;
 
+import java.io.File;
 import java.util.List;
 import java.util.Map;
 
@@ -11,6 +12,14 @@ public interface Parameters extends Iterable<String> {
 
     char PARAMETERS_SEPARATOR = '&';
     char PARAMETER_VALUE_SEPARATOR = '=';
+    String COMMENT_MARK = "//";
+
+
+    Parameters load(final File file);
+
+
+    Parameters append(final File file);
+
 
     Parameters add(final String parameter, final Object value);
 

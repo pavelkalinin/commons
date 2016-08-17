@@ -1,10 +1,17 @@
 package xyz.enhorse.commons.parameters;
 
+import xyz.enhorse.commons.PathEx;
+import xyz.enhorse.commons.StringPair;
 import xyz.enhorse.commons.Validate;
 import xyz.enhorse.commons.errors.AbsentException;
 import xyz.enhorse.commons.errors.DuplicateException;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.*;
+import java.util.function.Consumer;
 
 /**
  * @author <a href="mailto:pavel13kalinin@gmail.com">Pavel Kalinin</a>
@@ -33,97 +40,20 @@ public abstract class AbstractParameters<T extends Map> implements Parameters {
 
 
     @Override
-    public Parameters add(final String parameter, final Object value) {
-        if (isExists(parameter)) {
-            throw new DuplicateException("Parameter", parameter);
-        }
-
-        content.put(parameter, value);
-        return this;
-    }
-
-
-    @Override
-    public Parameters put(final String parameter, final Object value) {
-        content.put(Validate.isIdentifier("parameter", parameter), value);
-        return this;
-    }
-
-
-    @Override
-    public Parameters replace(final String parameter, final Object newValue) {
-        return delete(parameter).add(parameter, newValue);
-    }
-
-
-    @Override
-    public Parameters remove(final String parameter) {
-        content.remove(Validate.isIdentifier("parameter", parameter));
-        return this;
-    }
-
-
-    @Override
-    public Parameters delete(final String parameter) {
-        if (!isExists(parameter)) {
-            throw new AbsentException("Parameter", parameter);
-        }
-
-        content.remove(parameter);
-        return this;
-    }
-
-
-    @Override
-    public Parameters clear() {
-        content.clear();
-        return this;
-    }
-
-
-    @Override
-    public Object get(final String parameter) {
-        if (!isExists(parameter)) {
-            throw new AbsentException("Parameter", parameter);
-        }
-
-        return content.get(parameter);
-    }
-
-
-    @Override
-    public boolean isExists(final String parameter) {
-        return content.containsKey(Validate.isIdentifier("parameter", parameter));
-    }
-
-
-    @Override
-    public boolean isEmpty() {
-        return content.isEmpty();
-    }
-
-
-    @Override
-    public int size() {
-        return content.size();
-    }
-
-
-    @Override
-    public List<String> list() {
-        return new ArrayList<>(content.keySet());
-    }
-
-
-    @Override
-    public Map toMap() {
-        return new HashMap<>(content);
-    }
-
-
-    @Override
     public Iterator<String> iterator() {
         return content.keySet().iterator();
+    }
+
+
+    @Override
+    public void forEach(final Consumer<? super String> action) {
+        content.keySet().forEach(action);
+    }
+
+
+    @Override
+    public Spliterator<String> spliterator() {
+        return content.keySet().spliterator();
     }
 
 
@@ -162,6 +92,123 @@ public abstract class AbstractParameters<T extends Map> implements Parameters {
         options.setLength(options.length() - 1);
 
         return options.toString();
+    }
+
+
+    @Override
+    public Parameters load(final File file) {
+        if (!(new PathEx(file)).isExistingFile()) {
+            return this;
+        }
+
+        clear();
+        return append(file);
+    }
+
+
+    @Override
+    public Parameters append(final File file) {
+        PathEx path = new PathEx(file);
+
+        if (path.isExistingFile()) {
+            try (InputStream in = new FileInputStream(file)) {
+                ParametersLoader loader = new ParametersLoader(in);
+                for (StringPair pair : loader.load()) {
+                    put(pair.key(), pair.value());
+                }
+            } catch (IOException ex) {
+                throw new IllegalStateException("Error loading parameters from \'" + file + "\'");
+            }
+        }
+
+        return this;
+    }
+
+
+    @Override
+    public Parameters add(final String parameter, final Object value) {
+        if (isExists(parameter)) {
+            throw new DuplicateException("Parameter", parameter);
+        }
+
+        return put(parameter, value);
+    }
+
+
+    @Override
+    public Parameters put(final String parameter, final Object value) {
+        content.put(Validate.isIdentifier("parameter", parameter), value);
+        return this;
+    }
+
+
+    @Override
+    public Parameters replace(final String parameter, final Object newValue) {
+        return delete(parameter).add(parameter, newValue);
+    }
+
+
+    @Override
+    public Parameters remove(final String parameter) {
+        content.remove(Validate.isIdentifier("parameter", parameter));
+        return this;
+    }
+
+
+    @Override
+    public Parameters delete(final String parameter) {
+        if (!isExists(parameter)) {
+            throw new AbsentException("Parameter", parameter);
+        }
+
+        return remove(parameter);
+    }
+
+
+    @Override
+    public Parameters clear() {
+        content.clear();
+        return this;
+    }
+
+
+    @Override
+    public Object get(final String parameter) {
+        if (!isExists(parameter)) {
+            throw new AbsentException("Parameter", parameter);
+        }
+
+        return content.get(parameter);
+    }
+
+
+    @Override
+    public boolean isExists(final String parameter) {
+        return content.containsKey(parameter);
+    }
+
+
+    @Override
+    public boolean isEmpty() {
+        return content.isEmpty();
+    }
+
+
+    @Override
+    public int size() {
+        return content.size();
+    }
+
+
+    @Override
+    public List<String> list() {
+        return new ArrayList<>(content.keySet());
+    }
+
+
+    @Override
+    public Map toMap() {
+        return new HashMap<>(content);
     }
 
 
