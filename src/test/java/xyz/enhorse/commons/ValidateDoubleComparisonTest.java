@@ -2,7 +2,7 @@ package xyz.enhorse.commons;
 
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 import static xyz.enhorse.commons.Validate.*;
 
 /**
@@ -12,14 +12,14 @@ import static xyz.enhorse.commons.Validate.*;
 public class ValidateDoubleComparisonTest {
     private static final double PRECISION = 0.00001;
 
-    // isLess
+    // less
 
 
     @Test
     public void isLess_positive() throws Exception {
         double value = 1;
         double boundary = 2;
-        assertEquals(value, isLess("test value", value, boundary), PRECISION);
+        assertEquals(value, less("test value", value, boundary), PRECISION);
     }
 
 
@@ -27,7 +27,7 @@ public class ValidateDoubleComparisonTest {
     public void isLess_negative() throws Exception {
         double value = -2;
         double boundary = -1;
-        assertEquals(value, isLess("test value", value, boundary), PRECISION);
+        assertEquals(value, less("test value", value, boundary), PRECISION);
     }
 
 
@@ -35,7 +35,7 @@ public class ValidateDoubleComparisonTest {
     public void isLess_zero() throws Exception {
         double value = 0;
         double boundary = 1;
-        assertEquals(value, isLess("test value", value, boundary), PRECISION);
+        assertEquals(value, less("test value", value, boundary), PRECISION);
     }
 
 
@@ -43,7 +43,7 @@ public class ValidateDoubleComparisonTest {
     public void isLess_maximumBoundary() throws Exception {
         double value = 0;
         double boundary = Double.MAX_VALUE;
-        assertEquals(value, isLess("test value", value, boundary), PRECISION);
+        assertEquals(value, less("test value", value, boundary), PRECISION);
     }
 
 
@@ -51,7 +51,7 @@ public class ValidateDoubleComparisonTest {
     public void isLess_minimum() throws Exception {
         double value = Double.MAX_VALUE * -1;
         double boundary = 0;
-        assertEquals(value, isLess("test value", value, boundary), PRECISION);
+        assertEquals(value, less("test value", value, boundary), PRECISION);
     }
 
 
@@ -59,7 +59,7 @@ public class ValidateDoubleComparisonTest {
     public void isLess_greater() throws Exception {
         double value = 1;
         double boundary = 0;
-        isLess("test value", value, boundary);
+        less("test value", value, boundary);
     }
 
 
@@ -67,7 +67,7 @@ public class ValidateDoubleComparisonTest {
     public void isLess_equalsToBoundary() throws Exception {
         double value = 1;
         double boundary = 1;
-        isLess("test value", value, boundary);
+        less("test value", value, boundary);
     }
 
 
@@ -75,7 +75,7 @@ public class ValidateDoubleComparisonTest {
     public void isLess_minimums() throws Exception {
         double value = Double.MIN_VALUE;
         double boundary = Double.MIN_VALUE;
-        isLess("test value", value, boundary);
+        less("test value", value, boundary);
     }
 
 
@@ -83,18 +83,18 @@ public class ValidateDoubleComparisonTest {
     public void isLess_maximums() throws Exception {
         double value = Double.MAX_VALUE;
         double boundary = Double.MAX_VALUE;
-        isLess("test value", value, boundary);
+        less("test value", value, boundary);
     }
 
 
-    // isLessOrEquals
+    // lessOrEquals
 
 
     @Test
     public void isLessOrEquals_positive() throws Exception {
         double value = 1;
         double boundary = 2;
-        assertEquals(value, isLessOrEquals("test value", value, boundary), PRECISION);
+        assertEquals(value, lessOrEquals("test value", value, boundary), PRECISION);
     }
 
 
@@ -102,7 +102,7 @@ public class ValidateDoubleComparisonTest {
     public void isLessOrEquals_negative() throws Exception {
         double value = -2;
         double boundary = -1;
-        assertEquals(value, isLessOrEquals("test value", value, boundary), PRECISION);
+        assertEquals(value, lessOrEquals("test value", value, boundary), PRECISION);
     }
 
 
@@ -110,7 +110,7 @@ public class ValidateDoubleComparisonTest {
     public void isLessOrEquals_zero() throws Exception {
         double value = 0;
         double boundary = 1;
-        assertEquals(value, isLessOrEquals("test value", value, boundary), PRECISION);
+        assertEquals(value, lessOrEquals("test value", value, boundary), PRECISION);
     }
 
 
@@ -118,7 +118,7 @@ public class ValidateDoubleComparisonTest {
     public void isLessOrEquals_maximumBoundary() throws Exception {
         double value = 0;
         double boundary = Double.MAX_VALUE;
-        assertEquals(value, isLessOrEquals("test value", value, boundary), PRECISION);
+        assertEquals(value, lessOrEquals("test value", value, boundary), PRECISION);
     }
 
 
@@ -126,7 +126,7 @@ public class ValidateDoubleComparisonTest {
     public void isLessOrEquals_minimum() throws Exception {
         double value = Double.MAX_VALUE * -1;
         double boundary = 0;
-        assertEquals(value, isLessOrEquals("test value", value, boundary), PRECISION);
+        assertEquals(value, lessOrEquals("test value", value, boundary), PRECISION);
     }
 
 
@@ -134,7 +134,7 @@ public class ValidateDoubleComparisonTest {
     public void isLessOrEquals_greater() throws Exception {
         double value = 1;
         double boundary = 0;
-        isLessOrEquals("test value", value, boundary);
+        lessOrEquals("test value", value, boundary);
     }
 
 
@@ -142,7 +142,7 @@ public class ValidateDoubleComparisonTest {
     public void isLessOrEqual_equals() throws Exception {
         double value = 1;
         double boundary = 1;
-        isLessOrEquals("test value", value, boundary);
+        lessOrEquals("test value", value, boundary);
     }
 
 
@@ -150,7 +150,7 @@ public class ValidateDoubleComparisonTest {
     public void isLessOrEquals_equalsMinimums() throws Exception {
         double value = Double.MIN_VALUE;
         double boundary = Double.MIN_VALUE;
-        isGreaterOrEquals("test value", value, boundary);
+        greaterOrEquals("test value", value, boundary);
     }
 
 
@@ -158,18 +158,18 @@ public class ValidateDoubleComparisonTest {
     public void isLessOrEquals_equalsMaximums() throws Exception {
         double value = Double.MAX_VALUE;
         double boundary = Double.MAX_VALUE;
-        isGreaterOrEquals("test value", value, boundary);
+        greaterOrEquals("test value", value, boundary);
     }
 
 
-    // isGreater
+    // greater
 
 
     @Test
     public void isGreater_positive() throws Exception {
         double value = 2;
         double boundary = 1;
-        assertEquals(value, isGreater("test value", value, boundary), PRECISION);
+        assertEquals(value, greater("test value", value, boundary), PRECISION);
     }
 
 
@@ -177,7 +177,7 @@ public class ValidateDoubleComparisonTest {
     public void isGreater_negative() throws Exception {
         double value = -1;
         double boundary = -2;
-        assertEquals(value, isGreater("test value", value, boundary), PRECISION);
+        assertEquals(value, greater("test value", value, boundary), PRECISION);
     }
 
 
@@ -185,7 +185,7 @@ public class ValidateDoubleComparisonTest {
     public void isGreater_zero() throws Exception {
         double value = 1;
         double boundary = 0;
-        assertEquals(value, isGreater("test value", value, boundary), PRECISION);
+        assertEquals(value, greater("test value", value, boundary), PRECISION);
     }
 
 
@@ -193,7 +193,7 @@ public class ValidateDoubleComparisonTest {
     public void isGreater_minimumBoundary() throws Exception {
         double value = 0;
         double boundary = Double.MAX_VALUE * -1;
-        assertEquals(value, isGreater("test value", value, boundary), PRECISION);
+        assertEquals(value, greater("test value", value, boundary), PRECISION);
     }
 
 
@@ -201,7 +201,7 @@ public class ValidateDoubleComparisonTest {
     public void isGreater_maximum() throws Exception {
         double value = Double.MAX_VALUE;
         double boundary = 0;
-        assertEquals(value, isGreater("test value", value, boundary), PRECISION);
+        assertEquals(value, greater("test value", value, boundary), PRECISION);
     }
 
 
@@ -209,7 +209,7 @@ public class ValidateDoubleComparisonTest {
     public void isGreater_less() throws Exception {
         double value = 0;
         double boundary = 1;
-        isGreater("test value", value, boundary);
+        greater("test value", value, boundary);
     }
 
 
@@ -217,7 +217,7 @@ public class ValidateDoubleComparisonTest {
     public void isGreater_equals() throws Exception {
         double value = 1;
         double boundary = 1;
-        isGreater("test value", value, boundary);
+        greater("test value", value, boundary);
     }
 
 
@@ -225,7 +225,7 @@ public class ValidateDoubleComparisonTest {
     public void isGreater_minimums() throws Exception {
         double value = Double.MIN_VALUE;
         double boundary = Double.MIN_VALUE;
-        isLess("test value", value, boundary);
+        less("test value", value, boundary);
     }
 
 
@@ -233,18 +233,18 @@ public class ValidateDoubleComparisonTest {
     public void isGreater_maximums() throws Exception {
         double value = Double.MAX_VALUE;
         double boundary = Double.MAX_VALUE;
-        isLess("test value", value, boundary);
+        less("test value", value, boundary);
     }
 
 
-    // isGreaterOrEquals
+    // greaterOrEquals
 
 
     @Test
     public void isGreaterOrEquals_positive() throws Exception {
         double value = 2;
         double boundary = 1;
-        assertEquals(value, isGreaterOrEquals("test value", value, boundary), PRECISION);
+        assertEquals(value, greaterOrEquals("test value", value, boundary), PRECISION);
     }
 
 
@@ -252,7 +252,7 @@ public class ValidateDoubleComparisonTest {
     public void isGreaterOrEquals_negative() throws Exception {
         double value = -1;
         double boundary = -2;
-        assertEquals(value, isGreaterOrEquals("test value", value, boundary), PRECISION);
+        assertEquals(value, greaterOrEquals("test value", value, boundary), PRECISION);
     }
 
 
@@ -260,7 +260,7 @@ public class ValidateDoubleComparisonTest {
     public void isGreaterOrEquals_zero() throws Exception {
         double value = 1;
         double boundary = 0;
-        assertEquals(value, isGreaterOrEquals("test value", value, boundary), PRECISION);
+        assertEquals(value, greaterOrEquals("test value", value, boundary), PRECISION);
     }
 
 
@@ -268,7 +268,7 @@ public class ValidateDoubleComparisonTest {
     public void isGreaterOrEquals_minimumBoundary() throws Exception {
         double value = 0;
         double boundary = Double.MAX_VALUE * -1;
-        assertEquals(value, isGreaterOrEquals("test value", value, boundary), PRECISION);
+        assertEquals(value, greaterOrEquals("test value", value, boundary), PRECISION);
     }
 
 
@@ -276,7 +276,7 @@ public class ValidateDoubleComparisonTest {
     public void isGreaterOrEquals_maximum() throws Exception {
         double value = Double.MAX_VALUE;
         double boundary = 0;
-        assertEquals(value, isGreaterOrEquals("test value", value, boundary), PRECISION);
+        assertEquals(value, greaterOrEquals("test value", value, boundary), PRECISION);
     }
 
 
@@ -284,7 +284,7 @@ public class ValidateDoubleComparisonTest {
     public void isGreaterOrEquals_greater() throws Exception {
         double value = 0;
         double boundary = 1;
-        isGreaterOrEquals("test value", value, boundary);
+        greaterOrEquals("test value", value, boundary);
     }
 
 
@@ -292,7 +292,7 @@ public class ValidateDoubleComparisonTest {
     public void isGreaterOrEquals_equals() throws Exception {
         double value = 1;
         double boundary = 1;
-        isGreaterOrEquals("test value", value, boundary);
+        greaterOrEquals("test value", value, boundary);
     }
 
 
@@ -300,7 +300,7 @@ public class ValidateDoubleComparisonTest {
     public void isGreaterOrEquals_minimums() throws Exception {
         double value = Double.MIN_VALUE;
         double boundary = Double.MIN_VALUE;
-        isGreaterOrEquals("test value", value, boundary);
+        greaterOrEquals("test value", value, boundary);
     }
 
 
@@ -308,11 +308,11 @@ public class ValidateDoubleComparisonTest {
     public void isGreaterOrEquals_maximums() throws Exception {
         double value = Double.MAX_VALUE;
         double boundary = Double.MAX_VALUE;
-        isGreaterOrEquals("test value", value, boundary);
+        greaterOrEquals("test value", value, boundary);
     }
 
 
-    // isBetween
+    // inRangeExclusive
 
 
     @Test
@@ -320,7 +320,7 @@ public class ValidateDoubleComparisonTest {
         double value = 2;
         double min = 1;
         double max = 3;
-        assertEquals(value, isBetween("test value", value, min, max), PRECISION);
+        assertEquals(value, inRangeExclusive("test value", value, min, max), PRECISION);
     }
 
 
@@ -329,7 +329,7 @@ public class ValidateDoubleComparisonTest {
         double value = -2;
         double min = -3;
         double max = -1;
-        assertEquals(value, isBetween("test value", value, min, max), PRECISION);
+        assertEquals(value, inRangeExclusive("test value", value, min, max), PRECISION);
     }
 
 
@@ -338,7 +338,7 @@ public class ValidateDoubleComparisonTest {
         double value = 0;
         double min = -1;
         double max = 1;
-        assertEquals(value, isBetween("test value", value, min, max), PRECISION);
+        assertEquals(value, inRangeExclusive("test value", value, min, max), PRECISION);
     }
 
 
@@ -347,7 +347,7 @@ public class ValidateDoubleComparisonTest {
         double value = 1;
         double min = 0;
         double max = 2;
-        assertEquals(value, isBetween("test value", value, min, max), PRECISION);
+        assertEquals(value, inRangeExclusive("test value", value, min, max), PRECISION);
     }
 
 
@@ -356,7 +356,7 @@ public class ValidateDoubleComparisonTest {
         double value = -1;
         double min = -2;
         double max = 0;
-        assertEquals(value, isBetween("test value", value, min, max), PRECISION);
+        assertEquals(value, inRangeExclusive("test value", value, min, max), PRECISION);
     }
 
 
@@ -365,7 +365,7 @@ public class ValidateDoubleComparisonTest {
         double value = 0;
         double min = Double.MAX_VALUE * -1 ;
         double max = Double.MAX_VALUE;
-        assertEquals(value, isBetween("test value", value, min, max), PRECISION);
+        assertEquals(value, inRangeExclusive("test value", value, min, max), PRECISION);
     }
 
 
@@ -374,7 +374,7 @@ public class ValidateDoubleComparisonTest {
         double value = 3;
         double min = 1;
         double max = 2;
-        isBetween("test value", value, min, max);
+        inRangeExclusive("test value", value, min, max);
     }
 
 
@@ -383,7 +383,7 @@ public class ValidateDoubleComparisonTest {
         double value = 2;
         double min = 1;
         double max = 2;
-        isBetween("test value", value, min, max);
+        inRangeExclusive("test value", value, min, max);
     }
 
 
@@ -392,7 +392,7 @@ public class ValidateDoubleComparisonTest {
         double value = 3;
         double min = 1;
         double max = 2;
-        isBetween("test value", value, min, max);
+        inRangeExclusive("test value", value, min, max);
     }
 
 
@@ -401,7 +401,7 @@ public class ValidateDoubleComparisonTest {
         double value = 1;
         double min = 1;
         double max = 2;
-        isBetween("test value", value, min, max);
+        inRangeExclusive("test value", value, min, max);
     }
 
 
@@ -410,7 +410,7 @@ public class ValidateDoubleComparisonTest {
         double value = Double.MIN_VALUE;
         double min = Double.MIN_VALUE;
         double max = 0;
-        isBetween("test value", value, min, max);
+        inRangeExclusive("test value", value, min, max);
     }
 
 
@@ -419,7 +419,7 @@ public class ValidateDoubleComparisonTest {
         double value = Double.MAX_VALUE;
         double min = 0;
         double max = Double.MAX_VALUE;
-        isBetween("test value", value, min, max);
+        inRangeExclusive("test value", value, min, max);
     }
 
 
@@ -428,7 +428,7 @@ public class ValidateDoubleComparisonTest {
         double value = 0;
         double min = 1;
         double max = 1;
-        isBetween("test value", value, min, max);
+        inRangeExclusive("test value", value, min, max);
     }
 
 
@@ -437,10 +437,10 @@ public class ValidateDoubleComparisonTest {
         double value = 0;
         double min = 2;
         double max = 1;
-        isBetween("test value", value, min, max);
+        inRangeExclusive("test value", value, min, max);
     }
 
-    // isBetweenOrEquals
+    // inRangeInclusive
 
 
     @Test
@@ -448,7 +448,7 @@ public class ValidateDoubleComparisonTest {
         double value = 2;
         double min = 1;
         double max = 3;
-        assertEquals(value, isBetweenOrEquals("test value", value, min, max), PRECISION);
+        assertEquals(value, inRangeInclusive("test value", value, min, max), PRECISION);
     }
 
 
@@ -457,7 +457,7 @@ public class ValidateDoubleComparisonTest {
         double value = -2;
         double min = -3;
         double max = -1;
-        assertEquals(value, isBetweenOrEquals("test value", value, min, max), PRECISION);
+        assertEquals(value, inRangeInclusive("test value", value, min, max), PRECISION);
     }
 
 
@@ -466,7 +466,7 @@ public class ValidateDoubleComparisonTest {
         double value = 0;
         double min = -1;
         double max = 1;
-        assertEquals(value, isBetweenOrEquals("test value", value, min, max), PRECISION);
+        assertEquals(value, inRangeInclusive("test value", value, min, max), PRECISION);
     }
 
 
@@ -475,7 +475,7 @@ public class ValidateDoubleComparisonTest {
         double value = 1;
         double min = 0;
         double max = 2;
-        assertEquals(value, isBetweenOrEquals("test value", value, min, max), PRECISION);
+        assertEquals(value, inRangeInclusive("test value", value, min, max), PRECISION);
     }
 
 
@@ -484,7 +484,7 @@ public class ValidateDoubleComparisonTest {
         double value = -1;
         double min = -2;
         double max = 0;
-        assertEquals(value, isBetweenOrEquals("test value", value, min, max), PRECISION);
+        assertEquals(value, inRangeInclusive("test value", value, min, max), PRECISION);
     }
 
 
@@ -493,7 +493,7 @@ public class ValidateDoubleComparisonTest {
         double value = 0;
         double min = Double.MAX_VALUE * -1;
         double max = Double.MAX_VALUE;
-        assertEquals(value, isBetweenOrEquals("test value", value, min, max), PRECISION);
+        assertEquals(value, inRangeInclusive("test value", value, min, max), PRECISION);
     }
 
 
@@ -502,7 +502,7 @@ public class ValidateDoubleComparisonTest {
         double value = 3;
         double min = 1;
         double max = 2;
-        isBetweenOrEquals("test value", value, min, max);
+        inRangeInclusive("test value", value, min, max);
     }
 
 
@@ -511,7 +511,7 @@ public class ValidateDoubleComparisonTest {
         double value = 2;
         double min = 1;
         double max = 2;
-        isBetweenOrEquals("test value", value, min, max);
+        inRangeInclusive("test value", value, min, max);
     }
 
 
@@ -520,7 +520,7 @@ public class ValidateDoubleComparisonTest {
         double value = 3;
         double min = 1;
         double max = 2;
-        isBetweenOrEquals("test value", value, min, max);
+        inRangeInclusive("test value", value, min, max);
     }
 
 
@@ -529,7 +529,7 @@ public class ValidateDoubleComparisonTest {
         double value = 1;
         double min = 1;
         double max = 2;
-        isBetweenOrEquals("test value", value, min, max);
+        inRangeInclusive("test value", value, min, max);
     }
 
 
@@ -538,7 +538,7 @@ public class ValidateDoubleComparisonTest {
         double value = Double.MAX_VALUE * -1;
         double min = Double.MAX_VALUE * -1;
         double max = 0;
-        isBetweenOrEquals("test value", value, min, max);
+        inRangeInclusive("test value", value, min, max);
     }
 
 
@@ -547,7 +547,7 @@ public class ValidateDoubleComparisonTest {
         double value = Double.MAX_VALUE;
         double min = 0;
         double max = Double.MAX_VALUE;
-        isBetweenOrEquals("test value", value, min, max);
+        inRangeInclusive("test value", value, min, max);
     }
 
 
@@ -556,7 +556,7 @@ public class ValidateDoubleComparisonTest {
         double value = 0;
         double min = 1;
         double max = 1;
-        isBetweenOrEquals("test value", value, min, max);
+        inRangeInclusive("test value", value, min, max);
     }
 
 
@@ -565,7 +565,7 @@ public class ValidateDoubleComparisonTest {
         double value = 0;
         double min = 2;
         double max = 1;
-        isBetweenOrEquals("test value", value, min, max);
+        inRangeInclusive("test value", value, min, max);
     }
 
 
@@ -574,6 +574,6 @@ public class ValidateDoubleComparisonTest {
         double value = 1;
         double min = 1;
         double max = 1;
-        isBetweenOrEquals("test value", value, min, max);
+        inRangeInclusive("test value", value, min, max);
     }
 }
