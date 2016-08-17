@@ -155,10 +155,27 @@ public class ValidateTest {
 
 
     @Test
-    public void isUrlSafe() throws Exception {
+    public void isUrlSafe_allValid() throws Exception {
         Validate.urlSafe("test parameter", "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._");
     }
 
+
+    @Test
+    public void isUrlSafe_onlyLetter() throws Exception {
+        Validate.urlSafe("test parameter", "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz");
+    }
+
+
+    @Test
+    public void isUrlSafe_onlyDigits() throws Exception {
+        Validate.urlSafe("test parameter", "0123456789");
+    }
+
+
+    @Test
+    public void isUrlSafe_onlyValidSymbols() throws Exception {
+        Validate.urlSafe("test parameter", "-._");
+    }
 
     @Test(expected = IllegalArgumentException.class)
     public void isUrlSafe_nullValue() throws Exception {
