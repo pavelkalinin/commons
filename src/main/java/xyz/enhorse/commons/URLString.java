@@ -3,6 +3,7 @@ package xyz.enhorse.commons;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 /**
  * @author <a href="mailto:pavel13kalinin@gmail.com">Pavel Kalinin</a>
@@ -74,12 +75,12 @@ public class URLString {
 
 
     public static URLString encodeUTF(final String string) {
-        return encode(string, Charset.forName("UTF-8"));
+        return encode(string, StandardCharsets.UTF_8);
     }
 
 
     public static URLString decodeUTF(final String string) {
-        return decode(string, Charset.forName("UTF-8"));
+        return decode(string, StandardCharsets.UTF_8);
     }
 
 
