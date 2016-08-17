@@ -30,6 +30,29 @@ public class Validate {
     }
 
 
+    public static <T> T defaultIfNull(T checkedValue, DefaultsProducer<T> producer) {
+        if (checkedValue == null) {
+            if (producer != null) {
+                return producer.getDefault();
+            } else {
+                throw new IllegalArgumentException("Can't get a default value " +
+                        "because a default values producer isn't defined.");
+            }
+        }
+
+        return checkedValue;
+    }
+
+
+    public static String defaultIfNullOrEmpty(String checkedValue, String defaultValue) {
+        if ((checkedValue == null) || (checkedValue.trim().isEmpty())) {
+            return defaultValue;
+        }
+
+        return checkedValue;
+    }
+
+
     public static String notNullOrEmpty(String parameter, String value) {
         String content = notNull(parameter, value);
 
@@ -78,15 +101,6 @@ public class Validate {
         }
 
         return value;
-    }
-
-
-    public static String defaultIfNullOrEmpty(String checkedValue, String defaultValue) {
-        if ((checkedValue == null) || (checkedValue.trim().isEmpty())) {
-            return defaultValue;
-        }
-
-        return checkedValue;
     }
 
 
