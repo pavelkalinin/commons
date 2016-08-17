@@ -1,13 +1,12 @@
 package xyz.enhorse.commons.parameters;
 
+import xyz.enhorse.commons.Check;
 import xyz.enhorse.commons.StringPair;
 import xyz.enhorse.commons.Validate;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.Charset;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,11 +16,11 @@ import java.util.List;
  */
 public class ParametersLoader {
 
-    private final InputStream input;
+    private final Reader input;
 
 
-    ParametersLoader(final InputStream in) {
-        input = Validate.notNull("input stream", in);
+    ParametersLoader(final Reader reader) {
+        input = Validate.notNull("reader", reader);
     }
 
 
@@ -29,12 +28,14 @@ public class ParametersLoader {
         List<StringPair> list = new ArrayList<>();
 
         String line;
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(input, Charset.forName("UTF-8")))) {
-            while ((line = reader.readLine()) != null) {
+        try (BufferedReader in = new BufferedReader(input)) {
+            while ((line = in.readLine()) != null) {
                 line = trimHead(line);
                 if (!line.startsWith(Parameters.COMMENT_MARK)) {
                     StringPair pair = StringPair.parse(line, Parameters.PARAMETER_VALUE_SEPARATOR);
-                    list.add(new StringPair(pair.key().trim().toLowerCase(), trimHead(pair.value())));
+                    if (Check.isUrlSafe(pair.key())) {
+                        list.add(new StringPair(pair.key().trim().toLowerCase(), trimHead(pair.value())));
+                    }
                 }
             }
         } catch (IOException ex) {
