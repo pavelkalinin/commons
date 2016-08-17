@@ -32,6 +32,7 @@ public class Validate {
 
     public static String notNullOrEmpty(String parameter, String value) {
         String content = notNull(parameter, value);
+
         if (content.trim().isEmpty()) {
             throw new IllegalArgumentException("\"" + parameter + "\" is not allowed to be empty.");
         }
@@ -42,11 +43,12 @@ public class Validate {
 
     public static String isIdentifier(String parameter, String value) {
         String content = notNullOrEmpty(parameter, value);
+
         for (int i = 0; i < content.length(); i++) {
             char current = content.charAt(i);
             if (!Character.isJavaIdentifierPart(current)) {
                 throw new IllegalArgumentException("\"" + parameter
-                        + "\" contains illegal symbol '" + current + '\'');
+                        + "\" contains illegal symbol \'" + current + '\'');
             }
         }
 
@@ -54,12 +56,19 @@ public class Validate {
     }
 
 
-    public static String defaultIfNullOrEmpty(String checkedValue, String defaultValue) {
-        if ((checkedValue == null) || (checkedValue.trim().isEmpty())) {
-            return defaultValue;
+    public static String isUrlSafe(String parameter, String value) {
+        String content = notNullOrEmpty(parameter, value);
+
+        for (int i = 0; i < content.length(); i++) {
+            char current = content.charAt(i);
+
+            if ((!Character.isLetterOrDigit(current)) && (".-_".indexOf(current) < 0)) {
+                throw new IllegalArgumentException("\"" + parameter
+                        + "\" contains a not URL safe symbol \'" + current + '\'');
+            }
         }
 
-        return checkedValue;
+        return content;
     }
 
 
@@ -69,6 +78,15 @@ public class Validate {
         }
 
         return value;
+    }
+
+
+    public static String defaultIfNullOrEmpty(String checkedValue, String defaultValue) {
+        if ((checkedValue == null) || (checkedValue.trim().isEmpty())) {
+            return defaultValue;
+        }
+
+        return checkedValue;
     }
 
 

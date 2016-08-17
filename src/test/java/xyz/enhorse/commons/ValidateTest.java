@@ -118,38 +118,74 @@ public class ValidateTest {
     }
 
 
-    @Test(expected = IllegalArgumentException.class)
-    public void onlyLettersAndDigits_NullValue() throws Exception {
-        Validate.isIdentifier("test parameter", null);
-    }
-
-
     @Test
-    public void onlyLettersAndDigits_ValidValue() throws Exception {
+    public void isIdentifier() throws Exception {
         Validate.isIdentifier("test parameter", "string");
     }
 
 
     @Test(expected = IllegalArgumentException.class)
-    public void onlyLettersAndDigits_ValueWithSpace() throws Exception {
+    public void isIdentifier_NullValue() throws Exception {
+        Validate.isIdentifier("test parameter", null);
+    }
+
+
+    @Test(expected = IllegalArgumentException.class)
+    public void isIdentifier_ValueWithSpace() throws Exception {
         Validate.isIdentifier("test parameter", "string value");
     }
 
 
     @Test(expected = IllegalArgumentException.class)
-    public void onlyLettersAndDigits_ValueWithIllegalCharacter() throws Exception {
+    public void isIdentifier_ValueWithIllegalCharacter() throws Exception {
         Validate.isIdentifier("test parameter", "string%value");
     }
 
 
     @Test(expected = IllegalArgumentException.class)
-    public void onlyLettersAndDigits_EmptyValue() throws Exception {
+    public void isIdentifier_EmptyValue() throws Exception {
         Validate.isIdentifier("test parameter", "");
     }
 
 
     @Test(expected = IllegalArgumentException.class)
-    public void onlyLettersAndDigits_ValueWithOnlyIllegalCharacters() throws Exception {
+    public void isIdentifier_ValueWithOnlyIllegalCharacters() throws Exception {
         Validate.isIdentifier("test parameter", " ^ ");
+    }
+
+
+    @Test
+    public void isUrlSafe() throws Exception {
+        Validate.isUrlSafe("test parameter", "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._");
+    }
+
+
+    @Test(expected = IllegalArgumentException.class)
+    public void isUrlSafe_nullValue() throws Exception {
+        Validate.isUrlSafe("test parameter", null);
+    }
+
+
+    @Test(expected = IllegalArgumentException.class)
+    public void isUrlSafe_valueWithIllegalSymbol() throws Exception {
+        Validate.isUrlSafe("test parameter", "Ab.&-");
+    }
+
+
+    @Test(expected = IllegalArgumentException.class)
+    public void isUrlSafe_valueWithOnlyIllegalSymbol() throws Exception {
+        Validate.isUrlSafe("test parameter", "&");
+    }
+
+
+    @Test(expected = IllegalArgumentException.class)
+    public void isUrlSafe_valueWithOnlyIllegalSymbols() throws Exception {
+        Validate.isUrlSafe("test parameter", " &%");
+    }
+
+
+    @Test(expected = IllegalArgumentException.class)
+    public void isUrlSafe_emptyValue() throws Exception {
+        Validate.isUrlSafe("test parameter", "");
     }
 }
