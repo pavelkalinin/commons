@@ -45,7 +45,7 @@ public class Validate {
 
 
     public static String defaultIfNullOrEmpty(String checkedValue, String defaultValue) {
-        if ((checkedValue == null) || (checkedValue.trim().isEmpty())) {
+        if ((checkedValue == null) || (checkedValue.isEmpty())) {
             return defaultValue;
         }
 
@@ -56,7 +56,7 @@ public class Validate {
     public static String notNullOrEmpty(String parameter, String value) {
         String content = notNull(parameter, value);
 
-        if (content.trim().isEmpty()) {
+        if (content.isEmpty()) {
             throw new IllegalArgumentException("\"" + parameter + "\" is not allowed to be empty.");
         }
 

@@ -13,11 +13,13 @@ import static org.junit.Assert.*;
 public class ValidateDefaultProducerTest {
 
     @Test
-    public void defaultIfNull() throws Exception {
+    public void defaultIfNull_notNull() throws Exception {
         String defaultValue = "default";
         String value = "value";
 
-        assertEquals(value, Validate.defaultIfNull(value, defaultValue));
+        String actual = Validate.defaultIfNull(value, () -> defaultValue);
+
+        assertEquals(value, actual);
     }
 
 
@@ -47,9 +49,8 @@ public class ValidateDefaultProducerTest {
     @Test(expected = IllegalArgumentException.class)
     public void defaultIfNull_producerIsNull() throws Exception {
         String defaultValue = "default";
-        DefaultsProducer<String> producer = null;
 
-        String actual = Validate.defaultIfNull(null, producer);
+        String actual = Validate.defaultIfNull(null, null);
 
         assertEquals(defaultValue, actual);
     }
