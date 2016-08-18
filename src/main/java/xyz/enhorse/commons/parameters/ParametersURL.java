@@ -37,8 +37,8 @@ public class ParametersURL implements ParametersLoader {
         List<StringPair> list = new ArrayList<>();
 
         for (String parameter : query.split(String.valueOf(PARAMETERS_SEPARATOR))) {
-            StringPair pair = StringPair.parse(parameter, Parameters.PARAMETER_VALUE_SEPARATOR);
-            list.add(new StringPair(pair.key(), URLString.decode(pair.value(), encoding).plain()));
+            StringPair pair = StringPair.create(parameter, Parameters.PARAMETER_VALUE_SEPARATOR);
+            list.add(new StringPair(pair.leading(), URLString.decode(pair.trailing(), encoding).plain()));
         }
 
         return list;

@@ -10,160 +10,265 @@ import static org.junit.Assert.*;
  */
 public class StringPairTest {
 
+    private static final String LEADING = "leading";
+    private static final String TRAILING = "trailing";
+    private static final String DELIMITER = "=";
+
+
     @Test
-    public void create() throws Exception {
-        assertNotNull(new StringPair("key", "value"));
-    }
+    public void constructor_validArguments() throws Exception {
+        StringPair pair = new StringPair(LEADING, TRAILING);
 
-
-    @Test(expected = IllegalArgumentException.class)
-    public void create_illegal_keyIs_null() throws Exception {
-        assertNotNull(new StringPair(null, "value"));
-    }
-
-
-    @Test(expected = IllegalArgumentException.class)
-    public void create_illegal_keyIs_empty() throws Exception {
-        assertNotNull(new StringPair("", "value"));
-    }
-
-
-    @Test(expected = IllegalArgumentException.class)
-    public void create_illegal_keyIs_onlySpaces() throws Exception {
-        assertNotNull(new StringPair(" ", "value"));
+        assertEquals("Leading is wrong", LEADING, pair.leading());
+        assertEquals("Trailing is wrong", TRAILING, pair.trailing());
     }
 
 
     @Test
-    public void create_valueIs_null() throws Exception {
-        assertNotNull(new StringPair("key", null));
+    public void constructor_leading_null() throws Exception {
+        StringPair pair = new StringPair(null, TRAILING);
+
+        assertNotEquals("Leading is null", pair.leading());
+        assertEquals("Trailing is wrong", TRAILING, pair.trailing());
     }
 
 
     @Test
-    public void create_defaultValueIf_valueIs_null() throws Exception {
-        assertNotNull(new StringPair("key", null).value());
+    public void constructor_trailing_null() throws Exception {
+        StringPair pair = new StringPair(LEADING, null);
+
+        assertEquals("Leading is wrong", LEADING, pair.leading());
+        assertNotNull("Trailing is null", pair.trailing());
     }
 
 
     @Test
-    public void key() throws Exception {
-        String key = "key";
-        assertEquals(key, new StringPair(key, "value").key());
+    public void constructor_leading_empty() throws Exception {
+        StringPair pair = new StringPair("", TRAILING);
+
+        assertTrue("Leading is not empty", pair.leading().isEmpty());
+        assertEquals("Trailing is wrong", TRAILING, pair.trailing());
     }
 
 
     @Test
-    public void value() throws Exception {
-        String value = "value";
-        assertEquals(value, new StringPair("key", value).value());
+    public void constructor_trailing_empty() throws Exception {
+        StringPair pair = new StringPair(LEADING, "");
+
+        assertEquals("Leading is wrong", LEADING, pair.leading());
+        assertTrue("Trailing is not empty", pair.trailing().isEmpty());
     }
 
 
     @Test
-    public void parse_delimiterString() throws Exception {
-        String key = "key";
-        String value = "value";
-        String delimiter = "==";
-        StringPair pair = StringPair.parse(key + delimiter + value, delimiter);
-        assertNotNull(pair);
-        assertEquals("key is wrong", key, pair.key());
-        assertEquals("value is wrong", value, pair.value());
+    public void leading() throws Exception {
+        assertEquals(LEADING, new StringPair(LEADING, TRAILING).leading());
     }
 
 
     @Test
-    public void parse_delimiterChar() throws Exception {
-        String key = "key";
-        String value = "value";
+    public void trailing() throws Exception {
+        assertEquals(TRAILING, new StringPair(LEADING, TRAILING).trailing());
+    }
+
+
+    @Test
+    public void create_delimiter_string() throws Exception {
+        StringPair pair = StringPair.create(LEADING + DELIMITER + TRAILING, DELIMITER);
+
+        assertEquals("Leading is wrong", LEADING, pair.leading());
+        assertEquals("Trailing is wrong", TRAILING, pair.trailing());
+    }
+
+
+    @Test
+    public void create_delimiter_char() throws Exception {
         char delimiter = '=';
-        StringPair pair = StringPair.parse(key + delimiter + value, delimiter);
-        assertNotNull(pair);
-        assertEquals("key is wrong", key, pair.key());
-        assertEquals("value is wrong", value, pair.value());
+
+        StringPair pair = StringPair.create(LEADING + delimiter + TRAILING, delimiter);
+
+        assertEquals("Leading is wrong", LEADING, pair.leading());
+        assertEquals("Trailing is wrong", TRAILING, pair.trailing());
     }
 
 
     @Test
-    public void parse_emptyValue() throws Exception {
-        String key = "key";
-        String value = "";
-        String delimiter = "==";
-        StringPair pair = StringPair.parse(key + delimiter + value, delimiter);
-        assertNotNull(pair);
-        assertEquals("key is wrong", key, pair.key());
-        assertEquals("value is wrong", value, pair.value());
+    public void create_leading_empty() throws Exception {
+        StringPair pair = StringPair.create("" + DELIMITER + TRAILING, DELIMITER);
+
+        assertTrue("Leading is not empty", pair.leading().isEmpty());
+        assertEquals("Trailing is wrong", TRAILING, pair.trailing());
     }
 
 
     @Test
-    public void parse_emptyKey() throws Exception {
-        String key = "";
-        String value = "value";
-        String delimiter = "==";
-        StringPair pair = StringPair.parse(key + delimiter + value, delimiter);
-        assertNotNull(pair);
-        assertEquals("key is wrong", key + delimiter + value, pair.key());
-        assertEquals("value is wrong", "", pair.value());
+    public void create_trailing_empty() throws Exception {
+        StringPair pair = StringPair.create(LEADING + DELIMITER + "", DELIMITER);
+
+        assertEquals("Leading is wrong", LEADING, pair.leading());
+        assertTrue("Trailing is not empty", pair.trailing().isEmpty());
     }
 
 
     @Test
-    public void parse_withoutDelimiter() throws Exception {
-        String key = "key";
-        String value = "value";
-        String delimiter = "==";
-        StringPair pair = StringPair.parse(key + value, delimiter);
-        assertNotNull(pair);
-        assertEquals("key is wrong", key + value, pair.key());
-        assertEquals("value is wrong", "", pair.value());
-    }
+    public void create_withoutDelimiter() throws Exception {
+        StringPair pair = StringPair.create(LEADING + TRAILING, DELIMITER);
 
-
-    @Test(expected = IllegalArgumentException.class)
-    public void parse_stringIs_null() throws Exception {
-        assertNull(StringPair.parse(null, "=="));
-    }
-
-
-    @Test(expected = IllegalArgumentException.class)
-    public void parse_stringIs_empty() throws Exception {
-        assertNull(StringPair.parse("", "=="));
-    }
-
-
-    @Test(expected = IllegalArgumentException.class)
-    public void parse_stringIs_onlySpaces() throws Exception {
-        assertNull(StringPair.parse("  ", "=="));
-    }
-
-
-    @Test(expected = IllegalArgumentException.class)
-    public void parse_delimiterIs_null() throws Exception {
-        assertNull(StringPair.parse("key==value", null));
+        assertEquals("Leading is wrong", LEADING + TRAILING, pair.leading());
+        assertTrue("Trailing is not empty", pair.trailing().isEmpty());
     }
 
 
     @Test
-    public void parse_delimiterIs_empty() throws Exception {
-        String key = "key";
-        String value = "value";
-        String delimiter = "";
-        StringPair pair = StringPair.parse(key + delimiter + value, delimiter);
-        assertNotNull(pair);
-        assertEquals("key is wrong", key + delimiter + value, pair.key());
-        assertEquals("value is wrong", "", pair.value());
+    public void create_string_null() throws Exception {
+        StringPair pair = StringPair.create(null, DELIMITER);
+
+        assertTrue("Leading is not empty", pair.leading().isEmpty());
+        assertTrue("Trailing is not empty", pair.trailing().isEmpty());
     }
 
 
     @Test
-    public void parse_valueHas_delimiter() throws Exception {
-        String key = "key";
-        String value = "value with a delimiter";
-        String delimiter = " ";
-        StringPair pair = StringPair.parse(key + delimiter + value, delimiter);
-        assertNotNull(pair);
-        assertEquals("key is wrong", key, pair.key());
-        assertEquals("value is wrong", value, pair.value());
+    public void create_string_empty() throws Exception {
+        StringPair pair = StringPair.create("", DELIMITER);
+
+        assertTrue("Leading is not empty", pair.leading().isEmpty());
+        assertTrue("Trailing is not empty", pair.trailing().isEmpty());
+    }
+
+
+    @Test
+    public void create_string_onlySpaces_delimiter_notSpace() throws Exception {
+        String leading = "   ";
+        StringPair pair = StringPair.create(leading, "==");
+
+        assertEquals("Leading is wrong", leading, pair.leading());
+        assertTrue("Trailing is not empty", pair.trailing().isEmpty());
+    }
+
+
+    @Test
+    public void create_string_onlySpaces_delimiter_space() throws Exception {
+        String trailing = "   ";
+        StringPair pair = StringPair.create(" " + trailing, " ");
+
+        assertTrue("Leading is not empty", pair.leading().isEmpty());
+        assertEquals("Trailing is wrong", trailing, pair.trailing());
+    }
+
+
+    @Test
+    public void create_delimiter_null() throws Exception {
+        StringPair pair = StringPair.create(LEADING, null);
+
+        assertEquals("Leading is wrong", LEADING, pair.leading());
+        assertTrue("Leading is not empty", pair.trailing().isEmpty());
+    }
+
+
+    @Test
+    public void create_delimiter_empty() throws Exception {
+        StringPair pair = StringPair.create(LEADING, null);
+
+        assertEquals("Leading is wrong", LEADING, pair.leading());
+        assertTrue("Leading is not empty", pair.trailing().isEmpty());
+    }
+
+
+    @Test
+    public void create_multiple_delimiters() throws Exception {
+        String trailing = TRAILING + DELIMITER + TRAILING;
+
+        StringPair pair = StringPair.create(LEADING + DELIMITER + trailing, DELIMITER);
+
+        assertEquals("Leading is wrong", LEADING, pair.leading());
+        assertEquals("Trailing is wrong", trailing, pair.trailing());
+    }
+
+
+    @Test
+    public void toString_output() throws Exception {
+        String toString = new StringPair(LEADING, TRAILING).toString();
+
+        assertTrue("toString() doesn't contain a leading", toString.contains(LEADING));
+        assertTrue("toString() doesn't contain a trailing", toString.contains(TRAILING));
+    }
+
+
+    @Test
+    public void equals_same() throws Exception {
+        StringPair pair = StringPair.create(LEADING + DELIMITER + TRAILING, DELIMITER);
+
+        assertEquals(pair, pair);
+    }
+
+
+    @Test
+    public void equals_identical() throws Exception {
+        StringPair pair1 = StringPair.create(LEADING + DELIMITER + TRAILING, DELIMITER);
+        StringPair pair2 = StringPair.create(LEADING + DELIMITER + TRAILING, DELIMITER);
+
+        assertEquals(pair1, pair2);
+    }
+
+
+    @Test
+    public void notEquals_differentLeading() throws Exception {
+        StringPair pair1 = StringPair.create(LEADING + DELIMITER + TRAILING, DELIMITER);
+        StringPair pair2 = StringPair.create(" " + LEADING + DELIMITER + TRAILING, DELIMITER);
+
+        assertNotEquals(pair1, pair2);
+    }
+
+
+    @Test
+    public void notEquals_differentTrailing() throws Exception {
+        StringPair pair1 = StringPair.create(LEADING + DELIMITER + TRAILING, DELIMITER);
+        StringPair pair2 = StringPair.create(LEADING + DELIMITER + TRAILING + " ", DELIMITER);
+
+        assertNotEquals(pair1, pair2);
+    }
+
+
+    @Test
+    public void notEquals_null() throws Exception {
+        StringPair pair = StringPair.create(LEADING + DELIMITER + TRAILING, DELIMITER);
+
+        assertNotEquals(pair, null);
+    }
+
+
+    @Test
+    public void hashCode_same() throws Exception {
+        StringPair pair = StringPair.create(LEADING + DELIMITER + TRAILING, DELIMITER);
+
+        assertEquals(pair.hashCode(), pair.hashCode());
+    }
+
+
+    @Test
+    public void hashCode_identical() throws Exception {
+        StringPair pair1 = StringPair.create(LEADING + DELIMITER + TRAILING, DELIMITER);
+        StringPair pair2 = StringPair.create(LEADING + DELIMITER + TRAILING, DELIMITER);
+
+        assertEquals(pair1.hashCode(), pair2.hashCode());
+    }
+
+
+    @Test
+    public void hashCode_differentLeading() throws Exception {
+        StringPair pair1 = StringPair.create(LEADING + DELIMITER + TRAILING, DELIMITER);
+        StringPair pair2 = StringPair.create(" " + LEADING + DELIMITER + TRAILING, DELIMITER);
+
+        assertNotEquals(pair1.hashCode(), pair2.hashCode());
+    }
+
+
+    @Test
+    public void hashCode_differentTrailing() throws Exception {
+        StringPair pair1 = StringPair.create(LEADING + DELIMITER + TRAILING, DELIMITER);
+        StringPair pair2 = StringPair.create(LEADING + DELIMITER + TRAILING + " ", DELIMITER);
+
+        assertNotEquals(pair1.hashCode(), pair2.hashCode());
     }
 }

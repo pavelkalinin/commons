@@ -6,30 +6,35 @@ package xyz.enhorse.commons;
  */
 public class StringPair {
 
-    private final String key;
-    private final String value;
+    private static final String DEFAULT_LEADING = "";
+    private static final String DEFAULT_TRAILING = "";
+
+    private static final StringPair EMPTY = new StringPair(DEFAULT_LEADING, DEFAULT_TRAILING);
+
+    private final String leading;
+    private final String trailing;
 
 
-    public StringPair(final String key, final String value) {
-        this.key = Validate.notNullOrEmpty("pair's key", key);
-        this.value = Validate.defaultIfNull(value, "");
+    public StringPair(final String leading, final String trailing) {
+        this.leading = Validate.defaultIfNull(leading, DEFAULT_LEADING);
+        this.trailing = Validate.defaultIfNull(trailing, DEFAULT_TRAILING);
     }
 
 
-    public String key() {
-        return key;
+    public String leading() {
+        return leading;
     }
 
 
-    public String value() {
-        return value;
+    public String trailing() {
+        return trailing;
     }
 
 
     @Override
     public int hashCode() {
-        int result = key.hashCode();
-        result = 31 * result + value.hashCode();
+        int result = leading.hashCode();
+        result = 31 * result + trailing.hashCode();
         return result;
     }
 
@@ -46,24 +51,24 @@ public class StringPair {
 
         StringPair pair = (StringPair) o;
 
-        return key.equals(pair.key)
-                && value.equals(pair.value);
+        return leading.equals(pair.leading)
+                && trailing.equals(pair.trailing);
 
     }
 
 
     @Override
     public String toString() {
-        return String.format("[%s[:]%s]", key, value);
+        return String.format("[%s[:]%s]", leading, trailing);
     }
 
 
-    public static StringPair parse(final String string, final String delimiter) {
+    public static StringPair create(final String string, final String delimiter) {
         return new Splitter(delimiter).split(string);
     }
 
 
-    public static StringPair parse(final String string, final char delimiter) {
+    public static StringPair create(final String string, final char delimiter) {
         return new Splitter(delimiter).split(string);
     }
 
@@ -74,28 +79,31 @@ public class StringPair {
 
 
         public Splitter(final String delimiter) {
-            this.delimiter = Validate.notNull("splitter's delimiter", delimiter);
+            this.delimiter = Validate.defaultIfNull(delimiter, "");
         }
 
 
         public Splitter(final char delimiter) {
-            this.delimiter = String.valueOf(Validate.notNull("splitter's delimiter", delimiter));
+            this.delimiter = String.valueOf(delimiter);
         }
 
 
         public StringPair split(final String string) {
-            Validate.notNullOrEmpty("string to split", string);
-            int position = string.indexOf(delimiter);
+            if (string == null) {
+                return EMPTY;
+            }
+
+            int position = !delimiter.isEmpty() ? string.indexOf(delimiter) : -1;
 
             String key;
             String value;
 
-            if (position > 0) {
+            if (position > -1) {
                 key = string.substring(0, position);
                 value = string.substring(position + delimiter.length());
             } else {
                 key = string;
-                value = "";
+                value = DEFAULT_TRAILING;
             }
 
             return new StringPair(key, value);

@@ -7,7 +7,13 @@ import xyz.enhorse.commons.Validate;
 import xyz.enhorse.commons.errors.AbsentException;
 import xyz.enhorse.commons.errors.DuplicateException;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Spliterator;
+import java.util.StringJoiner;
 import java.util.function.Consumer;
 
 /**
@@ -28,7 +34,7 @@ public abstract class AbstractParameters<T extends Map> implements Parameters {
     public Parameters append(final List<StringPair> list) {
         if (list != null) {
             for (StringPair pair : list) {
-                put(pair.key(), pair.value());
+                put(pair.leading(), pair.trailing());
             }
         }
 

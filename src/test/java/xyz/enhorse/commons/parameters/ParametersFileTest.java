@@ -6,13 +6,17 @@ import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import xyz.enhorse.commons.StringPair;
 
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
+import static java.nio.charset.StandardCharsets.*;
 import static org.junit.Assert.*;
 
 /**
@@ -34,7 +38,7 @@ public class ParametersFileTest {
         ParametersFile file = generateFile(parameters, UTF_8);
 
         for (StringPair pair : file.load()) {
-            assertEquals(parameters.get(pair.key()), pair.value());
+            assertEquals(parameters.get(pair.leading()), pair.trailing());
         }
     }
 
@@ -105,7 +109,7 @@ public class ParametersFileTest {
 
         ParametersFile file = generateFile(parameters, UTF_8);
 
-        assertEquals(key, file.load().get(0).key());
+        assertEquals(key, file.load().get(0).leading());
     }
 
 
@@ -130,7 +134,7 @@ public class ParametersFileTest {
 
         List<StringPair> parameters = new ParametersFile(file, encoding).load();
 
-        assertEquals(value2, parameters.get(0).value());
+        assertEquals(value2, parameters.get(0).trailing());
     }
 
 
@@ -150,7 +154,7 @@ public class ParametersFileTest {
 
         ParametersFile file = generateFile(parameters, UTF_8);
 
-        assertEquals(value, file.load().get(0).value());
+        assertEquals(value, file.load().get(0).trailing());
     }
 
 

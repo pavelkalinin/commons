@@ -6,7 +6,7 @@ import xyz.enhorse.commons.StringPair;
 import java.net.URL;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 /**
  * @author <a href="mailto:pavel13kalinin@gmail.com">Pavel Kalinin</a>
@@ -20,7 +20,7 @@ public class ParametersURLTest {
         URL url = new URL("http://internet.org/?" + query);
         List<StringPair> parameters = new ParametersURL(url).load();
 
-        assertEquals("value1", parameters.get(0).value());
-        assertEquals("value2", parameters.get(1).value());
+        assertEquals("value1", parameters.get(0).trailing());
+        assertEquals("value2", parameters.get(1).trailing());
     }
 }
