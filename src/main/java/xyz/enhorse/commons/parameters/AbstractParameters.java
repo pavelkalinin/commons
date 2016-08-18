@@ -1,17 +1,13 @@
 package xyz.enhorse.commons.parameters;
 
+import xyz.enhorse.commons.Pretty;
 import xyz.enhorse.commons.StringPair;
+import xyz.enhorse.commons.URLString;
 import xyz.enhorse.commons.Validate;
 import xyz.enhorse.commons.errors.AbsentException;
 import xyz.enhorse.commons.errors.DuplicateException;
 
-import java.io.Reader;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Spliterator;
+import java.util.*;
 import java.util.function.Consumer;
 
 /**
@@ -28,90 +24,10 @@ public abstract class AbstractParameters<T extends Map> implements Parameters {
     }
 
 
-    public AbstractParameters(Class<T> map, String parameters) {
-        this(map);
-        parseParameters(parameters);
-    }
-
-
-    public AbstractParameters(Class<T> map, Parameters parameters) {
-        this(map);
-        copyParameters(parameters);
-    }
-
-
     @Override
-    public Iterator<String> iterator() {
-        return content.keySet().iterator();
-    }
-
-
-    @Override
-    public void forEach(final Consumer<? super String> action) {
-        content.keySet().forEach(action);
-    }
-
-
-    @Override
-    public Spliterator<String> spliterator() {
-        return content.keySet().spliterator();
-    }
-
-
-    @Override
-    public int hashCode() {
-        return content.hashCode();
-    }
-
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
-        AbstractParameters other = (AbstractParameters) o;
-
-        return content.equals(other.content);
-    }
-
-
-    @Override
-    public String toString() {
-        if (isEmpty()) {
-            return "";
-        }
-
-        StringBuilder options = new StringBuilder();
-        for (Map.Entry<String, Object> entry : content.entrySet()) {
-            options.append(entry.getKey()).append('=').append(entry.getValue()).append('&');
-        }
-        options.setLength(options.length() - 1);
-
-        return options.toString();
-    }
-
-
-    @Override
-    public Parameters load(final Reader reader) {
-        if (reader == null) {
-            return this;
-        }
-
-        clear();
-        return append(reader);
-    }
-
-
-    @Override
-    public Parameters append(final Reader reader) {
-        if (reader != null) {
-            ParametersLoader loader = new ParametersLoader(reader);
-            for (StringPair pair : loader.load()) {
+    public Parameters append(final List<StringPair> list) {
+        if (list != null) {
+            for (StringPair pair : list) {
                 put(pair.key(), pair.value());
             }
         }
@@ -139,7 +55,10 @@ public abstract class AbstractParameters<T extends Map> implements Parameters {
 
     @Override
     public Parameters replace(final String parameter, final Object newValue) {
-        return delete(parameter).add(parameter, newValue);
+        if (!isExists(parameter)) {
+            throw new AbsentException("Parameter", parameter);
+        }
+        return put(parameter, newValue);
     }
 
 
@@ -147,16 +66,6 @@ public abstract class AbstractParameters<T extends Map> implements Parameters {
     public Parameters remove(final String parameter) {
         content.remove(parameter);
         return this;
-    }
-
-
-    @Override
-    public Parameters delete(final String parameter) {
-        if (!isExists(parameter)) {
-            throw new AbsentException("Parameter", parameter);
-        }
-
-        return remove(parameter);
     }
 
 
@@ -202,29 +111,70 @@ public abstract class AbstractParameters<T extends Map> implements Parameters {
 
 
     @Override
-    public Map toMap() {
+    public Map asMap() {
         return new HashMap<>(content);
     }
 
 
-    private void copyParameters(final Parameters parameters) {
-        if (parameters != null) {
-            for (String parameter : parameters) {
-                add(parameter, parameters.get(parameter));
-            }
+    @Override
+    public String asURLEncodedString() {
+        final String parametersDelimiter = "&";
+        final char valueDelimiter = '=';
+        final char queryStart = '?';
+
+        StringJoiner query = new StringJoiner(parametersDelimiter);
+
+        for (Map.Entry<String, Object> entry : content.entrySet()) {
+            query.add(entry.getKey() + valueDelimiter + URLString.encodeUTF(String.valueOf(entry.getValue())));
         }
+
+        return queryStart + query.toString();
     }
 
 
-    private void parseParameters(final String parameters) {
-        if ((parameters != null) && (!parameters.trim().isEmpty())) {
-            for (String parameter : parameters.split(String.valueOf(PARAMETERS_SEPARATOR))) {
-                String name = extractParameterName(parameter);
-                if (!name.trim().isEmpty()) {
-                    put(extractParameterName(parameter), extractParameterValue(parameter));
-                }
-            }
+    @Override
+    public int hashCode() {
+        return content.hashCode();
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
         }
+
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        AbstractParameters other = (AbstractParameters) o;
+
+        return content.equals(other.content);
+    }
+
+
+    @Override
+    public String toString() {
+        return Pretty.format(content);
+    }
+
+
+    @Override
+    public Iterator<Map.Entry<String, Object>> iterator() {
+        return content.entrySet().iterator();
+    }
+
+
+    @Override
+    public void forEach(final Consumer<? super Map.Entry<String, Object>> action) {
+        content.entrySet().forEach(action);
+    }
+
+
+    @Override
+    public Spliterator<Map.Entry<String, Object>> spliterator() {
+        return content.entrySet().spliterator();
     }
 
 
@@ -237,21 +187,5 @@ public abstract class AbstractParameters<T extends Map> implements Parameters {
         } catch (Exception ex) {
             throw new IllegalStateException("Couldn't create an instance of " + map.toString(), ex);
         }
-    }
-
-
-    private static String extractParameterName(final String parameter) {
-        String temp = Validate.defaultIfNull(parameter, "");
-
-        int delimiter = temp.indexOf(PARAMETER_VALUE_SEPARATOR);
-        return delimiter > -1 ? temp.substring(0, delimiter) : temp;
-    }
-
-
-    private static String extractParameterValue(final String parameter) {
-        String temp = Validate.defaultIfNull(parameter, "");
-
-        int delimiter = temp.indexOf(PARAMETER_VALUE_SEPARATOR);
-        return delimiter > -1 ? temp.substring(delimiter + 1) : "";
     }
 }

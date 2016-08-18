@@ -11,14 +11,4 @@ public class ConcurrentParameters extends AbstractParameters<ConcurrentHashMap> 
     public ConcurrentParameters() {
         super(ConcurrentHashMap.class);
     }
-
-
-    public ConcurrentParameters(final String parameters) {
-        super(ConcurrentHashMap.class, parameters);
-    }
-
-
-    public ConcurrentParameters(final Parameters parameters) {
-        super(ConcurrentHashMap.class, parameters);
-    }
 }

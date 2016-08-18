@@ -1,6 +1,7 @@
 package xyz.enhorse.commons.parameters;
 
-import java.io.Reader;
+import xyz.enhorse.commons.StringPair;
+
 import java.util.List;
 import java.util.Map;
 
@@ -8,17 +9,12 @@ import java.util.Map;
  * @author <a href="mailto:pavel13kalinin@gmail.com">Pavel Kalinin</a>
  *         23.06.2016.
  */
-public interface Parameters extends Iterable<String> {
+public interface Parameters extends Iterable<Map.Entry<String, Object>> {
 
-    char PARAMETERS_SEPARATOR = '&';
     char PARAMETER_VALUE_SEPARATOR = '=';
-    String COMMENT_MARK = "//";
 
 
-    Parameters load(final Reader reader);
-
-
-    Parameters append(final Reader reader);
+    Parameters append(List<StringPair> list);
 
 
     Parameters add(final String parameter, final Object value);
@@ -31,9 +27,6 @@ public interface Parameters extends Iterable<String> {
 
 
     Parameters remove(final String parameter);
-
-
-    Parameters delete(final String parameter);
 
 
     Parameters clear();
@@ -57,5 +50,8 @@ public interface Parameters extends Iterable<String> {
     String toString();
 
 
-    Map toMap();
+    Map asMap();
+
+
+    String asURLEncodedString();
 }

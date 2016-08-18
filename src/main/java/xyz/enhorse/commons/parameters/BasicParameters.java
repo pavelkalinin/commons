@@ -11,14 +11,4 @@ public class BasicParameters extends AbstractParameters<HashMap> {
     public BasicParameters() {
         super(HashMap.class);
     }
-
-
-    public BasicParameters(final String parameters) {
-        super(HashMap.class, parameters);
-    }
-
-
-    public BasicParameters(final Parameters parameters) {
-        super(HashMap.class, parameters);
-    }
 }
