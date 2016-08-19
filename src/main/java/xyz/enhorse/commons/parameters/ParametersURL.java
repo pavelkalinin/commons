@@ -6,14 +6,14 @@ import xyz.enhorse.commons.Validate;
 
 import java.net.URL;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author <a href="mailto:pavel13kalinin@gmail.com">Pavel Kalinin</a>
  *         18.08.2016
  */
-public class ParametersURL implements ParametersLoader {
+public class ParametersURL extends AbstractParametersLoader {
 
     public static final char PARAMETERS_SEPARATOR = '&';
 
@@ -33,15 +33,17 @@ public class ParametersURL implements ParametersLoader {
 
 
     @Override
-    public List<StringPair> load() {
-        List<StringPair> list = new ArrayList<>();
+    public Map<String, String> load() {
+        Map<String, String> map = new HashMap<>();
 
         for (String parameter : query.split(String.valueOf(PARAMETERS_SEPARATOR))) {
-            StringPair pair = StringPair.create(parameter, Parameters.PARAMETER_VALUE_SEPARATOR);
-            list.add(new StringPair(pair.leading(), URLString.decode(pair.trailing(), encoding).plain()));
+            StringPair pair = super.processString(parameter, map);
+            if (!StringPair.EMPTY.equals(pair)) {
+                map.put(pair.leading(), URLString.decode(pair.trailing(), encoding).plain());
+            }
         }
 
-        return list;
+        return map;
     }
 
 

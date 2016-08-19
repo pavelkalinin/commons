@@ -4,19 +4,13 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
-import xyz.enhorse.commons.StringPair;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.nio.charset.Charset;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import static java.nio.charset.StandardCharsets.*;
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.junit.Assert.*;
 
 /**
@@ -37,8 +31,8 @@ public class ParametersFileTest {
 
         ParametersFile file = generateFile(parameters, UTF_8);
 
-        for (StringPair pair : file.load()) {
-            assertEquals(parameters.get(pair.leading()), pair.trailing());
+        for (Map.Entry<String, String> entry : file.load().entrySet()) {
+            assertEquals(parameters.get(entry.getKey()), entry.getValue());
         }
     }
 
@@ -75,18 +69,6 @@ public class ParametersFileTest {
     }
 
 
-    @Test
-    public void load_withComment() throws Exception {
-        Map<String, Object> parameters = new HashMap<>();
-        parameters.put("//key1", "value1");
-        parameters.put("key2", "value2");
-        parameters.put("key3", "value3");
-
-        ParametersFile file = generateFile(parameters, UTF_8);
-
-        assertEquals(parameters.size() - 1, file.load().size());
-    }
-
 
     @Test
     public void load_incorrectKey() throws Exception {
@@ -104,12 +86,13 @@ public class ParametersFileTest {
     @Test
     public void load_keyBetweenSpaces() throws Exception {
         String key = "key";
+
         Map<String, Object> parameters = new HashMap<>();
-        parameters.put("  " + "key" + "  ", "value");
+        parameters.put("  " + key + "  ", "value");
 
         ParametersFile file = generateFile(parameters, UTF_8);
 
-        assertEquals(key, file.load().get(0).leading());
+        assertTrue(file.load().containsKey(key));
     }
 
 
@@ -132,9 +115,9 @@ public class ParametersFileTest {
             }
         }
 
-        List<StringPair> parameters = new ParametersFile(file, encoding).load();
+        Map<String, String> parameters = new ParametersFile(file, encoding).load();
 
-        assertEquals(value2, parameters.get(0).trailing());
+        assertEquals(value2, parameters.get(key));
     }
 
 
@@ -148,15 +131,18 @@ public class ParametersFileTest {
 
     @Test
     public void load_trimLeadingSpacesFromValue() throws Exception {
+        String key = "key";
         String value = "value";
+
         Map<String, Object> parameters = new HashMap<>();
-        parameters.put("key", "   " + value);
+        parameters.put(key, "   " + value);
 
         ParametersFile file = generateFile(parameters, UTF_8);
 
-        assertEquals(value, file.load().get(0).trailing());
+        assertEquals(value, file.load().get(key));
     }
 
+    //TODO check with a different from UTF-8 encoding
 
     @Test
     public void toString_output() throws Exception {

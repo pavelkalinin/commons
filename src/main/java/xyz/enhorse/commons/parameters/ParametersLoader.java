@@ -1,8 +1,8 @@
 package xyz.enhorse.commons.parameters;
 
-import xyz.enhorse.commons.StringPair;
+import org.apache.log4j.Logger;
 
-import java.util.List;
+import java.util.Map;
 
 /**
  * @author <a href="mailto:pavel13kalinin@gmail.com">Pavel Kalinin</a>
@@ -10,5 +10,7 @@ import java.util.List;
  */
 public interface ParametersLoader {
 
-    List<StringPair> load();
+    Logger LOGGER = Logger.getLogger(ParametersLoader.class);
+
+    Map<String, String> load();
 }
