@@ -5,11 +5,10 @@ package xyz.enhorse.commons;
  *         17.08.2016
  */
 public class StringPair {
-
     private static final String DEFAULT_LEADING = "";
     private static final String DEFAULT_TRAILING = "";
 
-    private static final StringPair EMPTY = new StringPair(DEFAULT_LEADING, DEFAULT_TRAILING);
+    public static final StringPair EMPTY = new StringPair(DEFAULT_LEADING, DEFAULT_TRAILING);
 
     private final String leading;
     private final String trailing;
