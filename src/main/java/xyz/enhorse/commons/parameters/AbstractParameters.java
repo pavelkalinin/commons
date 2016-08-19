@@ -1,19 +1,12 @@
 package xyz.enhorse.commons.parameters;
 
 import xyz.enhorse.commons.Pretty;
-import xyz.enhorse.commons.StringPair;
 import xyz.enhorse.commons.URLString;
 import xyz.enhorse.commons.Validate;
 import xyz.enhorse.commons.errors.AbsentException;
 import xyz.enhorse.commons.errors.DuplicateException;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Spliterator;
-import java.util.StringJoiner;
+import java.util.*;
 import java.util.function.Consumer;
 
 /**
@@ -31,10 +24,10 @@ public abstract class AbstractParameters<T extends Map> implements Parameters {
 
 
     @Override
-    public Parameters append(final List<StringPair> list) {
-        if (list != null) {
-            for (StringPair pair : list) {
-                put(pair.leading(), pair.trailing());
+    public Parameters append(final Map<String, Object> map) {
+        if (map != null) {
+            for (Map.Entry<String, Object> entry : map.entrySet()) {
+                put(entry.getKey(), entry.getValue());
             }
         }
 

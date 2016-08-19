@@ -1,7 +1,5 @@
 package xyz.enhorse.commons.parameters;
 
-import xyz.enhorse.commons.StringPair;
-
 import java.util.List;
 import java.util.Map;
 
@@ -14,7 +12,7 @@ public interface Parameters extends Iterable<Map.Entry<String, Object>> {
     char PARAMETER_VALUE_SEPARATOR = '=';
 
 
-    Parameters append(List<StringPair> list);
+    Parameters append(Map<String, Object> map);
 
 
     Parameters add(final String parameter, final Object value);
