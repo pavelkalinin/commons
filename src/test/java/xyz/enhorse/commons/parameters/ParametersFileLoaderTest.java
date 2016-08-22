@@ -17,7 +17,7 @@ import static org.junit.Assert.*;
  * @author <a href="mailto:pavel13kalinin@gmail.com">Pavel Kalinin</a>
  *         17.08.2016
  */
-public class ParametersFileTest {
+public class ParametersFileLoaderTest {
 
     private static final TemporaryFolder temp = new TemporaryFolder();
 
@@ -29,9 +29,9 @@ public class ParametersFileTest {
         parameters.put("key2", "value2");
         parameters.put("key3", "value3");
 
-        ParametersFile file = generateFile(parameters, UTF_8);
+        ParametersFileLoader file = generateFile(parameters, UTF_8);
 
-        for (Map.Entry<String, String> entry : file.load().entrySet()) {
+        for (Map.Entry<String, String> entry : file.load(UTF_8).entrySet()) {
             assertEquals(parameters.get(entry.getKey()), entry.getValue());
         }
     }
@@ -39,18 +39,7 @@ public class ParametersFileTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void create_illegal_nullFile() throws Exception {
-        assertNull(new ParametersFile(null, UTF_8));
-    }
-
-
-    @Test
-    public void create_nullCharset() throws Exception {
-        Map<String, Object> parameters = new HashMap<>();
-        parameters.put("key1", "value1");
-        parameters.put("key2", "value2");
-        parameters.put("key3", "value3");
-
-        assertNotNull(generateFile(parameters, null));
+        assertNull(new ParametersFileLoader(null));
     }
 
 
@@ -58,14 +47,14 @@ public class ParametersFileTest {
     public void create_illegal_notExistingFile() throws Exception {
         File file = temp.newFile();
         assert file.delete();
-        assertNotNull(new ParametersFile(file, UTF_8));
+        assertNotNull(new ParametersFileLoader(file));
     }
 
 
     @Test(expected = IllegalArgumentException.class)
     public void create_illegal_fileIsDirectory() throws Exception {
         File file = temp.newFolder();
-        assertNotNull(new ParametersFile(file, UTF_8));
+        assertNotNull(new ParametersFileLoader(file));
     }
 
 
@@ -77,9 +66,9 @@ public class ParametersFileTest {
         parameters.put("key 2", "value2");
         parameters.put("key3", "value3");
 
-        ParametersFile file = generateFile(parameters, UTF_8);
+        ParametersFileLoader file = generateFile(parameters, UTF_8);
 
-        assertEquals(parameters.size() - 1, file.load().size());
+        assertEquals(parameters.size() - 1, file.load(UTF_8).size());
     }
 
 
@@ -90,9 +79,9 @@ public class ParametersFileTest {
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("  " + key + "  ", "value");
 
-        ParametersFile file = generateFile(parameters, UTF_8);
+        ParametersFileLoader file = generateFile(parameters, UTF_8);
 
-        assertTrue(file.load().containsKey(key));
+        assertTrue(file.load(UTF_8).containsKey(key));
     }
 
 
@@ -115,7 +104,7 @@ public class ParametersFileTest {
             }
         }
 
-        Map<String, String> parameters = new ParametersFile(file, encoding).load();
+        Map<String, String> parameters = new ParametersFileLoader(file).load(encoding);
 
         assertEquals(value2, parameters.get(key));
     }
@@ -123,9 +112,9 @@ public class ParametersFileTest {
 
     @Test
     public void load_empty() throws Exception {
-        ParametersFile file = generateFile(new HashMap<>(), UTF_8);
+        ParametersFileLoader file = generateFile(new HashMap<>(), UTF_8);
 
-        assertEquals(0, file.load().size());
+        assertEquals(0, file.load(UTF_8).size());
     }
 
 
@@ -137,9 +126,9 @@ public class ParametersFileTest {
         Map<String, Object> parameters = new HashMap<>();
         parameters.put(key, "   " + value);
 
-        ParametersFile file = generateFile(parameters, UTF_8);
+        ParametersFileLoader file = generateFile(parameters, UTF_8);
 
-        assertEquals(value, file.load().get(key));
+        assertEquals(value, file.load(UTF_8).get(key));
     }
 
     //TODO check with a different from UTF-8 encoding
@@ -147,10 +136,9 @@ public class ParametersFileTest {
     @Test
     public void toString_output() throws Exception {
         File file = temp.newFile();
-        String toString = new ParametersFile(file, UTF_8).toString();
+        String toString = new ParametersFileLoader(file).toString();
 
         assertTrue("doesn't contains filename", toString.contains(file.toString()));
-        assertTrue("doesn't contains charset", toString.contains(UTF_8.name()));
     }
 
 
@@ -166,7 +154,7 @@ public class ParametersFileTest {
     }
 
 
-    private static ParametersFile generateFile(final Map<String, Object> map, final Charset charset) throws Exception {
+    private static ParametersFileLoader generateFile(final Map<String, Object> map, final Charset charset) throws Exception {
         File file = temp.newFile();
 
         if (file != null) {
@@ -181,6 +169,6 @@ public class ParametersFileTest {
             }
         }
 
-        return new ParametersFile(file, charset);
+        return new ParametersFileLoader(file);
     }
 }

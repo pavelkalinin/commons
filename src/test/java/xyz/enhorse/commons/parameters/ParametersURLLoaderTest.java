@@ -10,13 +10,13 @@ import java.util.StringJoiner;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.junit.Assert.*;
-import static xyz.enhorse.commons.parameters.ParametersURL.PARAMETERS_SEPARATOR;
+import static xyz.enhorse.commons.parameters.ParametersURLLoader.PARAMETERS_SEPARATOR;
 
 /**
  * @author <a href="mailto:pavel13kalinin@gmail.com">Pavel Kalinin</a>
  *         18.08.2016
  */
-public class ParametersURLTest {
+public class ParametersURLLoaderTest {
 
     @Test
     public void load() throws Exception {
@@ -25,9 +25,9 @@ public class ParametersURLTest {
         parameters.put("key2", "value2");
         parameters.put("key3", "value3");
 
-        ParametersURL url = new ParametersURL(generateURL(parameters), UTF_8);
+        ParametersURLLoader url = new ParametersURLLoader(generateURL(parameters));
 
-        for (Map.Entry<String, String> entry : url.load().entrySet()) {
+        for (Map.Entry<String, String> entry : url.load(UTF_8).entrySet()) {
             assertEquals(parameters.get(entry.getKey()), entry.getValue());
         }
     }
@@ -35,18 +35,7 @@ public class ParametersURLTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void create_illegal_nullURL() throws Exception {
-        assertNull(new ParametersFile(null, UTF_8));
-    }
-
-
-    @Test
-    public void create_nullCharset() throws Exception {
-        Map<String, Object> parameters = new HashMap<>();
-        parameters.put("key1", "value1");
-        parameters.put("key2", "value2");
-        parameters.put("key3", "value3");
-
-        assertNotNull(new ParametersURL(generateURL(parameters), null));
+        assertNull(new ParametersFileLoader(null));
     }
 
 
@@ -57,9 +46,9 @@ public class ParametersURLTest {
         parameters.put("key 2", "value2");
         parameters.put("key3", "value3");
 
-        ParametersURL url = new ParametersURL(generateURL(parameters), UTF_8);
+        ParametersURLLoader url = new ParametersURLLoader(generateURL(parameters));
 
-        assertEquals(parameters.size() - 1, url.load().size());
+        assertEquals(parameters.size() - 1, url.load(UTF_8).size());
     }
 
 
@@ -70,9 +59,9 @@ public class ParametersURLTest {
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("  " + key + "  ", "value");
 
-        ParametersURL url = new ParametersURL(generateURL(parameters), UTF_8);
+        ParametersURLLoader url = new ParametersURLLoader(generateURL(parameters));
 
-        assertTrue(url.load().containsKey(key));
+        assertTrue(url.load(UTF_8).containsKey(key));
     }
 
 
@@ -86,7 +75,7 @@ public class ParametersURLTest {
 
         URL url = new URL("http://internet.org/?" + query);
 
-        Map<String, String> parameters = new ParametersURL(url, UTF_8).load();
+        Map<String, String> parameters = new ParametersURLLoader(url).load(UTF_8);
 
         assertEquals(value2, parameters.get(key));
     }
@@ -94,9 +83,9 @@ public class ParametersURLTest {
 
     @Test
     public void load_empty() throws Exception {
-        ParametersURL url = new ParametersURL(generateURL(new HashMap<>()), UTF_8);
+        ParametersURLLoader url = new ParametersURLLoader(generateURL(new HashMap<>()));
 
-        assertEquals(0, url.load().size());
+        assertEquals(0, url.load(UTF_8).size());
     }
 
 
@@ -107,10 +96,9 @@ public class ParametersURLTest {
     public void toString_output() throws Exception {
         String query = "key" + Parameters.PARAMETER_VALUE_SEPARATOR + "value";
 
-        String toString = new ParametersURL(new URL("http://internet.org/?" + query), UTF_8).toString();
+        String toString = new ParametersURLLoader(new URL("http://internet.org/?" + query)).toString();
 
         assertTrue("doesn't contains query", toString.contains(query));
-        assertTrue("doesn't contains charset", toString.contains(UTF_8.name()));
     }
 
 

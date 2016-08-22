@@ -9,8 +9,8 @@ import org.junit.runners.Suite;
  */
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-        ParametersFileTest.class,
-        ParametersURLTest.class
+        ParametersFileLoaderTest.class,
+        ParametersURLLoaderTest.class
 })
 public class ParametersLoaderTest {
 
