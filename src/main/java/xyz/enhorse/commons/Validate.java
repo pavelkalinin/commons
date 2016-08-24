@@ -67,8 +67,7 @@ public class Validate {
     public static String identifier(String parameter, String value) {
         String content = notNullOrEmpty(parameter, value);
 
-        for (int i = 0; i < content.length(); i++) {
-            char current = content.charAt(i);
+        for (char current : value.toCharArray()) {
             if (!Character.isJavaIdentifierPart(current)) {
                 throw new IllegalArgumentException("\"" + parameter
                         + "\" contains illegal symbol \'" + current + '\'');
@@ -82,10 +81,10 @@ public class Validate {
     public static String urlSafe(String parameter, String value) {
         String content = notNullOrEmpty(parameter, value);
 
-        for (int i = 0; i < content.length(); i++) {
-            char current = content.charAt(i);
-
-            if ((!Character.isLetterOrDigit(current)) && (".-_".indexOf(current) < 0)) {
+        for (char current : value.toCharArray()) {
+            if ((!((current >= 'A' && current <= 'Z') || (current >= 'a' && current <= 'z')))
+                    && (!Character.isDigit(current))
+                    && ("-._".indexOf(current) < 0)) {
                 throw new IllegalArgumentException("\"" + parameter
                         + "\" contains a not URL safe symbol \'" + current + '\'');
             }

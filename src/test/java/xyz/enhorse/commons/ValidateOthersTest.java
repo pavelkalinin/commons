@@ -215,6 +215,12 @@ public class ValidateOthersTest {
 
 
     @Test(expected = IllegalArgumentException.class)
+    public void isUrlSafe_valueWithUnicodeLetters() throws Exception {
+        Validate.urlSafe("test parameter", "тест");
+    }
+
+
+    @Test(expected = IllegalArgumentException.class)
     public void isUrlSafe_emptyValue() throws Exception {
         Validate.urlSafe("test parameter", "");
     }

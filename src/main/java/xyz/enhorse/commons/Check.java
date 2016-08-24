@@ -37,13 +37,17 @@ public class Check {
             return false;
         }
 
-        for (int i = 0; i < string.length(); i++) {
-            char current = string.charAt(i);
-            if ((!Character.isLetterOrDigit(current)) && ("-._".indexOf(current) < 0)) {
+        for (char current : string.toCharArray()) {
+            if ((!isLatinLetter(current)) && (!Character.isDigit(current)) && ("-._".indexOf(current) < 0)) {
                 return false;
             }
         }
 
         return true;
+    }
+
+
+    public static boolean isLatinLetter(char c) {
+        return (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z');
     }
 }
