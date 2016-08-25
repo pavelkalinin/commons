@@ -12,15 +12,15 @@ import java.util.StringTokenizer;
  * @author <a href="mailto:pavel13kalinin@gmail.com">Pavel Kalinin</a>
  *         18.08.2016
  */
-public class ParametersStringLoader implements ParametersLoader {
+public class StringLoader implements ParametersLoader {
 
     private final Map<String, String> map = new HashMap<>();
     private final String content;
     private final String splitter;
 
 
-    public ParametersStringLoader(final String string, final String delimiter) {
-        content = Validate.notNull("string", string);
+    public StringLoader(final String string, final String delimiter) {
+        content = Validate.defaultIfNull(string, "");
         splitter = Validate.notNullOrEmpty("delimiter", delimiter);
     }
 
