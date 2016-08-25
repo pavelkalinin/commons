@@ -1,8 +1,9 @@
 package xyz.enhorse.commons.parameters;
 
+import xyz.enhorse.commons.Check;
+import xyz.enhorse.commons.URLString;
 import xyz.enhorse.commons.Validate;
 
-import java.io.ByteArrayInputStream;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.Map;
@@ -11,30 +12,58 @@ import java.util.Map;
  * @author <a href="mailto:pavel13kalinin@gmail.com">Pavel Kalinin</a>
  *         18.08.2016
  */
-public class ParametersURLLoader implements ParametersLoader {
+public class ParametersURLLoader extends ParametersStringLoader {
 
     public static final String PARAMETERS_SEPARATOR = "&";
 
-    private final String query;
+    private final Charset charset;
 
 
-    public ParametersURLLoader(final URL url) {
-        query = Validate.notNull("URL", url).getQuery();
+    public ParametersURLLoader(final URL url, final Charset encoding) {
+        super(Validate.notNull("URL", url).getQuery(), PARAMETERS_SEPARATOR);
+        charset = Validate.defaultIfNull(encoding, Charset.defaultCharset());
     }
 
 
     @Override
-    public Map<String, String> load(final Charset encoding) {
-        Charset charset = Validate.defaultIfNull(encoding, Charset.defaultCharset());
-
-        ByteArrayInputStream stream = new ByteArrayInputStream(query.getBytes(encoding));
-        ParametersInputStreamLoader loader = new ParametersInputStreamLoader(stream, PARAMETERS_SEPARATOR);
-        return loader.load(charset);
+    public Map<String, String> load(final LoaderCompanion companion) {
+        return super.load(companion);
     }
 
 
     @Override
     public String toString() {
-        return query;
+        return super.toString() + '[' + charset + ']';
+    }
+
+
+    @Override
+    public Map<String, String> load() {
+        return load(new QueryLoader());
+    }
+
+
+    private class QueryLoader implements LoaderCompanion {
+
+        @Override
+        public String preProcessKey(final String key) {
+            if (!Check.isNullOrEmpty(key)) {
+                if (Check.isUrlSafe(key)) {
+                    return key;
+                } else {
+                    LOGGER.warn("\'" + key + "\' has an illegal name and will be ignored");
+                }
+            }
+            return key;
+        }
+
+
+        @Override
+        public String postProcessValue(final String value) {
+            if (!Check.isNullOrEmpty(value)) {
+                return URLString.decode(value, charset).plain();
+            }
+            return "";
+        }
     }
 }

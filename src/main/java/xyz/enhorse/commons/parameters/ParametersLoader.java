@@ -2,7 +2,6 @@ package xyz.enhorse.commons.parameters;
 
 import org.apache.log4j.Logger;
 
-import java.nio.charset.Charset;
 import java.util.Map;
 
 /**
@@ -13,5 +12,11 @@ public interface ParametersLoader {
 
     Logger LOGGER = Logger.getLogger(ParametersLoader.class);
 
-    Map<String, String> load(final Charset encoding);
+    default Map<String, String> load() {
+        return load(new LoaderCompanion() {
+        });
+    }
+
+
+    Map<String, String> load(final LoaderCompanion companion);
 }
