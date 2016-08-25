@@ -12,14 +12,14 @@ import java.util.Map;
  * @author <a href="mailto:pavel13kalinin@gmail.com">Pavel Kalinin</a>
  *         18.08.2016
  */
-public class ParametersURLLoader extends ParametersStringLoader {
+public class URLLoader extends StringLoader {
 
     public static final String PARAMETERS_SEPARATOR = "&";
 
     private final Charset charset;
 
 
-    public ParametersURLLoader(final URL url, final Charset encoding) {
+    public URLLoader(final URL url, final Charset encoding) {
         super(Validate.notNull("URL", url).getQuery(), PARAMETERS_SEPARATOR);
         charset = Validate.defaultIfNull(encoding, Charset.defaultCharset());
     }
@@ -33,7 +33,7 @@ public class ParametersURLLoader extends ParametersStringLoader {
 
     @Override
     public String toString() {
-        return super.toString() + '[' + charset + ']';
+        return super.toString() + ":[" + charset + ']';
     }
 
 
@@ -54,7 +54,7 @@ public class ParametersURLLoader extends ParametersStringLoader {
                     LOGGER.warn("\'" + key + "\' has an illegal name and will be ignored");
                 }
             }
-            return key;
+            return "";
         }
 
 
@@ -63,7 +63,7 @@ public class ParametersURLLoader extends ParametersStringLoader {
             if (!Check.isNullOrEmpty(value)) {
                 return URLString.decode(value, charset).plain();
             }
-            return "";
+            return value;
         }
     }
 }
