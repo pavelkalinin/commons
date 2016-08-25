@@ -57,6 +57,6 @@ public class StringLoader implements ParametersLoader {
 
     @Override
     public String toString() {
-        return content + '[' + splitter + ']';
+        return "[" + content + "]:[" + splitter + ']';
     }
 }
