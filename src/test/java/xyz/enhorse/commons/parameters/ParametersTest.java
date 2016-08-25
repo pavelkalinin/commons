@@ -9,12 +9,9 @@ import org.junit.runners.Suite;
  */
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-        StringLoaderTest.class,
-        InputStreamLoaderTest.class,
-        InputStreamLoaderExceptionsTest.class,
-        TextFileLoaderTest.class,
-        URLLoaderTest.class
+        BasicParametersTest.class,
+        ConcurrentParametersTest.class
 })
-public class ParametersLoaderTest {
+public class ParametersTest {
 
 }
