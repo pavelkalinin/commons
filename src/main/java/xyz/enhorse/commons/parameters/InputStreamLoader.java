@@ -15,7 +15,7 @@ import java.util.Map;
  * @author <a href="mailto:pavel13kalinin@gmail.com">Pavel Kalinin</a>
  *         22.08.2016
  */
-public class ParametersInputStreamLoader implements ParametersLoader {
+public class InputStreamLoader implements ParametersLoader {
 
     private static final int BUFFER_SIZE = 1024;
 
@@ -24,7 +24,7 @@ public class ParametersInputStreamLoader implements ParametersLoader {
     private final String splitter;
 
 
-    public ParametersInputStreamLoader(final InputStream in, final Charset encoding, final String delimiter) {
+    public InputStreamLoader(final InputStream in, final Charset encoding, final String delimiter) {
         input = Validate.notNull("input stream", in);
         charset = Validate.defaultIfNull(encoding, Charset.defaultCharset());
         splitter = Validate.notNullOrEmpty("delimiter", delimiter);
@@ -36,9 +36,10 @@ public class ParametersInputStreamLoader implements ParametersLoader {
         String string = inputStreamToString(charset);
 
         if (!Check.isNullOrEmpty(string)) {
-            ParametersStringLoader loader = new ParametersStringLoader(string, splitter);
+            StringLoader loader = new StringLoader(string, splitter);
             return loader.load(companion);
         }
+
         return new HashMap<>();
     }
 
