@@ -47,7 +47,7 @@ public abstract class AbstractParameters<T extends Map> implements Parameters {
 
     @Override
     public Parameters put(final String parameter, final Object value) {
-        content.put(Validate.urlSafe("parameter", parameter), value);
+        content.put(Validate.notNullOrEmpty("parameter", parameter), value);
         return this;
     }
 
@@ -124,7 +124,9 @@ public abstract class AbstractParameters<T extends Map> implements Parameters {
         StringJoiner query = new StringJoiner(parametersDelimiter);
 
         for (Map.Entry<String, Object> entry : content.entrySet()) {
-            query.add(entry.getKey() + valueDelimiter + URLString.encodeUTF(String.valueOf(entry.getValue())));
+            query.add(URLString.encodeUTF(entry.getKey()).encoded()
+                    + valueDelimiter
+                    + URLString.encodeUTF(String.valueOf(entry.getValue())).encoded());
         }
 
         return queryStart + query.toString();
