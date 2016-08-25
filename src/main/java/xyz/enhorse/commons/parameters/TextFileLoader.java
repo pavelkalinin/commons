@@ -13,13 +13,13 @@ import java.util.Map;
  * @author <a href="mailto:pavel13kalinin@gmail.com">Pavel Kalinin</a>
  *         17.08.2016
  */
-public class ParametersFileLoader implements ParametersLoader {
+public class TextFileLoader implements ParametersLoader {
 
     private final File input;
     private final Charset charset;
 
 
-    public ParametersFileLoader(final File file, final Charset encoding) {
+    public TextFileLoader(final File file, final Charset encoding) {
         input = validateFile(file);
         charset = Validate.defaultIfNull(encoding, Charset.defaultCharset());
     }
@@ -43,8 +43,8 @@ public class ParametersFileLoader implements ParametersLoader {
     @Override
     public Map<String, String> load(final LoaderCompanion companion) {
         try {
-            ParametersInputStreamLoader loader =
-                    new ParametersInputStreamLoader(new FileInputStream(input), charset, System.lineSeparator());
+            InputStreamLoader loader =
+                    new InputStreamLoader(new FileInputStream(input), charset, System.lineSeparator());
             return loader.load(companion);
         } catch (FileNotFoundException ex) {
             String message = "File \'" + input + "\' was not found";
@@ -60,7 +60,7 @@ public class ParametersFileLoader implements ParametersLoader {
     }
 
 
-    private class FileLoaderCompanion implements LoaderCompanion {
+    private static class FileLoaderCompanion implements LoaderCompanion {
 
         @Override
         public String preProcessKey(final String key) {
@@ -86,8 +86,8 @@ public class ParametersFileLoader implements ParametersLoader {
             String result = string;
             if (string.charAt(0) == '\"') {
                 result = string.substring(1);
-                int tail = string.length() - 1;
-                if (string.charAt(tail) == '\"') {
+                int tail = result.length() - 1;
+                if (result.charAt(tail) == '\"') {
                     result = result.substring(0, tail);
                 }
             }
