@@ -94,8 +94,8 @@ public class URLString {
         try {
             return new URLString(string, URLEncoder.encode(string, encoding.name()), encoding);
         } catch (Exception ex) {
-            throw new IllegalArgumentException(String.format("Can't encode the string \'%s\' with the charset %s: %s",
-                    string, encoding.name(), ex.getMessage()));
+            throw new IllegalStateException(String.format("Can't encode the string \'%s\' with the charset %s: %s",
+                    string, encoding, ex.getMessage()));
         }
     }
 
@@ -110,8 +110,8 @@ public class URLString {
         try {
             return new URLString(URLDecoder.decode(string, encoding.name()), string, encoding);
         } catch (Exception ex) {
-            throw new IllegalArgumentException(String.format("Can't decode the string \'%s\' with the charset %s: %s",
-                    string, encoding.name(), ex.getMessage()));
+            throw new IllegalStateException(String.format("Can't decode the string \'%s\' with the charset %s: %s",
+                    string, encoding, ex.getMessage()));
         }
     }
 }
