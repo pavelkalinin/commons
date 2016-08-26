@@ -15,16 +15,25 @@ public enum Identify {
             return NULL;
         }
 
-        String in = string.trim();
+        if (string.length() == 1) {
+            if (Character.isDigit(string.charAt(0))) {
+                return INTEGER;
+            } else {
+                return CHAR;
+            }
+        }
+
+        String input = string.trim();
 
         if (isBoolean(string)) {
             return BOOLEAN;
         }
 
-        int length = in.length();
+
+        char[] chars = input.toCharArray();
+        int length = chars.length;
         boolean isFloat = false;
         int i = -1;
-        char[] chars = in.toCharArray();
 
         while (i++ < length - 1) {
             if (!Character.isDigit(chars[i])) {
@@ -45,7 +54,7 @@ public enum Identify {
                 return DOUBLE;
             }
 
-            Long number = Long.parseLong(in);
+            Long number = Long.parseLong(input);
             return number <= Integer.MAX_VALUE ? INTEGER : LONG;
         }
 

@@ -35,6 +35,12 @@ public enum PureTypes {
             return Double.parseDouble(string.trim());
         }
     },
+    CHAR {
+        @Override
+        Object cast(final String string) {
+            return string.charAt(0);
+        }
+    },
     STRING {
         @Override
         Object cast(final String string) {
