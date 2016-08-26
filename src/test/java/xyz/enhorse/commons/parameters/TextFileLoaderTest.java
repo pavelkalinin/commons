@@ -257,6 +257,16 @@ public class TextFileLoaderTest {
     }
 
 
+    @Test(expected = IllegalStateException.class)
+    public void load_fileIsAbsent() throws Exception {
+        File file = temp.newFile();
+        ParametersLoader loader = new TextFileLoader(file, UTF_8);
+
+        assert file.delete();
+        loader.load();
+    }
+
+
     private static File generateFile(final String string, final Charset charset) throws Exception {
         File file = temp.newFile();
 
