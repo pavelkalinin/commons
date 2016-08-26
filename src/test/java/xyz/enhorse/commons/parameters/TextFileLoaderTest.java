@@ -101,6 +101,31 @@ public class TextFileLoaderTest {
 
 
     @Test
+    public void load_isLazy() throws Exception {
+        Map<String, String> map = new HashMap<>();
+        map.put("key1", "value1");
+        map.put("key2", "value2");
+        map.put("key3", "value3");
+
+        File file = generateFile(map, UTF_8);
+        ParametersLoader loader = new TextFileLoader(file, UTF_8);
+
+        String newKey = "key";
+        String newValue = "value";
+        assert !map.containsKey(newKey);
+        writeFile(file, newKey + Parameters.PARAMETER_VALUE_SEPARATOR + newValue, UTF_8);
+
+        Map<String, String> actual = loader.load();
+
+        for (Map.Entry<String, String> entry : map.entrySet()) {
+            String key = entry.getKey();
+            assertFalse("contains the key \'" + key + "\'", actual.containsKey(key));
+        }
+        assertEquals("incorrect value", newValue, actual.get(newKey));
+    }
+
+
+    @Test
     public void load_empty() throws Exception {
         TextFileLoader file = new TextFileLoader(generateFile(new HashMap<>(), UTF_8), UTF_8);
 
@@ -231,6 +256,13 @@ public class TextFileLoaderTest {
     private static File generateFile(final String string, final Charset charset) throws Exception {
         File file = temp.newFile();
 
+        writeFile(file, string, charset);
+
+        return file;
+    }
+
+
+    private static void writeFile(final File file, final String string, final Charset charset) {
         if (file != null) {
             try (BufferedWriter writer = new BufferedWriter
                     (new OutputStreamWriter(new FileOutputStream(file, false), charset != null ? charset : UTF_8))) {
@@ -241,8 +273,6 @@ public class TextFileLoaderTest {
                 throw new IllegalStateException("Error saving the file \'" + file + "\'", ex);
             }
         }
-
-        return file;
     }
 
 

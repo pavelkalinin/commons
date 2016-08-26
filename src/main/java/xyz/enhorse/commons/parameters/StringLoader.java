@@ -27,6 +27,8 @@ public class StringLoader implements ParametersLoader {
 
     @Override
     public Map<String, String> load(final LoaderCompanion companion) {
+        map.clear();
+
         LoaderCompanion processor = Validate.defaultIfNull(companion, new LoaderCompanion() {
         });
 

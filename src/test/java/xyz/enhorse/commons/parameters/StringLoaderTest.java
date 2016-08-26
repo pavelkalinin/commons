@@ -106,6 +106,58 @@ public class StringLoaderTest {
 
 
     @Test
+    public void load_usingSameLoaderTwice() throws Exception {
+        String key1 = "key1";
+        String key2 = "key2";
+        String key3 = "key2";
+        String value1 = "value1";
+        String value2 = "value2";
+        String value3 = "value3";
+
+        Map<String, String> expected = new HashMap<String, String>() {{
+            put(key1, value1);
+            put(key2, value2);
+            put(key3, value3);
+        }};
+
+        ParametersLoader loader = new StringLoader(mapToString(expected), SEPARATOR);
+        Map<String, String> actual = loader.load();
+
+        for (Map.Entry<String, String> entry : expected.entrySet()) {
+            String key = entry.getKey();
+            String value = entry.getValue();
+            assertTrue("doesn't contain the key \'" + key + "\'", actual.containsKey(key));
+            assertEquals("incorrect value of the key \'" + key + "\'", value, actual.get(key));
+        }
+
+        actual = loader.load();
+        assertEquals("size changed", expected.size(), actual.size());
+    }
+
+
+    @Test
+    public void load_resultIsImmutable() throws Exception {
+        String key1 = "key1";
+        String value1 = "value1";
+
+        Map<String, String> expected = new HashMap<String, String>() {{
+            put(key1, value1);
+        }};
+
+        ParametersLoader loader = new StringLoader(mapToString(expected), SEPARATOR);
+        Map<String, String> actual = loader.load();
+
+        String key = "key";
+        String value = "value";
+        actual.put(key, value);
+
+        actual = loader.load();
+        assertFalse(actual.containsKey(key));
+    }
+
+
+
+    @Test
     public void load_empty() throws Exception {
         Map<String, String> actual = new StringLoader("", SEPARATOR).load();
 
