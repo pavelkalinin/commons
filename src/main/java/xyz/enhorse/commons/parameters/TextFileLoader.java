@@ -1,6 +1,5 @@
 package xyz.enhorse.commons.parameters;
 
-import xyz.enhorse.commons.Check;
 import xyz.enhorse.commons.Validate;
 
 import java.io.File;
@@ -35,12 +34,6 @@ public class TextFileLoader implements ParametersLoader {
 
 
     @Override
-    public Map<String, String> load() {
-        return load(new FileLoaderCompanion());
-    }
-
-
-    @Override
     public Map<String, String> load(final LoaderCompanion companion) {
         try {
             InputStreamLoader loader =
@@ -57,42 +50,5 @@ public class TextFileLoader implements ParametersLoader {
     @Override
     public String toString() {
         return input.toString() + '[' + charset + ']';
-    }
-
-
-    private static class FileLoaderCompanion implements LoaderCompanion {
-
-        @Override
-        public String preProcessKey(final String key) {
-            if (!Check.isNullOrEmpty(key)) {
-                return key.trim();
-            }
-
-            return key;
-        }
-
-
-        @Override
-        public String postProcessValue(final String value) {
-            if (!Check.isNullOrEmpty(value)) {
-                return trimQuotes(value.trim());
-            }
-
-            return value;
-        }
-
-
-        private String trimQuotes(final String string) {
-            String result = string;
-            if (string.charAt(0) == '\"') {
-                result = string.substring(1);
-                int tail = result.length() - 1;
-                if (result.charAt(tail) == '\"') {
-                    result = result.substring(0, tail);
-                }
-            }
-
-            return result;
-        }
     }
 }

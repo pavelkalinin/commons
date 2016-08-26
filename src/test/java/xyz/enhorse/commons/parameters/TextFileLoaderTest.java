@@ -158,12 +158,12 @@ public class TextFileLoaderTest {
 
 
     @Test
-    public void load_keySpacesTrimmed() throws Exception {
-        String key = "k e y";
+    public void load_keyBetweenSpaces() throws Exception {
+        String key = "  key ";
         String value = "value";
 
         Map<String, String> map = new HashMap<String, String>() {{
-            put("   " + key + " ", value);
+            put(key, value);
         }};
 
         Map<String, String> actual = new TextFileLoader(generateFile(map, UTF_8), UTF_8).load();
@@ -214,42 +214,12 @@ public class TextFileLoaderTest {
 
 
     @Test
-    public void load_valueSpacesTrimmed() throws Exception {
+    public void load_valueBetweenSpaces() throws Exception {
         String key = "key";
-        String value = "value";
+        String value = " value    ";
 
         Map<String, String> map = new HashMap<String, String>() {{
-            put(key, " " + value + "    ");
-        }};
-
-        Map<String, String> actual = new TextFileLoader(generateFile(map, UTF_8), UTF_8).load();
-
-        assertEquals(value, actual.get(key));
-    }
-
-
-    @Test
-    public void load_valueQuotesTrimmed() throws Exception {
-        String key = "key";
-        String value = "value";
-
-        Map<String, String> map = new HashMap<String, String>() {{
-            put(key, "\"" + value + "\"");
-        }};
-
-        Map<String, String> actual = new TextFileLoader(generateFile(map, UTF_8), UTF_8).load();
-
-        assertEquals(value, actual.get(key));
-    }
-
-
-    @Test
-    public void load_valueSpaceAfterQuotesRemained() throws Exception {
-        String key = "key";
-        String value = " value ";
-
-        Map<String, String> map = new HashMap<String, String>() {{
-            put(key, "\"" + value + "\"");
+            put(key, value);
         }};
 
         Map<String, String> actual = new TextFileLoader(generateFile(map, UTF_8), UTF_8).load();
