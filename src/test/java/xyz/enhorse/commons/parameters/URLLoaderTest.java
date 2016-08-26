@@ -27,7 +27,13 @@ public class URLLoaderTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void create_nullURL() throws Exception {
-        new TextFileLoader(null, UTF_8);
+        new URLLoader(null, UTF_8);
+    }
+
+
+    @Test
+    public void create() throws Exception {
+        new URLLoader(generateURL(new HashMap<>()), UTF_8);
     }
 
 

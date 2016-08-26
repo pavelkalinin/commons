@@ -13,6 +13,7 @@ import org.junit.runners.Suite;
         InputStreamLoaderTest.class,
         InputStreamLoaderExceptionsTest.class,
         TextFileLoaderTest.class,
+        TextFileLoaderExceptionsTest.class,
         URLLoaderTest.class,
         CustomCompanionTest.class
 })

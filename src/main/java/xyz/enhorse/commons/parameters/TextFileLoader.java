@@ -2,9 +2,7 @@ package xyz.enhorse.commons.parameters;
 
 import xyz.enhorse.commons.Validate;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.*;
 import java.nio.charset.Charset;
 import java.util.Map;
 
@@ -24,6 +22,11 @@ public class TextFileLoader implements ParametersLoader {
     }
 
 
+    public TextFileLoader(final String filename, final Charset encoding) {
+        this(new File(Validate.notNull("filename", filename)), encoding);
+    }
+
+
     private File validateFile(final File file) {
         if ((file == null) || !(file.exists()) || !(file.isFile())) {
             throw new IllegalArgumentException("Illegal input. \'" + file + "\' must be an existing file.");
@@ -35,12 +38,14 @@ public class TextFileLoader implements ParametersLoader {
 
     @Override
     public Map<String, String> load(final LoaderCompanion companion) {
-        try {
-            InputStreamLoader loader =
-                    new InputStreamLoader(new FileInputStream(input), charset, System.lineSeparator());
-            return loader.load(companion);
+        try (InputStream stream = new FileInputStream(input)) {
+            return (new InputStreamLoader(stream, charset, System.lineSeparator())).load(companion);
         } catch (FileNotFoundException ex) {
             String message = "File \'" + input + "\' was not found";
+            LOGGER.error(message, ex);
+            throw new IllegalStateException(message, ex);
+        } catch (IOException ex) {
+            String message = "Error reading \'" + input + "\'";
             LOGGER.error(message, ex);
             throw new IllegalStateException(message, ex);
         }
