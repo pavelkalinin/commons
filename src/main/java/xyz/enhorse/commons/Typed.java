@@ -4,7 +4,7 @@ package xyz.enhorse.commons;
  * @author <a href="mailto:pavel13kalinin@gmail.com">Pavel Kalinin</a>
  *         21.04.2016
  */
-public interface Typed {
+public interface Typed<T> {
 
-    String type();
+    Class<T> type();
 }
