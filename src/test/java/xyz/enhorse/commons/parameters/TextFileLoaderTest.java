@@ -38,14 +38,28 @@ public class TextFileLoaderTest {
 
 
     @Test
-    public void create() throws Exception {
+    public void create_file() throws Exception {
         assertNotNull(new TextFileLoader(temp.newFile(), UTF_8));
+    }
+
+
+    @Test
+    public void create_string() throws Exception {
+        assertNotNull(new TextFileLoader(temp.newFile().toString(), UTF_8));
     }
 
 
     @Test(expected = IllegalArgumentException.class)
     public void create_nullFile() throws Exception {
-        new TextFileLoader(null, UTF_8);
+        File file = null;
+        new TextFileLoader(file, UTF_8);
+    }
+
+
+    @Test(expected = IllegalArgumentException.class)
+    public void create_nullString() throws Exception {
+        String file = null;
+        new TextFileLoader(file, UTF_8);
     }
 
 
@@ -69,16 +83,6 @@ public class TextFileLoaderTest {
         File file = temp.newFolder();
 
         new TextFileLoader(file, UTF_8);
-    }
-
-
-    @Test(expected = IllegalStateException.class)
-    public void load_fileIsAbsent() throws Exception {
-        File file = temp.newFile();
-        ParametersLoader loader = new TextFileLoader(file, UTF_8);
-
-        assert file.delete();
-        loader.load();
     }
 
 
