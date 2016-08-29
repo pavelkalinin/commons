@@ -49,14 +49,32 @@ public class IdentifyTest {
 
 
     @Test
+    public void type_stringFromOneSymbol() throws Exception {
+        Assert.assertEquals(CHAR, type("*"));
+    }
+
+
+    @Test
     public void type_stringFromDigits_minimalInteger() throws Exception {
         Assert.assertEquals(INTEGER, type(String.valueOf(Integer.MIN_VALUE)));
     }
 
 
     @Test
+    public void type_stringFromDigits_minimalLong() throws Exception {
+        Assert.assertEquals(LONG, type(String.valueOf(Long.MIN_VALUE)));
+    }
+
+
+    @Test
     public void type_stringFromDigits_maximalInteger() throws Exception {
         Assert.assertEquals(INTEGER, type(String.valueOf(Integer.MAX_VALUE)));
+    }
+
+
+    @Test
+    public void type_stringFromDigits_maximalLong() throws Exception {
+        Assert.assertEquals(LONG, type(String.valueOf(Long.MAX_VALUE)));
     }
 
 

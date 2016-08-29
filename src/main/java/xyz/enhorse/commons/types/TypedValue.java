@@ -5,12 +5,12 @@ package xyz.enhorse.commons.types;
  * @author <a href="mailto:pavel13kalinin@gmail.com">Pavel Kalinin</a>
  *         26.08.2016
  */
-public class PureValue {
+public class TypedValue {
 
     private final Object value;
 
 
-    PureValue(final Object value) {
+    TypedValue(final Object value) {
         this.value = value;
     }
 

@@ -20,7 +20,7 @@ public enum PureTypes {
     INTEGER {
         @Override
         Object cast(final String string) {
-            return Integer.parseInt(string.trim());
+            return Integer.parseInt(string);
         }
     },
     LONG {
@@ -52,12 +52,12 @@ public enum PureTypes {
     abstract Object cast(final String string);
 
 
-    public static PureValue pureValueOf(final String string) {
-        return new PureValue(convert(string));
+    public static TypedValue pureValueOf(final String string) {
+        return new TypedValue(convert(string));
     }
 
 
     public static Object convert(final String string) {
-        return Identify.type(string).cast(string);
+        return (Identify.type(string)).cast(string);
     }
 }

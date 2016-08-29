@@ -32,7 +32,15 @@ public enum Identify {
 
         try {
             Long number = Long.parseLong(input);
-            return number <= Integer.MAX_VALUE ? INTEGER : LONG;
+            if ((number >= 0) && (number <= Integer.MAX_VALUE)) {
+                return INTEGER;
+            }
+
+            if ((number < 0) && (number >= Integer.MIN_VALUE)) {
+                return INTEGER;
+            }
+
+            return LONG;
         } catch (NumberFormatException notInteger) {
             try {
                 Double.parseDouble(input);
