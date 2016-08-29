@@ -10,6 +10,7 @@ public enum Identify {
     ;
 
 
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     public static PureTypes type(final String string) {
         if (string == null) {
             return NULL;
@@ -25,45 +26,21 @@ public enum Identify {
 
         String input = string.trim();
 
-        if (isBoolean(string)) {
+        if (isBoolean(input)) {
             return BOOLEAN;
         }
 
-
-        char[] chars = input.toCharArray();
-        int length = chars.length;
-        boolean isFloat = false;
-        int i = -1;
-
-        while (i++ < length - 1) {
-            if (!Character.isDigit(chars[i])) {
-                if (isFloatingPoint(chars[i])) {
-                    if (isFloat) {
-                        break;
-                    } else {
-                        isFloat = true;
-                    }
-                } else {
-                    break;
-                }
-            }
-        }
-
-        if (i == length) {
-            if (isFloat) {
-                return DOUBLE;
-            }
-
+        try {
             Long number = Long.parseLong(input);
             return number <= Integer.MAX_VALUE ? INTEGER : LONG;
+        } catch (NumberFormatException notInteger) {
+            try {
+                Double.parseDouble(input);
+                return DOUBLE;
+            } catch (NumberFormatException notFloat) {
+                return STRING;
+            }
         }
-
-        return STRING;
-    }
-
-
-    private static boolean isFloatingPoint(final char c) {
-        return (c == '.');
     }
 
 
