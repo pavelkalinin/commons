@@ -32,7 +32,7 @@ public class InputStreamLoader implements ParametersLoader {
 
 
     @Override
-    public Map<String, String> load(final LoaderCompanion companion) {
+    public Map<String, Object> load(final LoaderCompanion companion) {
         String string = inputStreamToString(charset);
 
         if (!Check.isNullOrEmpty(string)) {
