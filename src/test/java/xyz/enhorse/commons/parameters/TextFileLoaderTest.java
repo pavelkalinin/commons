@@ -93,7 +93,7 @@ public class TextFileLoaderTest {
         map.put("key2", "value2");
         map.put("key3", "value3");
 
-        Map<String, String> actual = new TextFileLoader(generateFile(map, UTF_8), UTF_8).load();
+        Map<String, Object> actual = new TextFileLoader(generateFile(map, UTF_8), UTF_8).load();
 
         for (Map.Entry<String, String> entry : map.entrySet()) {
             String key = entry.getKey();
@@ -119,7 +119,7 @@ public class TextFileLoaderTest {
         assert !map.containsKey(newKey);
         writeFile(file, newKey + Parameters.PARAMETER_VALUE_SEPARATOR + newValue, UTF_8);
 
-        Map<String, String> actual = loader.load();
+        Map<String, Object> actual = loader.load();
 
         for (Map.Entry<String, String> entry : map.entrySet()) {
             String key = entry.getKey();
@@ -146,7 +146,7 @@ public class TextFileLoaderTest {
         String string = key + Parameters.PARAMETER_VALUE_SEPARATOR + value1 + SEPARATOR
                 + key + Parameters.PARAMETER_VALUE_SEPARATOR + value2;
 
-        Map<String, String> actual = new TextFileLoader(generateFile(string, UTF_8), UTF_8).load();
+        Map<String, Object> actual = new TextFileLoader(generateFile(string, UTF_8), UTF_8).load();
 
         assertTrue("incorrect size", actual.size() == 1);
         assertEquals("incorrect value", value2, actual.get(key));
@@ -164,7 +164,7 @@ public class TextFileLoaderTest {
             put(key2, value);
         }};
 
-        Map<String, String> actual = new TextFileLoader(generateFile(map, UTF_8), UTF_8).load();
+        Map<String, Object> actual = new TextFileLoader(generateFile(map, UTF_8), UTF_8).load();
 
         assertTrue("incorrect size", actual.size() == map.size());
         assertEquals("incorrect value", actual.get(key1), actual.get(key2));
@@ -180,7 +180,7 @@ public class TextFileLoaderTest {
             put(key, value);
         }};
 
-        Map<String, String> actual = new TextFileLoader(generateFile(map, UTF_8), UTF_8).load();
+        Map<String, Object> actual = new TextFileLoader(generateFile(map, UTF_8), UTF_8).load();
 
         assertTrue(actual.containsKey(key));
     }
@@ -195,7 +195,7 @@ public class TextFileLoaderTest {
             put(key, value);
         }};
 
-        Map<String, String> actual = new TextFileLoader(generateFile(map, UTF_8), UTF_8).load();
+        Map<String, Object> actual = new TextFileLoader(generateFile(map, UTF_8), UTF_8).load();
 
         assertTrue(actual.containsKey(key));
     }
@@ -208,7 +208,7 @@ public class TextFileLoaderTest {
 
         String string = key + Parameters.PARAMETER_VALUE_SEPARATOR + value;
 
-        Map<String, String> actual = new TextFileLoader(generateFile(string, UTF_8), UTF_8).load();
+        Map<String, Object> actual = new TextFileLoader(generateFile(string, UTF_8), UTF_8).load();
 
         assertTrue(actual.isEmpty());
     }
@@ -221,9 +221,9 @@ public class TextFileLoaderTest {
 
         String string = key + Parameters.PARAMETER_VALUE_SEPARATOR + value;
 
-        Map<String, String> actual = new TextFileLoader(generateFile(string, UTF_8), UTF_8).load();
-
-        assertTrue(actual.get(key).isEmpty());
+        Map<String, Object> map = new TextFileLoader(generateFile(string, UTF_8), UTF_8).load();
+        String actual = (String) map.get(key);
+        assertTrue(actual.isEmpty());
     }
 
 
@@ -236,7 +236,7 @@ public class TextFileLoaderTest {
             put(key, value);
         }};
 
-        Map<String, String> actual = new TextFileLoader(generateFile(map, UTF_8), UTF_8).load();
+        Map<String, Object> actual = new TextFileLoader(generateFile(map, UTF_8), UTF_8).load();
 
         assertEquals(map.get(key), actual.get(key));
     }
@@ -251,7 +251,7 @@ public class TextFileLoaderTest {
             put(key, value);
         }};
 
-        Map<String, String> actual = new TextFileLoader(generateFile(map, UTF_8), UTF_8).load();
+        Map<String, Object> actual = new TextFileLoader(generateFile(map, UTF_8), UTF_8).load();
 
         assertEquals(value, actual.get(key));
     }

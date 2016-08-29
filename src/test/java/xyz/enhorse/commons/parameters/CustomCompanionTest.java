@@ -25,7 +25,7 @@ public class CustomCompanionTest {
         String string = key + "  " + Parameters.PARAMETER_VALUE_SEPARATOR + '\"' + cipheredValue + "\"";
 
         ParametersLoader loader = new StringLoader(string, "%");
-        Map<String, String> map = loader.load(new CipherCompanion());
+        Map<String, Object> map = loader.load(new CipherCompanion());
 
         assertFalse("value doesn't ciphered", string.contains(value));
         assertTrue("key not found", map.containsKey(KEY_PREFIX + key));

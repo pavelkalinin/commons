@@ -14,7 +14,7 @@ import java.util.StringTokenizer;
  */
 public class StringLoader implements ParametersLoader {
 
-    private final Map<String, String> map = new HashMap<>();
+    private final Map<String, Object> map = new HashMap<>();
     private final String content;
     private final String splitter;
 
@@ -26,7 +26,7 @@ public class StringLoader implements ParametersLoader {
 
 
     @Override
-    public Map<String, String> load(final LoaderCompanion companion) {
+    public Map<String, Object> load(final LoaderCompanion companion) {
         map.clear();
 
         LoaderCompanion processor = Validate.defaultIfNull(companion, new LoaderCompanion() {

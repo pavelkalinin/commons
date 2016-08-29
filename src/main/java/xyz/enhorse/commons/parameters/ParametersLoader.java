@@ -12,11 +12,11 @@ public interface ParametersLoader {
 
     Logger LOGGER = Logger.getLogger(ParametersLoader.class);
 
-    default Map<String, String> load() {
+    default Map<String, Object> load() {
         return load(new LoaderCompanion() {
         });
     }
 
 
-    Map<String, String> load(final LoaderCompanion companion);
+    Map<String, Object> load(final LoaderCompanion companion);
 }

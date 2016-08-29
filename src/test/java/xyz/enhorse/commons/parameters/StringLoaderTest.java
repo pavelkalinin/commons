@@ -94,7 +94,7 @@ public class StringLoaderTest {
             put(key3, value3);
         }};
 
-        Map<String, String> actual = new StringLoader(mapToString(expected), SEPARATOR).load();
+        Map<String, Object> actual = new StringLoader(mapToString(expected), SEPARATOR).load();
 
         for (Map.Entry<String, String> entry : expected.entrySet()) {
             String key = entry.getKey();
@@ -121,7 +121,7 @@ public class StringLoaderTest {
         }};
 
         ParametersLoader loader = new StringLoader(mapToString(expected), SEPARATOR);
-        Map<String, String> actual = loader.load();
+        Map<String, Object> actual = loader.load();
 
         for (Map.Entry<String, String> entry : expected.entrySet()) {
             String key = entry.getKey();
@@ -145,7 +145,7 @@ public class StringLoaderTest {
         }};
 
         ParametersLoader loader = new StringLoader(mapToString(expected), SEPARATOR);
-        Map<String, String> actual = loader.load();
+        Map<String, Object> actual = loader.load();
 
         String key = "key";
         String value = "value";
@@ -159,7 +159,7 @@ public class StringLoaderTest {
 
     @Test
     public void load_empty() throws Exception {
-        Map<String, String> actual = new StringLoader("", SEPARATOR).load();
+        Map<String, Object> actual = new StringLoader("", SEPARATOR).load();
 
         assertTrue(actual.size() == 0);
     }
@@ -174,7 +174,7 @@ public class StringLoaderTest {
         String string = key + Parameters.PARAMETER_VALUE_SEPARATOR + value1 + SEPARATOR
                 + key + Parameters.PARAMETER_VALUE_SEPARATOR + value2;
 
-        Map<String, String> actual = new StringLoader(string, SEPARATOR).load();
+        Map<String, Object> actual = new StringLoader(string, SEPARATOR).load();
 
         assertTrue("incorrect size", actual.size() == 1);
         assertEquals("incorrect value", value2, actual.get(key));
@@ -192,7 +192,7 @@ public class StringLoaderTest {
             put(key2, value);
         }};
 
-        Map<String, String> actual = new StringLoader(mapToString(map), SEPARATOR).load();
+        Map<String, Object> actual = new StringLoader(mapToString(map), SEPARATOR).load();
 
         assertTrue("incorrect size", actual.size() == map.size());
         assertEquals("incorrect value", actual.get(key1), actual.get(key2));
@@ -208,7 +208,7 @@ public class StringLoaderTest {
             put(key, value);
         }};
 
-        Map<String, String> actual = new StringLoader(mapToString(map), SEPARATOR).load();
+        Map<String, Object> actual = new StringLoader(mapToString(map), SEPARATOR).load();
 
         assertTrue(actual.containsKey(key));
     }
@@ -223,7 +223,7 @@ public class StringLoaderTest {
             put(key, value);
         }};
 
-        Map<String, String> actual = new StringLoader(mapToString(map), SEPARATOR).load();
+        Map<String, Object> actual = new StringLoader(mapToString(map), SEPARATOR).load();
 
         assertTrue(actual.containsKey(key));
     }
@@ -238,7 +238,7 @@ public class StringLoaderTest {
             put(key, value);
         }};
 
-        Map<String, String> actual = new StringLoader(mapToString(map), SEPARATOR).load();
+        Map<String, Object> actual = new StringLoader(mapToString(map), SEPARATOR).load();
 
         assertEquals(map.get(key), actual.get(key));
     }
@@ -253,7 +253,7 @@ public class StringLoaderTest {
             put(key, value);
         }};
 
-        Map<String, String> actual = new StringLoader(mapToString(map), SEPARATOR).load();
+        Map<String, Object> actual = new StringLoader(mapToString(map), SEPARATOR).load();
 
         assertEquals(map.get(key), actual.get(key));
     }

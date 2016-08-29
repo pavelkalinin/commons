@@ -51,7 +51,7 @@ public class URLLoaderTest {
         map.put("key3", "value3");
 
         URLLoader url = new URLLoader(generateURL(map), UTF_8);
-        Map<String, String> actual = url.load();
+        Map<String, Object> actual = url.load();
 
         for (Map.Entry<String, String> entry : map.entrySet()) {
             String key = entry.getKey();
@@ -98,7 +98,7 @@ public class URLLoaderTest {
 
         URL url = new URL("http://internet.org/?" + query);
 
-        Map<String, String> actual = new URLLoader(url, UTF_8).load();
+        Map<String, Object> actual = new URLLoader(url, UTF_8).load();
 
         assertEquals(value2, actual.get(key));
     }
@@ -113,8 +113,9 @@ public class URLLoaderTest {
         map.put(key + key, "value");
 
         URLLoader url = new URLLoader(generateURL(map), UTF_8);
+        String actual = (String) (url.load().get(key));
 
-        assertTrue(url.load().get(key).isEmpty());
+        assertTrue(actual.isEmpty());
     }
 
 
@@ -126,7 +127,7 @@ public class URLLoaderTest {
         Map<String, String> map = new HashMap<>();
         map.put(key, URLString.encode(value, UTF_8).encoded());
 
-        Map<String, String> actual = new URLLoader(generateURL(map), UTF_8).load();
+        Map<String, Object> actual = new URLLoader(generateURL(map), UTF_8).load();
 
         assertNotEquals("value doesn't encoded", value, map.get(key));
         assertEquals("parameter doesn't decoded", value, actual.get(key));

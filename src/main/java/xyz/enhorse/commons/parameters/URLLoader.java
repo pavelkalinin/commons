@@ -26,7 +26,7 @@ public class URLLoader extends StringLoader {
 
 
     @Override
-    public Map<String, String> load(final LoaderCompanion companion) {
+    public Map<String, Object> load(final LoaderCompanion companion) {
         return super.load(companion);
     }
 
@@ -38,7 +38,7 @@ public class URLLoader extends StringLoader {
 
 
     @Override
-    public Map<String, String> load() {
+    public Map<String, Object> load() {
         return load(new QueryLoader());
     }
 
@@ -59,7 +59,7 @@ public class URLLoader extends StringLoader {
 
 
         @Override
-        public String postProcessValue(final String value) {
+        public Object postProcessValue(final String value) {
             if (!Check.isNullOrEmpty(value)) {
                 return URLString.decode(value, charset).plain();
             }

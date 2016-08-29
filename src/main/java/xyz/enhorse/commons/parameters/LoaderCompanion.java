@@ -18,7 +18,7 @@ public interface LoaderCompanion {
         return key;
     }
 
-    default String postProcessValue(final String value) {
+    default Object postProcessValue(final String value) {
         return value;
     }
 }

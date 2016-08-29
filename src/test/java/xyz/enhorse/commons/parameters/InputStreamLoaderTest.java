@@ -76,7 +76,7 @@ public class InputStreamLoaderTest {
         String string = mapToString(expected);
         InputStream stream = new ByteArrayInputStream(string.getBytes(UTF_8));
         ParametersLoader loader = new InputStreamLoader(stream, UTF_8, SEPARATOR);
-        Map<String, String> actual = loader.load();
+        Map<String, Object> actual = loader.load();
 
         for (Map.Entry<String, String> entry : expected.entrySet()) {
             String key = entry.getKey();
@@ -97,7 +97,7 @@ public class InputStreamLoaderTest {
         InputStream stream = new ByteArrayInputStream(string.getBytes(UTF_8));
         ParametersLoader loader = new InputStreamLoader(stream, UTF_8, SEPARATOR);
 
-        Map<String, String> actual = loader.load();
+        Map<String, Object> actual = loader.load();
 
         assertTrue("incorrect size", actual.size() == 1);
         assertEquals("incorrect value", value2, actual.get(key));
@@ -117,7 +117,7 @@ public class InputStreamLoaderTest {
 
         InputStream stream = new ByteArrayInputStream(mapToString(map).getBytes(UTF_8));
         ParametersLoader loader = new InputStreamLoader(stream, UTF_8, SEPARATOR);
-        Map<String, String> actual = loader.load();
+        Map<String, Object> actual = loader.load();
 
         assertTrue("incorrect size", actual.size() == 2);
         assertEquals("incorrect value", actual.get(key1), actual.get(key2));
@@ -208,8 +208,8 @@ public class InputStreamLoaderTest {
 
         InputStream stream = new ByteArrayInputStream(mapToString(map).getBytes(UTF_8));
 
-        Map<String, String> utf = new InputStreamLoader(stream, UTF_8, SEPARATOR).load();
-        Map<String, String> ascii = new InputStreamLoader(stream, US_ASCII, SEPARATOR).load();
+        Map<String, Object> utf = new InputStreamLoader(stream, UTF_8, SEPARATOR).load();
+        Map<String, Object> ascii = new InputStreamLoader(stream, US_ASCII, SEPARATOR).load();
 
         assertNotEquals("charset wasn't applied", utf.get(key), ascii.get(key));
     }
@@ -226,8 +226,8 @@ public class InputStreamLoaderTest {
 
         InputStream stream = new ByteArrayInputStream(mapToString(map).getBytes(UTF_8));
 
-        Map<String, String> utf1 = new InputStreamLoader(stream, UTF_8, SEPARATOR).load();
-        Map<String, String> utf2 = new InputStreamLoader(stream, UTF_8, SEPARATOR).load();
+        Map<String, Object> utf1 = new InputStreamLoader(stream, UTF_8, SEPARATOR).load();
+        Map<String, Object> utf2 = new InputStreamLoader(stream, UTF_8, SEPARATOR).load();
 
         assertNotEquals("charset wasn't applied", utf1.get(key), utf2.get(key));
     }
