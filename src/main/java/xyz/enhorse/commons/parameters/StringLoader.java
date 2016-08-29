@@ -26,6 +26,12 @@ public class StringLoader implements ParametersLoader {
 
 
     @Override
+    public Map<String, Object> load() {
+        return load(PureTypesLoaderCompanion.INSTANCE);
+    }
+
+
+    @Override
     public Map<String, Object> load(final LoaderCompanion companion) {
         map.clear();
 

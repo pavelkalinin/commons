@@ -259,6 +259,27 @@ public class StringLoaderTest {
     }
 
 
+    @Test
+    public void load_value_integer() throws Exception {
+        String key = "key";
+        int value = 40;
+
+        Map<String, Object> actual = new StringLoader(key + PARAMETER_VALUE_SEPARATOR + value, SEPARATOR).load();
+
+        assertEquals(value, actual.get(key));
+    }
+
+
+    @Test
+    public void load_value_boolean() throws Exception {
+        String key = "key";
+
+        Map<String, Object> actual = new StringLoader(key + PARAMETER_VALUE_SEPARATOR + Boolean.TRUE, SEPARATOR).load();
+
+        assertEquals(Boolean.TRUE, actual.get(key));
+    }
+
+
     private static String mapToString(Map<String, String> map) {
         StringJoiner joiner = new StringJoiner(String.valueOf(SEPARATOR));
 
