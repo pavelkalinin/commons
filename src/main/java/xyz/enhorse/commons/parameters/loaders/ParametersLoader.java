@@ -1,4 +1,4 @@
-package xyz.enhorse.commons.parameters;
+package xyz.enhorse.commons.parameters.loaders;
 
 import org.apache.log4j.Logger;
 

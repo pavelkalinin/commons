@@ -1,4 +1,4 @@
-package xyz.enhorse.commons.parameters;
+package xyz.enhorse.commons.parameters.loaders;
 
 import xyz.enhorse.commons.Check;
 import xyz.enhorse.commons.URLString;
@@ -26,6 +26,12 @@ public class URLLoader extends StringLoader {
 
 
     @Override
+    public Map<String, Object> load() {
+        return load(new QueryLoader());
+    }
+
+
+    @Override
     public Map<String, Object> load(final LoaderCompanion companion) {
         return super.load(companion);
     }
@@ -35,13 +41,6 @@ public class URLLoader extends StringLoader {
     public String toString() {
         return super.toString() + ":[" + charset + ']';
     }
-
-
-    @Override
-    public Map<String, Object> load() {
-        return load(new QueryLoader());
-    }
-
 
     private class QueryLoader implements LoaderCompanion {
 

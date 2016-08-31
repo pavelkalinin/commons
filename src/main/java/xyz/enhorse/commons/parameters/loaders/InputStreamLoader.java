@@ -1,4 +1,4 @@
-package xyz.enhorse.commons.parameters;
+package xyz.enhorse.commons.parameters.loaders;
 
 import xyz.enhorse.commons.Check;
 import xyz.enhorse.commons.Validate;

@@ -1,4 +1,4 @@
-package xyz.enhorse.commons.parameters;
+package xyz.enhorse.commons.parameters.loaders;
 
 /**
  * @author <a href="mailto:pavel13kalinin@gmail.com">Pavel Kalinin</a>
