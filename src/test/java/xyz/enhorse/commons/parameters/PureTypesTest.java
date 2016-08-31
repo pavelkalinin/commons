@@ -1,9 +1,10 @@
-package xyz.enhorse.commons.types;
+package xyz.enhorse.commons.parameters;
 
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-import static xyz.enhorse.commons.types.PureTypes.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static xyz.enhorse.commons.parameters.PureTypes.*;
 
 /**
  * @author <a href="mailto:pavel13kalinin@gmail.com">Pavel Kalinin</a>
@@ -24,12 +25,6 @@ public class PureTypesTest {
 
 
     @Test
-    public void pureValueOf_NULL() throws Exception {
-        assertNull(PureTypes.pureValueOf(null).value());
-    }
-
-
-    @Test
     public void convert_BOOLEAN() throws Exception {
         assertEquals(Boolean.TRUE, PureTypes.convert("true"));
     }
@@ -38,12 +33,6 @@ public class PureTypesTest {
     @Test
     public void cast_BOOLEAN() throws Exception {
         assertEquals(Boolean.FALSE, BOOLEAN.cast("false"));
-    }
-
-
-    @Test
-    public void pureValueOf_BOOLEAN() throws Exception {
-        assertTrue(PureTypes.pureValueOf("true").value());
     }
 
 
@@ -59,14 +48,6 @@ public class PureTypesTest {
     public void cast_INTEGER() throws Exception {
         int expected = 543;
         Object actual = INTEGER.cast(String.valueOf(expected));
-        assertEquals(expected, actual);
-    }
-
-
-    @Test
-    public void pureValueOf_INTEGER() throws Exception {
-        int expected = -978;
-        int actual = PureTypes.pureValueOf(String.valueOf(expected)).value();
         assertEquals(expected, actual);
     }
 
@@ -88,14 +69,6 @@ public class PureTypesTest {
 
 
     @Test
-    public void pureValueOf_LONG() throws Exception {
-        long expected = Long.MAX_VALUE - 5;
-        long actual = PureTypes.pureValueOf(String.valueOf(expected)).value();
-        assertEquals(expected, actual);
-    }
-
-
-    @Test
     public void convert_DOUBLE() throws Exception {
         double expected = Math.PI;
         Object actual = PureTypes.convert(String.valueOf(expected));
@@ -108,14 +81,6 @@ public class PureTypesTest {
         double expected = Math.PI;
         Object actual = DOUBLE.cast(String.valueOf(expected));
         assertEquals(expected, actual);
-    }
-
-
-    @Test
-    public void pureValueOf_DOUBLE() throws Exception {
-        double expected = Math.PI;
-        double actual = PureTypes.pureValueOf(String.valueOf(expected)).value();
-        assertEquals(expected, actual, 0.0001);
     }
 
 
@@ -136,14 +101,6 @@ public class PureTypesTest {
 
 
     @Test
-    public void pureValueOf_CHAR() throws Exception {
-        char expected = '*';
-        char actual = PureTypes.pureValueOf(String.valueOf(expected)).value();
-        assertEquals(expected, actual);
-    }
-
-
-    @Test
     public void convert_STRING() throws Exception {
         String expected = "string";
         Object actual = PureTypes.convert(expected);
@@ -155,14 +112,6 @@ public class PureTypesTest {
     public void cast_STRING() throws Exception {
         String expected = "string";
         Object actual = STRING.cast(expected);
-        assertEquals(expected, actual);
-    }
-
-
-    @Test
-    public void pureValueOf_STRING() throws Exception {
-        String expected = "string";
-        String actual = PureTypes.pureValueOf(expected).value();
         assertEquals(expected, actual);
     }
 }

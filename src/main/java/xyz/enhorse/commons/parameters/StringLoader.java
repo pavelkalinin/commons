@@ -48,7 +48,7 @@ public class StringLoader implements ParametersLoader {
 
 
     private void processEntry(final String string, final LoaderCompanion companion) {
-        StringPair pair = StringPair.create(string, Parameters.PARAMETER_VALUE_SEPARATOR);
+        StringPair pair = StringPair.create(string, Parameter.SEPARATOR);
 
         String key = companion.preProcessKey(pair.leading());
         String value = companion.preProcessValue(pair.trailing());

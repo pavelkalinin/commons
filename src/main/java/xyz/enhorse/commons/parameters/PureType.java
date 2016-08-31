@@ -4,13 +4,9 @@ package xyz.enhorse.commons.parameters;
  * @author <a href="mailto:pavel13kalinin@gmail.com">Pavel Kalinin</a>
  *         31.08.2016
  */
-public interface Parameter {
+public interface PureType<T> {
 
-    char SEPARATOR = '=';
+    T cast(final String string);
 
-    String name();
-
-    <T> T value();
-
-    Class<?> type();
+    Class<T> type();
 }

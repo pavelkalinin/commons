@@ -1,13 +1,13 @@
 package xyz.enhorse.commons.parameters;
 
 import xyz.enhorse.commons.Pretty;
-import xyz.enhorse.commons.URLString;
 import xyz.enhorse.commons.Validate;
 import xyz.enhorse.commons.errors.AbsentException;
-import xyz.enhorse.commons.errors.DuplicateException;
 
-import java.util.*;
-import java.util.function.Consumer;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author <a href="mailto:pavel13kalinin@gmail.com">Pavel Kalinin</a>
@@ -15,7 +15,7 @@ import java.util.function.Consumer;
  */
 public abstract class AbstractParameters<T extends Map> implements Parameters {
 
-    private final Map<String, Object> content;
+    private final Map<String, Parameter> content;
 
 
     public AbstractParameters(Class<T> map) {
@@ -24,40 +24,10 @@ public abstract class AbstractParameters<T extends Map> implements Parameters {
 
 
     @Override
-    public Parameters append(final Map<String, Object> map) {
-        if (map != null) {
-            for (Map.Entry<String, Object> entry : map.entrySet()) {
-                put(entry.getKey(), entry.getValue());
-            }
-        }
-
+    public Parameters put(final Parameter parameter) {
+        Validate.notNull("parameter", parameter);
+        content.put(parameter.name(), parameter);
         return this;
-    }
-
-
-    @Override
-    public Parameters add(final String parameter, final Object value) {
-        if (isExists(parameter)) {
-            throw new DuplicateException("Parameter", parameter);
-        }
-
-        return put(parameter, value);
-    }
-
-
-    @Override
-    public Parameters put(final String parameter, final Object value) {
-        content.put(Validate.notNullOrEmpty("parameter", parameter), value);
-        return this;
-    }
-
-
-    @Override
-    public Parameters replace(final String parameter, final Object newValue) {
-        if (!isExists(parameter)) {
-            throw new AbsentException("Parameter", parameter);
-        }
-        return put(parameter, newValue);
     }
 
 
@@ -76,18 +46,18 @@ public abstract class AbstractParameters<T extends Map> implements Parameters {
 
 
     @Override
-    public Object get(final String parameter) {
-        if (!isExists(parameter)) {
-            throw new AbsentException("Parameter", parameter);
+    public Parameter get(final String name) {
+        if (!isExists(name)) {
+            throw new AbsentException("Parameter", name);
         }
 
-        return content.get(parameter);
+        return content.get(name);
     }
 
 
     @Override
-    public boolean isExists(final String parameter) {
-        return content.containsKey(parameter);
+    public boolean isExists(final String name) {
+        return content.containsKey(name);
     }
 
 
@@ -98,38 +68,21 @@ public abstract class AbstractParameters<T extends Map> implements Parameters {
 
 
     @Override
+    public Parameters merge(final Collection<Parameter> parameters) {
+        parameters.forEach(this::put);
+        return this;
+    }
+
+
+    @Override
     public int size() {
         return content.size();
     }
 
 
     @Override
-    public List<String> list() {
-        return new ArrayList<>(content.keySet());
-    }
-
-
-    @Override
-    public Map asMap() {
-        return new HashMap<>(content);
-    }
-
-
-    @Override
-    public String asURLEncodedString() {
-        final String parametersDelimiter = "&";
-        final char valueDelimiter = '=';
-        final char queryStart = '?';
-
-        StringJoiner query = new StringJoiner(parametersDelimiter);
-
-        for (Map.Entry<String, Object> entry : content.entrySet()) {
-            query.add(URLString.encodeUTF(entry.getKey()).encoded()
-                    + valueDelimiter
-                    + URLString.encodeUTF(String.valueOf(entry.getValue())).encoded());
-        }
-
-        return queryStart + query.toString();
+    public List<Parameter> list() {
+        return new ArrayList<>(content.values());
     }
 
 
@@ -161,30 +114,12 @@ public abstract class AbstractParameters<T extends Map> implements Parameters {
     }
 
 
-    @Override
-    public Iterator<Map.Entry<String, Object>> iterator() {
-        return content.entrySet().iterator();
-    }
-
-
-    @Override
-    public void forEach(final Consumer<? super Map.Entry<String, Object>> action) {
-        content.entrySet().forEach(action);
-    }
-
-
-    @Override
-    public Spliterator<Map.Entry<String, Object>> spliterator() {
-        return content.entrySet().spliterator();
-    }
-
-
     @SuppressWarnings("unchecked")
-    private static <T extends Map> Map<String, Object> createInstance(Class<T> map) {
+    private static <T extends Map> Map<String, Parameter> createInstance(Class<T> map) {
         Validate.notNull("map class", map);
 
         try {
-            return (Map<String, Object>) map.newInstance();
+            return (Map<String, Parameter>) map.newInstance();
         } catch (Exception ex) {
             throw new IllegalStateException("Couldn't create an instance of " + map.toString(), ex);
         }
