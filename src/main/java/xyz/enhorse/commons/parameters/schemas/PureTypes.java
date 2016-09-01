@@ -1,4 +1,4 @@
-package xyz.enhorse.commons.parameters;
+package xyz.enhorse.commons.parameters.schemas;
 
 /**
  * @author <a href="mailto:pavel13kalinin@gmail.com">Pavel Kalinin</a>
@@ -7,7 +7,7 @@ package xyz.enhorse.commons.parameters;
 public enum PureTypes implements PureType {
     NULL {
         @Override
-        public Object cast(final String string) {
+        public String cast(final String string) {
             return null;
         }
 
@@ -122,6 +122,11 @@ public enum PureTypes implements PureType {
                 return STRING;
             }
         }
+    }
+
+
+    public static PureTypes identify(final Object object) {
+        return identify(String.valueOf(object));
     }
 
 

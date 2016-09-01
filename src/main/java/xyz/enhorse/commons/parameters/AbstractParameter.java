@@ -2,6 +2,7 @@ package xyz.enhorse.commons.parameters;
 
 import xyz.enhorse.commons.StringPair;
 import xyz.enhorse.commons.Validate;
+import xyz.enhorse.commons.parameters.schemas.PureTypes;
 
 /**
  * @author <a href="mailto:pavel13kalinin@gmail.com">Pavel Kalinin</a>
