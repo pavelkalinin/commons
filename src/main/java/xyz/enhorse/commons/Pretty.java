@@ -9,17 +9,13 @@ import java.util.Map;
  * @author <a href="mailto:pavel13kalinin@gmail.com">Pavel Kalinin</a>
  *         29/07/16
  */
-public class Pretty {
+public enum Pretty {
+    ;
 
     public static final String KEY_VALUE_DELIMITER = "=";
     public static final String DELIMITER = "; ";
     public static final String GROUP_START = "[";
     public static final String GROUP_END = "]";
-
-
-    private Pretty() {
-
-    }
 
 
     public static String format(final Throwable throwable) {
@@ -37,6 +33,20 @@ public class Pretty {
         }
 
         return stacktrace;
+    }
+
+
+    public static String format(final Iterable iterable) {
+        if (iterable == null) {
+            return "";
+        }
+
+        StringBuilder builder = new StringBuilder();
+        for (Object o : iterable) {
+            builder.append(Pretty.format(o)).append(DELIMITER);
+        }
+
+        return "" + GROUP_START + trimTailDelimiter(builder) + GROUP_END;
     }
 
 
