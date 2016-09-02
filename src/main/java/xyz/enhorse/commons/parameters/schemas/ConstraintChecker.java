@@ -2,11 +2,9 @@ package xyz.enhorse.commons.parameters.schemas;
 
 /**
  * @author <a href="mailto:pavel13kalinin@gmail.com">Pavel Kalinin</a>
- *         01.09.2016
+ *         02.09.2016
  */
-public class BasicSchema extends AbstractSchema {
+public interface ConstraintChecker<T> {
 
-    BasicSchema() {
-        super();
-    }
+    boolean check(final T value, final T constraint);
 }

@@ -7,7 +7,6 @@ import xyz.enhorse.commons.Validate;
  *         01.09.2016
  */
 public class Constraint<T extends Comparable<T>> {
-
     private final T constraint;
     private final Constraints type;
 
