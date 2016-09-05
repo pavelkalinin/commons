@@ -35,9 +35,34 @@ public class Description<T extends Comparable<T>> {
     }
 
 
+    public boolean canBeNull() {
+        for (Constraint constraint : constraints) {
+            if ((constraint.type() == Constraints.NOT_EQUAL) && (constraint.constraint() == null)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+
+    public T defaultValue() {
+        return producer != null ? producer.getDefault() : null;
+    }
+
+
+    public PureType<T> type() {
+        return type;
+    }
+
+
+    public T cast(final String value) {
+        return type().cast(value);
+    }
+
+
     private boolean isAcceptableNull(final String string) {
-        return ((string == null) && (producer != null))
-                || (doesConstraintsHasNotNull());
+        return ((string == null) && (producer != null)) || (canBeNull());
     }
 
 
@@ -63,17 +88,6 @@ public class Description<T extends Comparable<T>> {
         }
 
         return true;
-    }
-
-
-    private boolean doesConstraintsHasNotNull() {
-        for (Constraint constraint : constraints) {
-            if ((constraint.type() == Constraints.NOT_EQUAL) && (constraint.constraint() == null)) {
-                return true;
-            }
-        }
-
-        return false;
     }
 
 

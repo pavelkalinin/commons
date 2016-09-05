@@ -4,11 +4,11 @@ import xyz.enhorse.commons.Validate;
 
 /**
  * @author <a href="mailto:pavel13kalinin@gmail.com">Pavel Kalinin</a>
- *         30.08.2016
+ *         05.09.2016
  */
-public class BasicParameter extends AbstractParameter {
+public class BasicParameter<T> extends AbstractParameter<T> {
 
-    BasicParameter(final String name, final String value) {
+    public BasicParameter(final String name, final T value) {
         super(validate(name), value);
     }
 

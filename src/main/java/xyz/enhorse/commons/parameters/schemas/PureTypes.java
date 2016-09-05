@@ -20,7 +20,7 @@ public enum PureTypes {
     }
 
 
-    public static PureType identify(final String string) {
+    public static PureType<?> identify(final String string) {
         if (string == null) {
             return NULL;
         }
