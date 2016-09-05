@@ -2,13 +2,14 @@ package xyz.enhorse.commons.parameters;
 
 import xyz.enhorse.commons.StringPair;
 import xyz.enhorse.commons.Validate;
+import xyz.enhorse.commons.parameters.schemas.PureType;
 import xyz.enhorse.commons.parameters.schemas.PureTypes;
 
 /**
  * @author <a href="mailto:pavel13kalinin@gmail.com">Pavel Kalinin</a>
  *         30.08.2016
  */
-public abstract class AbstractParameter implements Parameter {
+public abstract class AbstractParameter<T extends PureType<T> & Comparable<T>> implements Parameter<T> {
 
     private final String name;
     private final String value;
@@ -35,14 +36,14 @@ public abstract class AbstractParameter implements Parameter {
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T> T value() {
+    public T value() {
         return (T) PureTypes.convert(value);
     }
 
 
     @Override
-    public Class<?> type() {
-        return PureTypes.identify(value).type();
+    public PureType type() {
+        return PureTypes.identify(value);
     }
 
 

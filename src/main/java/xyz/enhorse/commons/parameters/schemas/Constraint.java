@@ -8,17 +8,17 @@ import xyz.enhorse.commons.Validate;
  */
 public class Constraint<T extends Comparable<T>> {
     private final T constraint;
-    private final Constraints type;
+    private final ConstraintChecker checker;
 
 
-    public Constraint(final Constraints type, final T constraint) {
-        this.type = Validate.notNull("constraint's type", type);
+    public Constraint(final ConstraintChecker checker, final T constraint) {
+        this.checker = Validate.notNull("constraint checker", checker);
         this.constraint = constraint;
     }
 
 
-    public Constraints type() {
-        return type;
+    public ConstraintChecker type() {
+        return checker;
     }
 
 
@@ -28,14 +28,14 @@ public class Constraint<T extends Comparable<T>> {
 
 
     public boolean check(final T value) {
-        return type.check(value, constraint);
+        return checker.check(value, constraint);
     }
 
 
     @Override
     public int hashCode() {
         int result = (constraint != null) ? constraint.hashCode() : 0;
-        return 31 * result + type.hashCode();
+        return 31 * result + checker.hashCode();
     }
 
 
@@ -53,13 +53,13 @@ public class Constraint<T extends Comparable<T>> {
 
 
         return ((constraint != null) ? (constraint.equals(that.constraint)) : (that.constraint == null))
-                && (type == that.type);
+                && (checker == that.checker);
 
     }
 
 
     @Override
     public String toString() {
-        return type.name() + '(' + constraint + ')';
+        return checker.name() + '(' + constraint + ')';
     }
 }
