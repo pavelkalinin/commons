@@ -98,13 +98,17 @@ public enum PureTypes {
         INTEGER {
             @Override
             public Integer cast(final String string) {
-                return Integer.parseInt(string);
+                try {
+                    return Integer.parseInt(string);
+                } catch (NumberFormatException ex) {
+                    return null;
+                }
             }
 
 
             @Override
             public Class<Integer> type() {
-                return int.class;
+                return Integer.class;
             }
         }
     }
@@ -114,13 +118,17 @@ public enum PureTypes {
         LONG {
             @Override
             public Long cast(final String string) {
-                return Long.parseLong(string.trim());
+                try {
+                    return Long.parseLong(string);
+                } catch (NumberFormatException ex) {
+                    return null;
+                }
             }
 
 
             @Override
             public Class<Long> type() {
-                return long.class;
+                return Long.class;
             }
         }
     }
@@ -130,13 +138,17 @@ public enum PureTypes {
         DOUBLE {
             @Override
             public Double cast(final String string) {
-                return Double.parseDouble(string.trim());
+                try {
+                    return Double.parseDouble(string);
+                } catch (NumberFormatException ex) {
+                    return null;
+                }
             }
 
 
             @Override
             public Class<Double> type() {
-                return double.class;
+                return Double.class;
             }
         }
     }

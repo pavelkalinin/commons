@@ -26,13 +26,13 @@ public class URLLoader extends StringLoader {
 
 
     @Override
-    public Map<String, Object> load() {
+    public Map<String, String> load() {
         return load(new QueryLoader());
     }
 
 
     @Override
-    public Map<String, Object> load(final LoaderCompanion companion) {
+    public Map<String, String> load(final LoaderCompanion companion) {
         return super.load(companion);
     }
 
@@ -58,7 +58,7 @@ public class URLLoader extends StringLoader {
 
 
         @Override
-        public Object postProcessValue(final String value) {
+        public String postProcessValue(final String value) {
             if (!Check.isNullOrEmpty(value)) {
                 return URLString.decode(value, charset).plain();
             }

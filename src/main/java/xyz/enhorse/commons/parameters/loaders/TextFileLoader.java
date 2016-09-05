@@ -37,7 +37,7 @@ public class TextFileLoader implements ParametersLoader {
 
 
     @Override
-    public Map<String, Object> load(final LoaderCompanion companion) {
+    public Map<String, String> load(final LoaderCompanion companion) {
         try (InputStream stream = new FileInputStream(input)) {
             return (new InputStreamLoader(stream, charset, System.lineSeparator())).load(companion);
         } catch (FileNotFoundException ex) {

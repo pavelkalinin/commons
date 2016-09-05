@@ -17,8 +17,8 @@ public class DescriptionTest {
     public void isApplicable() throws Exception {
         Description d1 = new Description<>(INTEGER, null, null);
         assertTrue(d1.isApplicable("9"));
-        assertFalse(d1.isApplicable("string"));
-        assertFalse(d1.isApplicable(null));
+        assertTrue(d1.isApplicable("string"));
+        assertTrue(d1.isApplicable(null));
 
         Description d2 = new Description<>(INTEGER, () -> 9, null);
         assertTrue(d2.isApplicable("9"));
