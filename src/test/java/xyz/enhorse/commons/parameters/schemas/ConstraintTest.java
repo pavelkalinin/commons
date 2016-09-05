@@ -41,6 +41,7 @@ public class ConstraintTest {
     public void check_EQUAL_constraint_null() throws Exception {
         Constraint<Integer> constraint = new Constraint<>(EQUAL, null);
         assertFalse(constraint.check(60));
+        assertTrue(constraint.check(null));
     }
 
 
@@ -63,7 +64,8 @@ public class ConstraintTest {
     @Test
     public void check_NOT_EQUAL_constraint_null() throws Exception {
         Constraint<Integer> constraint = new Constraint<>(NOT_EQUAL, null);
-        assertFalse(constraint.check(42));
+        assertTrue(constraint.check(42));
+        assertFalse(constraint.check(null));
     }
 
 
@@ -162,28 +164,6 @@ public class ConstraintTest {
     @Test
     public void check_LESS_OR_EQUAL_value_null() throws Exception {
         Constraint<Integer> constraint = new Constraint<>(LESS_OR_EQUAL, 42);
-        assertFalse(constraint.check(null));
-    }
-
-
-    @Test
-    public void check_NOT_NULL() throws Exception {
-        Constraint<Integer> constraint = new Constraint<>(NOT_NULL, 42);
-        assertTrue(constraint.check(41));
-        assertFalse(constraint.check(null));
-    }
-
-
-    @Test
-    public void check_NOT_NULL_constraint_null() throws Exception {
-        Constraint<Integer> constraint = new Constraint<>(NOT_NULL, null);
-        assertTrue(constraint.check(42));
-    }
-
-
-    @Test
-    public void check_NOT_NULL_value_null() throws Exception {
-        Constraint<Integer> constraint = new Constraint<>(NOT_NULL, 42);
         assertFalse(constraint.check(null));
     }
 

@@ -8,8 +8,15 @@ public enum Constraints {
     EQUAL {
         @Override
         public <T extends Comparable<T>> boolean check(final T value, final T constraint) {
-            return (constraint != null) && (value != null)
-                    && (constraint.compareTo(value) == 0);
+            return ((constraint == null) && (value == null))
+                    || ((constraint != null) && (value != null) && (constraint.compareTo(value) == 0));
+        }
+    },
+    NOT_EQUAL {
+        @Override
+        public <T extends Comparable<T>> boolean check(final T value, final T constraint) {
+            return ((constraint == null) && (value != null))
+                    || ((constraint != null) && (value != null) && (constraint.compareTo(value) != 0));
         }
     },
     GREATER {
@@ -26,13 +33,6 @@ public enum Constraints {
                     && (constraint.compareTo(value) > 0);
         }
     },
-    NOT_EQUAL {
-        @Override
-        public <T extends Comparable<T>> boolean check(final T value, final T constraint) {
-            return (constraint != null) && (value != null)
-                    && (constraint.compareTo(value) != 0);
-        }
-    },
     GREATER_OR_EQUAL {
         @Override
         public <T extends Comparable<T>> boolean check(final T value, final T constraint) {
@@ -46,14 +46,7 @@ public enum Constraints {
             return (constraint != null) && (value != null)
                     && (constraint.compareTo(value) >= 0);
         }
-    },
-    NOT_NULL {
-        @Override
-        public <T extends Comparable<T>> boolean check(final T value, final T constraint) {
-            return value != null;
-        }
     };
-
 
     abstract <T extends Comparable<T>> boolean check(final T value, final T constraint);
 }

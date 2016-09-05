@@ -30,15 +30,6 @@ public class Description<T extends Comparable<T>> {
     }
 
 
-    public T compute(final String value) {
-        if (isApplicable(value)) {
-            return type.cast(value);
-        }
-
-        return null;
-    }
-
-
     public boolean isApplicable(final String value) {
         return (isAcceptableNull(value)) || (hasValidType(value) && doesMeetConstraints(value));
     }
@@ -77,7 +68,7 @@ public class Description<T extends Comparable<T>> {
 
     private boolean doesConstraintsHasNotNull() {
         for (Constraint constraint : constraints) {
-            if (constraint.type() == Constraints.NOT_NULL) {
+            if ((constraint.type() == Constraints.NOT_EQUAL) && (constraint.constraint() == null)) {
                 return true;
             }
         }
