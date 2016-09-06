@@ -1,4 +1,4 @@
-package xyz.enhorse.commons.parameters.schemas;
+package xyz.enhorse.commons.parameters.schemas.constraints;
 
 import xyz.enhorse.commons.Validate;
 
@@ -6,27 +6,31 @@ import xyz.enhorse.commons.Validate;
  * @author <a href="mailto:pavel13kalinin@gmail.com">Pavel Kalinin</a>
  *         01.09.2016
  */
-public class Constraint<T extends Comparable<T>> {
+public class BasicConstraint<T> implements Constraint<T> {
+
     private final T constraint;
-    private final ConstraintChecker checker;
+    private final ConstraintChecker<T> checker;
 
 
-    public Constraint(final ConstraintChecker checker, final T constraint) {
+    public BasicConstraint(final ConstraintChecker<T> checker, final T constraint) {
         this.checker = Validate.notNull("constraint checker", checker);
         this.constraint = constraint;
     }
 
 
+    @Override
     public ConstraintChecker type() {
         return checker;
     }
 
 
+    @Override
     public T constraint() {
         return constraint;
     }
 
 
+    @Override
     public boolean check(final T value) {
         return checker.check(value, constraint);
     }
@@ -49,7 +53,7 @@ public class Constraint<T extends Comparable<T>> {
             return false;
         }
 
-        Constraint<?> that = (Constraint<?>) o;
+        BasicConstraint<?> that = (BasicConstraint<?>) o;
 
 
         return ((constraint != null) ? (constraint.equals(that.constraint)) : (that.constraint == null))
