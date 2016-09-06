@@ -9,37 +9,25 @@ import xyz.enhorse.commons.Validate;
 public class BasicConstraint<T> implements Constraint<T> {
 
     private final T constraint;
-    private final ConstraintChecker<T> checker;
+    private final Examiner<T> examiner;
 
 
-    public BasicConstraint(final ConstraintChecker<T> checker, final T constraint) {
-        this.checker = Validate.notNull("constraint checker", checker);
+    public BasicConstraint(final T constraint, final Examiner<T> examiner) {
+        this.examiner = Validate.notNull("examiner", examiner);
         this.constraint = constraint;
     }
 
 
     @Override
-    public ConstraintChecker type() {
-        return checker;
-    }
-
-
-    @Override
-    public T constraint() {
-        return constraint;
-    }
-
-
-    @Override
-    public boolean check(final T value) {
-        return checker.check(value, constraint);
+    public boolean isApplicable(final T value) {
+        return examiner.evaluate(value, constraint);
     }
 
 
     @Override
     public int hashCode() {
         int result = (constraint != null) ? constraint.hashCode() : 0;
-        return 31 * result + checker.hashCode();
+        return 31 * result + examiner.hashCode();
     }
 
 
@@ -57,13 +45,13 @@ public class BasicConstraint<T> implements Constraint<T> {
 
 
         return ((constraint != null) ? (constraint.equals(that.constraint)) : (that.constraint == null))
-                && (checker == that.checker);
+                && (examiner == that.examiner);
 
     }
 
 
     @Override
     public String toString() {
-        return checker.name() + '(' + constraint + ')';
+        return examiner.toString() + '(' + constraint + ')';
     }
 }

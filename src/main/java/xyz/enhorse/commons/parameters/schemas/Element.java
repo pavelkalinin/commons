@@ -6,7 +6,7 @@ import xyz.enhorse.commons.Validate;
  * @author <a href="mailto:pavel13kalinin@gmail.com">Pavel Kalinin</a>
  *         05.09.2016
  */
-public class Element<T extends Comparable<T>> {
+public class Element<T> {
 
     private final String name;
     private final Description<T> description;

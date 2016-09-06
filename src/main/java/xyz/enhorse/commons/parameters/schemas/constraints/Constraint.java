@@ -6,9 +6,6 @@ package xyz.enhorse.commons.parameters.schemas.constraints;
  */
 public interface Constraint<T> {
 
-    ConstraintChecker type();
+    boolean isApplicable(T value);
 
-    T constraint();
-
-    boolean check(T value);
 }

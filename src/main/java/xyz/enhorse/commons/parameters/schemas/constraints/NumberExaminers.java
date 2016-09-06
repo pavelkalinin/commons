@@ -7,10 +7,10 @@ import java.math.BigInteger;
  * @author <a href="mailto:pavel13kalinin@gmail.com">Pavel Kalinin</a>
  *         01.09.2016
  */
-public enum NumberConstraintCheckers implements ConstraintChecker<Number> {
+public enum NumberExaminers implements Examiner<Number> {
     EQUAL {
         @Override
-        public boolean check(final Number value, final Number constraint) {
+        public boolean evaluate(final Number value, final Number constraint) {
             return ((constraint == null) && (value == null))
                     || ((constraint != null) && (value != null) && (compare(value, constraint) == 0));
         }
@@ -19,7 +19,7 @@ public enum NumberConstraintCheckers implements ConstraintChecker<Number> {
 
     NOT_EQUAL {
         @Override
-        public boolean check(final Number value, final Number constraint) {
+        public boolean evaluate(final Number value, final Number constraint) {
             return ((constraint == null) && (value != null))
                     || ((constraint != null) && (value != null) && (compare(value, constraint) != 0));
         }
@@ -28,36 +28,36 @@ public enum NumberConstraintCheckers implements ConstraintChecker<Number> {
 
     GREATER {
         @Override
-        public boolean check(final Number value, final Number constraint) {
-            return (constraint != null) && (value != null)
-                    && (compare(value, constraint) < 0);
-        }
-    },
-
-
-    LESS {
-        @Override
-        public boolean check(final Number value, final Number constraint) {
+        public boolean evaluate(final Number value, final Number constraint) {
             return (constraint != null) && (value != null)
                     && (compare(value, constraint) > 0);
         }
     },
 
 
+    LESS {
+        @Override
+        public boolean evaluate(final Number value, final Number constraint) {
+            return (constraint != null) && (value != null)
+                    && (compare(value, constraint) < 0);
+        }
+    },
+
+
     GREATER_OR_EQUAL {
         @Override
-        public boolean check(final Number value, final Number constraint) {
+        public boolean evaluate(final Number value, final Number constraint) {
             return (constraint != null) && (value != null)
-                    && (compare(value, constraint) <= 0);
+                    && (compare(value, constraint) >= 0);
         }
     },
 
 
     LESS_OR_EQUAL {
         @Override
-        public boolean check(final Number value, final Number constraint) {
+        public boolean evaluate(final Number value, final Number constraint) {
             return (constraint != null) && (value != null)
-                    && (compare(value, constraint) >= 0);
+                    && (compare(value, constraint) <= 0);
         }
     };
 
