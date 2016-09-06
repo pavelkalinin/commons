@@ -6,7 +6,7 @@ package xyz.enhorse.commons.parameters.schemas;
  */
 public enum PureTypes {
     ;
-    public static final PureType<String> NULL = NullType.NULL;
+    public static final PureType<Object> NULL = NullType.NULL;
     public static final PureType<String> STRING = StringType.STRING;
     public static final PureType<Character> CHAR = CharType.CHAR;
     public static final PureType<Integer> INTEGER = IntegerType.INTEGER;
@@ -63,7 +63,7 @@ public enum PureTypes {
     }
 
 
-    public enum NullType implements PureType<String> {
+    private enum NullType implements PureType<Object> {
         NULL {
             @Override
             public String cast(final String string) {
@@ -72,13 +72,13 @@ public enum PureTypes {
 
 
             @Override
-            public Class<String> type() {
+            public Class<Object> type() {
                 return null;
             }
         }
     }
 
-    public enum BooleanType implements PureType<Boolean> {
+    private enum BooleanType implements PureType<Boolean> {
         BOOLEAN {
             @Override
             public Boolean cast(final String string) {
@@ -94,7 +94,7 @@ public enum PureTypes {
     }
 
 
-    public enum IntegerType implements PureType<Integer> {
+    private enum IntegerType implements PureType<Integer> {
         INTEGER {
             @Override
             public Integer cast(final String string) {

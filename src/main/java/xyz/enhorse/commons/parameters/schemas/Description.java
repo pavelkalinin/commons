@@ -3,6 +3,8 @@ package xyz.enhorse.commons.parameters.schemas;
 import xyz.enhorse.commons.DefaultsProducer;
 import xyz.enhorse.commons.Pretty;
 import xyz.enhorse.commons.Validate;
+import xyz.enhorse.commons.parameters.schemas.constraints.BasicConstraint;
+import xyz.enhorse.commons.parameters.schemas.constraints.NumberConstraintCheckers;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -14,17 +16,17 @@ import static xyz.enhorse.commons.parameters.schemas.PureTypes.STRING;
  * @author <a href="mailto:pavel13kalinin@gmail.com">Pavel Kalinin</a>
  *         01.09.2016
  */
-public class Description<T extends Comparable<T>> {
+public class Description<T> {
 
     private final PureType<T> type;
     private final DefaultsProducer<T> producer;
-    private final Set<Constraint<T>> constraints;
+    private final Set<BasicConstraint<T>> constraints;
 
 
     @SafeVarargs
     public Description(final PureType<T> type,
                        final DefaultsProducer<T> producer,
-                       final Constraint<T>... constraints) {
+                       final BasicConstraint<T>... constraints) {
         this.type = Validate.notNull("type", type);
         this.producer = validateProducer(producer);
         this.constraints = arrayToSet(constraints);
@@ -37,8 +39,8 @@ public class Description<T extends Comparable<T>> {
 
 
     public boolean canBeNull() {
-        for (Constraint constraint : constraints) {
-            if ((constraint.type() == Constraints.NOT_EQUAL) && (constraint.constraint() == null)) {
+        for (BasicConstraint constraint : constraints) {
+            if ((constraint.type() == NumberConstraintCheckers.NOT_EQUAL) && (constraint.constraint() == null)) {
                 return false;
             }
         }
@@ -85,7 +87,7 @@ public class Description<T extends Comparable<T>> {
 
 
     private boolean doesMeetConstraints(final T object) {
-        for (Constraint<T> constraint : constraints) {
+        for (BasicConstraint<T> constraint : constraints) {
             try {
                 if (!constraint.check(object)) {
                     return false;
@@ -108,8 +110,8 @@ public class Description<T extends Comparable<T>> {
     }
 
 
-    private Set<Constraint<T>> arrayToSet(final Constraint<T>[] constraints) {
-        Set<Constraint<T>> set = new HashSet<>();
+    private Set<BasicConstraint<T>> arrayToSet(final BasicConstraint<T>[] constraints) {
+        Set<BasicConstraint<T>> set = new HashSet<>();
 
         if (constraints != null) {
             Collections.addAll(set, constraints);
