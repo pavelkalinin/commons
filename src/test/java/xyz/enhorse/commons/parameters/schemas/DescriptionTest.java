@@ -12,9 +12,9 @@ import static xyz.enhorse.commons.parameters.schemas.PureTypes.INTEGER;
  *         02.09.2016
  */
 public class DescriptionTest {
-
     @Test
     public void isApplicable() throws Exception {
+
         Description d1 = new Description<>(INTEGER, null, null);
         assertTrue(d1.isApplicable("9"));
         assertTrue(d1.isApplicable("string"));

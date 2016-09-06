@@ -1,14 +1,14 @@
-package xyz.enhorse.commons.collections;
+package xyz.enhorse.commons.parameters.schemas;
 
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author <a href="mailto:pavel13kalinin@gmail.com">Pavel Kalinin</a>
- *         05/09/16
+ *         06.09.2016
  */
-public class FlexibleConcurrentBox<T> extends BasicFlexibleBox<T> {
+public class ConcurrentSchema extends BasicSchema {
 
-    public FlexibleConcurrentBox() {
+    public ConcurrentSchema() {
         super(new ConcurrentHashMap<>());
     }
 }

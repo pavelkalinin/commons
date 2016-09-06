@@ -54,7 +54,7 @@ public class FlexibleMapTest {
         FlexibleMap<String, String> merge = new FlexibleLinkedHashMap<String, String>()
                 .put(KEY, VALUE);
 
-        map.merge(merge);
+        map.merge(merge.toMap());
 
         assertTrue(map.containsKey(KEY));
         assertEquals(3, map.size());
@@ -71,7 +71,7 @@ public class FlexibleMapTest {
                 .put(KEY, VALUE)
                 .put(KEY + KEY + KEY + KEY, VALUE);
 
-        map.intersect(intersection);
+        map.intersect(intersection.toMap());
 
         assertTrue(map.containsKey(KEY));
         assertEquals(1, map.size());
@@ -88,7 +88,7 @@ public class FlexibleMapTest {
                 .put(KEY + KEY, VALUE)
                 .put(KEY + KEY + KEY, VALUE);
 
-        map.subtract(subtract);
+        map.subtract(subtract.toMap());
 
         assertTrue(map.containsKey(KEY));
         assertEquals(1, map.size());
