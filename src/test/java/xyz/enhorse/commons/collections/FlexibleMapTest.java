@@ -1,4 +1,4 @@
-package xyz.enhorse.commons.maps;
+package xyz.enhorse.commons.collections;
 
 import org.junit.Test;
 

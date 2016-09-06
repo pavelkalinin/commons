@@ -1,23 +1,21 @@
-package xyz.enhorse.commons.maps;
+package xyz.enhorse.commons.collections;
 
 import xyz.enhorse.commons.Pretty;
 import xyz.enhorse.commons.Validate;
 
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Spliterator;
+import java.util.*;
 import java.util.function.Consumer;
 
 /**
  * @author <a href="mailto:pavel13kalinin@gmail.com">Pavel Kalinin</a>
  *         02.09.2016
  */
-public abstract class AbstractFlexibleMap<K, V> implements FlexibleMap<K, V> {
+public class BasicFlexibleMap<K, V> implements FlexibleMap<K, V> {
 
     private final Map<K, V> content;
 
 
-    public AbstractFlexibleMap(Map<K, V> map) {
+    public BasicFlexibleMap(Map<K, V> map) {
         content = copy(Validate.notNull("map", map));
     }
 
@@ -47,9 +45,9 @@ public abstract class AbstractFlexibleMap<K, V> implements FlexibleMap<K, V> {
 
 
     @Override
-    public FlexibleMap<K, V> merge(final FlexibleMap<? extends K, ? extends V> map) {
+    public FlexibleMap<K, V> merge(final Map<? extends K, ? extends V> map) {
         if (map != null) {
-            for (Map.Entry<? extends K, ? extends V> entry : map) {
+            for (Map.Entry<? extends K, ? extends V> entry : map.entrySet()) {
                 content.put(entry.getKey(), entry.getValue());
             }
         }
@@ -59,9 +57,9 @@ public abstract class AbstractFlexibleMap<K, V> implements FlexibleMap<K, V> {
 
 
     @Override
-    public FlexibleMap<K, V> subtract(final FlexibleMap<K, V> map) {
+    public FlexibleMap<K, V> subtract(final Map<K, V> map) {
         if (map != null) {
-            for (Map.Entry<? extends K, ? extends V> entry : map) {
+            for (Map.Entry<? extends K, ? extends V> entry : map.entrySet()) {
                 K key = entry.getKey();
                 if (content.containsKey(key)) {
                     content.remove(key);
@@ -74,7 +72,7 @@ public abstract class AbstractFlexibleMap<K, V> implements FlexibleMap<K, V> {
 
 
     @Override
-    public FlexibleMap<K, V> intersect(final FlexibleMap<K, V> map) {
+    public FlexibleMap<K, V> intersect(final Map<K, V> map) {
         if (map != null) {
             for (Iterator<Map.Entry<K, V>> iterator = content.entrySet().iterator(); iterator.hasNext(); ) {
                 K key = iterator.next().getKey();
@@ -133,6 +131,18 @@ public abstract class AbstractFlexibleMap<K, V> implements FlexibleMap<K, V> {
 
 
     @Override
+    public Set<K> keys() {
+        return toMap().keySet();
+    }
+
+
+    @Override
+    public Collection<V> values() {
+        return toMap().values();
+    }
+
+
+    @Override
     public Iterator<Map.Entry<K, V>> iterator() {
         return content.entrySet().iterator();
     }
@@ -161,7 +171,7 @@ public abstract class AbstractFlexibleMap<K, V> implements FlexibleMap<K, V> {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        AbstractFlexibleMap<?, ?> that = (AbstractFlexibleMap<?, ?>) o;
+        BasicFlexibleMap<?, ?> that = (BasicFlexibleMap<?, ?>) o;
 
         return content.equals(that.content);
 

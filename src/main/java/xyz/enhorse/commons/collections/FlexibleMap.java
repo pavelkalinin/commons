@@ -1,6 +1,8 @@
-package xyz.enhorse.commons.maps;
+package xyz.enhorse.commons.collections;
 
+import java.util.Collection;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author <a href="mailto:pavel13kalinin@gmail.com">Pavel Kalinin</a>
@@ -14,11 +16,11 @@ public interface FlexibleMap<K, V> extends Iterable<Map.Entry<K, V>> {
 
     FlexibleMap<K, V> replace(final K key, final V value);
 
-    FlexibleMap<K, V> merge(final FlexibleMap<? extends K, ? extends V> map);
+    FlexibleMap<K, V> merge(final Map<? extends K, ? extends V> map);
 
-    FlexibleMap<K, V> subtract(final FlexibleMap<K, V> map);
+    FlexibleMap<K, V> subtract(final Map<K, V> map);
 
-    FlexibleMap<K, V> intersect(final FlexibleMap<K, V> map);
+    FlexibleMap<K, V> intersect(final Map<K, V> map);
 
     FlexibleMap<K, V> clear();
 
@@ -33,4 +35,8 @@ public interface FlexibleMap<K, V> extends Iterable<Map.Entry<K, V>> {
     int size();
 
     Map<K, V> toMap();
+
+    Set<K> keys();
+
+    Collection<V> values();
 }
