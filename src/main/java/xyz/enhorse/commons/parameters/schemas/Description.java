@@ -1,6 +1,7 @@
 package xyz.enhorse.commons.parameters.schemas;
 
 import xyz.enhorse.commons.DefaultsProducer;
+import xyz.enhorse.commons.Pretty;
 import xyz.enhorse.commons.Validate;
 
 import java.util.Collections;
@@ -58,6 +59,13 @@ public class Description<T extends Comparable<T>> {
 
     public T cast(final String value) {
         return type().cast(value);
+    }
+
+
+    @Override
+    public String toString() {
+        return String.format("%s constraints:%s default value producer:%s",
+                type(), Pretty.format(constraints), producer);
     }
 
 
