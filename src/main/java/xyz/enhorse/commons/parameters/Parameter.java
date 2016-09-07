@@ -1,22 +1,22 @@
 package xyz.enhorse.commons.parameters;
 
-import xyz.enhorse.commons.Validate;
+import xyz.enhorse.commons.collections.NamedValue;
 
 /**
  * @author <a href="mailto:pavel13kalinin@gmail.com">Pavel Kalinin</a>
  *         30.08.2016
  */
-public class Parameter<T> {
+public class Parameter<T> implements NamedValue<ParameterValue<?>> {
 
     public static final char SEPARATOR = '=';
 
     private final String name;
-    private final T value;
+    private final ParameterValue<T> value;
 
 
-    public Parameter(final String name, final T value) {
-        this.name = Validate.notNull("parameter name", name);
-        this.value = value;
+    public Parameter(final String name, T value) {
+        this.name = name;
+        this.value = new ParameterValue<>(value, null);
     }
 
 
@@ -25,15 +25,20 @@ public class Parameter<T> {
     }
 
 
-    public T value() {
+    public ParameterValue<T> value() {
         return value;
+    }
+
+
+    public T deepValue() {
+        return value.value();
     }
 
 
     @Override
     public int hashCode() {
         return 31 * name.hashCode()
-                + (value != null ? value.hashCode() : 0);
+                + value.hashCode();
     }
 
 
@@ -49,13 +54,13 @@ public class Parameter<T> {
 
         Parameter parameter = (Parameter) o;
 
-        return name.equals(parameter.name)
-                && (value != null ? value.equals(parameter.value) : parameter.value == null);
+        return (name.equals(parameter.name))
+                && (value.equals(parameter.value));
     }
 
 
     @Override
     public String toString() {
-        return name + SEPARATOR + value;
+        return name() + SEPARATOR + deepValue();
     }
 }
