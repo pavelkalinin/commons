@@ -83,7 +83,7 @@ public class Description<T> {
 
     @Override
     public String toString() {
-        return String.format("%s; constraints:%s; default value producer:%s",
-                type, Pretty.format(constraints), producer);
+        return String.format("%s %s (%s)",
+                type, Pretty.format(constraints), producer != null ? producer.getDefault() : null);
     }
 }
