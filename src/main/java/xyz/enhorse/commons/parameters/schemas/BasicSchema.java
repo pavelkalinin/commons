@@ -12,10 +12,10 @@ import java.util.Map;
  * @author <a href="mailto:pavel13kalinin@gmail.com">Pavel Kalinin</a>
  *         05.09.2016
  */
-public abstract class AbstractSchema extends BasicFlexibleBox<Description<?>> implements Schema {
+public class BasicSchema<T extends Map> extends BasicFlexibleBox<Description<?>> implements Schema {
 
-    public AbstractSchema(final Map<String, Description<?>> content) {
-        super(content);
+    public BasicSchema(final Class<T> map) {
+        super(createInstance(map));
     }
 
 
@@ -67,5 +67,17 @@ public abstract class AbstractSchema extends BasicFlexibleBox<Description<?>> im
         throw new IllegalArgumentException(String.format(
                 "The parameter \"%s\" with the description %s is required, but not defined",
                 name, description));
+    }
+
+
+    @SuppressWarnings("unchecked")
+    private static <T extends Map> Map<String, Description<?>> createInstance(Class<T> map) {
+        Validate.notNull("map class", map);
+
+        try {
+            return (Map<String, Description<?>>) map.newInstance();
+        } catch (Exception ex) {
+            throw new IllegalStateException("Couldn't create an instance of " + map.toString(), ex);
+        }
     }
 }

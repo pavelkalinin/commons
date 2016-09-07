@@ -6,9 +6,9 @@ import java.util.HashMap;
  * @author <a href="mailto:pavel13kalinin@gmail.com">Pavel Kalinin</a>
  *         06.09.2016
  */
-public class HashSchema extends AbstractSchema {
+public class HashSchema extends BasicSchema<HashMap> {
 
     public HashSchema() {
-        super(new HashMap<>());
+        super(HashMap.class);
     }
 }
