@@ -1,4 +1,4 @@
-package xyz.enhorse.commons.parameters;
+package xyz.enhorse.commons.parameters.loaders;
 
 import xyz.enhorse.commons.Check;
 import xyz.enhorse.commons.URLString;
@@ -26,7 +26,13 @@ public class URLLoader extends StringLoader {
 
 
     @Override
-    public Map<String, Object> load(final LoaderCompanion companion) {
+    public Map<String, String> load() {
+        return load(new QueryLoader());
+    }
+
+
+    @Override
+    public Map<String, String> load(final Companion companion) {
         return super.load(companion);
     }
 
@@ -37,13 +43,7 @@ public class URLLoader extends StringLoader {
     }
 
 
-    @Override
-    public Map<String, Object> load() {
-        return load(new QueryLoader());
-    }
-
-
-    private class QueryLoader implements LoaderCompanion {
+    private class QueryLoader implements Companion {
 
         @Override
         public String preProcessKey(final String key) {
@@ -59,7 +59,7 @@ public class URLLoader extends StringLoader {
 
 
         @Override
-        public Object postProcessValue(final String value) {
+        public String postProcessValue(final String value) {
             if (!Check.isNullOrEmpty(value)) {
                 return URLString.decode(value, charset).plain();
             }

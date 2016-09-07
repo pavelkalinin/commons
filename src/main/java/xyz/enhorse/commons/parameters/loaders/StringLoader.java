@@ -1,8 +1,9 @@
-package xyz.enhorse.commons.parameters;
+package xyz.enhorse.commons.parameters.loaders;
 
 import xyz.enhorse.commons.Check;
 import xyz.enhorse.commons.StringPair;
 import xyz.enhorse.commons.Validate;
+import xyz.enhorse.commons.parameters.Parameter;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,9 +13,9 @@ import java.util.StringTokenizer;
  * @author <a href="mailto:pavel13kalinin@gmail.com">Pavel Kalinin</a>
  *         18.08.2016
  */
-public class StringLoader implements ParametersLoader {
+public class StringLoader implements Loader {
 
-    private final Map<String, Object> map = new HashMap<>();
+    private final Map<String, String> map = new HashMap<>();
     private final String content;
     private final String splitter;
 
@@ -26,16 +27,17 @@ public class StringLoader implements ParametersLoader {
 
 
     @Override
-    public Map<String, Object> load() {
-        return load(PureTypesLoaderCompanion.INSTANCE);
+    public Map<String, String> load() {
+        return load(new Companion() {
+        });
     }
 
 
     @Override
-    public Map<String, Object> load(final LoaderCompanion companion) {
+    public Map<String, String> load(final Companion companion) {
         map.clear();
 
-        LoaderCompanion processor = Validate.defaultIfNull(companion, new LoaderCompanion() {
+        Companion processor = Validate.defaultIfNull(companion, new Companion() {
         });
 
         StringTokenizer tokenizer = new StringTokenizer(content, splitter, false);
@@ -47,8 +49,8 @@ public class StringLoader implements ParametersLoader {
     }
 
 
-    private void processEntry(final String string, final LoaderCompanion companion) {
-        StringPair pair = StringPair.create(string, Parameters.PARAMETER_VALUE_SEPARATOR);
+    private void processEntry(final String string, final Companion companion) {
+        StringPair pair = StringPair.create(string, Parameter.SEPARATOR);
 
         String key = companion.preProcessKey(pair.leading());
         String value = companion.preProcessValue(pair.trailing());

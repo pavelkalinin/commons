@@ -1,8 +1,12 @@
-package xyz.enhorse.commons.parameters;
+package xyz.enhorse.commons.parameters.loaders;
 
 import xyz.enhorse.commons.Validate;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.Map;
 
@@ -10,7 +14,7 @@ import java.util.Map;
  * @author <a href="mailto:pavel13kalinin@gmail.com">Pavel Kalinin</a>
  *         17.08.2016
  */
-public class TextFileLoader implements ParametersLoader {
+public class TextFileLoader implements Loader {
 
     private final File input;
     private final Charset charset;
@@ -37,7 +41,7 @@ public class TextFileLoader implements ParametersLoader {
 
 
     @Override
-    public Map<String, Object> load(final LoaderCompanion companion) {
+    public Map<String, String> load(final Companion companion) {
         try (InputStream stream = new FileInputStream(input)) {
             return (new InputStreamLoader(stream, charset, System.lineSeparator())).load(companion);
         } catch (FileNotFoundException ex) {

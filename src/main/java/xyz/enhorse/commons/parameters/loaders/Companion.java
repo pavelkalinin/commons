@@ -1,10 +1,10 @@
-package xyz.enhorse.commons.parameters;
+package xyz.enhorse.commons.parameters.loaders;
 
 /**
  * @author <a href="mailto:pavel13kalinin@gmail.com">Pavel Kalinin</a>
  *         24.08.2016
  */
-public interface LoaderCompanion {
+public interface Companion {
 
     default String preProcessKey(final String key) {
         return key;
@@ -18,7 +18,7 @@ public interface LoaderCompanion {
         return key;
     }
 
-    default Object postProcessValue(final String value) {
+    default String postProcessValue(final String value) {
         return value;
     }
 }
