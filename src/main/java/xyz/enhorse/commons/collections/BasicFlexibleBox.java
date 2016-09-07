@@ -124,4 +124,10 @@ public class BasicFlexibleBox<T> implements FlexibleBox<T> {
     public Spliterator<String> spliterator() {
         return content.keys().spliterator();
     }
+
+
+    @Override
+    public String toString() {
+        return content.toString();
+    }
 }
