@@ -10,7 +10,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-import static xyz.enhorse.commons.parameters.schemas.PureTypes.*;
+import static xyz.enhorse.commons.parameters.schemas.PureTypes.STRING;
 
 /**
  * @author <a href="mailto:pavel13kalinin@gmail.com">Pavel Kalinin</a>
@@ -40,7 +40,7 @@ public class Description<T> {
             return canBeNull();
         }
 
-        return hasValidType(value) && doesMeetConstraints(value);
+        return check(value);
     }
 
 
@@ -59,12 +59,11 @@ public class Description<T> {
     }
 
 
-    private boolean hasValidType(final String string) {
-        return (type == STRING) || (type.equals(PureTypes.identify(string)));
-    }
+    private boolean check(final String string) {
+        if (!hasValidType(string)) {
+            return false;
+        }
 
-
-    private boolean doesMeetConstraints(final String string) {
         T value = type.cast(string);
 
         for (Constraint<T> constraint : constraints) {
@@ -74,6 +73,11 @@ public class Description<T> {
         }
 
         return true;
+    }
+
+
+    private boolean hasValidType(final String string) {
+        return (type == STRING) || (type.equals(PureTypes.identify(string)));
     }
 
 
