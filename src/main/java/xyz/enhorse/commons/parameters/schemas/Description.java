@@ -2,6 +2,8 @@ package xyz.enhorse.commons.parameters.schemas;
 
 import xyz.enhorse.commons.DefaultsProducer;
 import xyz.enhorse.commons.Pretty;
+import xyz.enhorse.commons.PureType;
+import xyz.enhorse.commons.PureTypes;
 import xyz.enhorse.commons.Validate;
 import xyz.enhorse.commons.parameters.schemas.constraints.Constraint;
 import xyz.enhorse.commons.parameters.schemas.constraints.NotNullConstraint;
@@ -10,7 +12,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-import static xyz.enhorse.commons.parameters.schemas.PureTypes.STRING;
+import static xyz.enhorse.commons.PureTypes.*;
 
 /**
  * @author <a href="mailto:pavel13kalinin@gmail.com">Pavel Kalinin</a>

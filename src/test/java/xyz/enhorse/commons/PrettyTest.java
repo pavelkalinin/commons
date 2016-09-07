@@ -2,12 +2,15 @@ package xyz.enhorse.commons;
 
 import org.junit.Test;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static xyz.enhorse.commons.Pretty.GROUP_END;
-import static xyz.enhorse.commons.Pretty.GROUP_START;
+import static org.junit.Assert.*;
+import static xyz.enhorse.commons.Pretty.*;
 
 /**
  * @author <a href="mailto:pavel13kalinin@gmail.com">Pavel Kalinin</a>

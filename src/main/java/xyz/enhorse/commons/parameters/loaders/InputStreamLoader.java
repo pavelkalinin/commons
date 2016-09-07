@@ -15,7 +15,7 @@ import java.util.Map;
  * @author <a href="mailto:pavel13kalinin@gmail.com">Pavel Kalinin</a>
  *         22.08.2016
  */
-public class InputStreamLoader implements ParametersLoader {
+public class InputStreamLoader implements Loader {
 
     private static final int BUFFER_SIZE = 1024;
 
@@ -32,7 +32,7 @@ public class InputStreamLoader implements ParametersLoader {
 
 
     @Override
-    public Map<String, String> load(final LoaderCompanion companion) {
+    public Map<String, String> load(final Companion companion) {
         String string = inputStreamToString(charset);
 
         if (!Check.isNullOrEmpty(string)) {

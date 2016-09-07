@@ -8,6 +8,7 @@ import xyz.enhorse.commons.collections.NamedValue;
  *         05.09.2016
  */
 public class Element<T> implements NamedValue<Description<?>> {
+
     private final String name;
     private final Description<T> description;
 
@@ -16,6 +17,7 @@ public class Element<T> implements NamedValue<Description<?>> {
         this.name = Validate.notNullOrEmpty("element name", name);
         this.description = Validate.notNull("element description", description);
     }
+
 
     @Override
     public String toString() {

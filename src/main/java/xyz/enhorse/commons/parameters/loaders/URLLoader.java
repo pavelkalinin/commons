@@ -32,7 +32,7 @@ public class URLLoader extends StringLoader {
 
 
     @Override
-    public Map<String, String> load(final LoaderCompanion companion) {
+    public Map<String, String> load(final Companion companion) {
         return super.load(companion);
     }
 
@@ -42,7 +42,8 @@ public class URLLoader extends StringLoader {
         return super.toString() + ":[" + charset + ']';
     }
 
-    private class QueryLoader implements LoaderCompanion {
+
+    private class QueryLoader implements Companion {
 
         @Override
         public String preProcessKey(final String key) {

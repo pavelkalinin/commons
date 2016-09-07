@@ -3,7 +3,11 @@ package xyz.enhorse.commons.collections;
 import xyz.enhorse.commons.Pretty;
 import xyz.enhorse.commons.Validate;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+import java.util.Spliterator;
 import java.util.function.Consumer;
 
 /**

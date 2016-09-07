@@ -8,15 +8,15 @@ import java.util.Map;
  * @author <a href="mailto:pavel13kalinin@gmail.com">Pavel Kalinin</a>
  *         18.08.2016
  */
-public interface ParametersLoader {
+public interface Loader {
 
-    Logger LOGGER = Logger.getLogger(ParametersLoader.class);
+    Logger LOGGER = Logger.getLogger(Loader.class);
 
     default Map<String, String> load() {
-        return load(new LoaderCompanion() {
+        return load(new Companion() {
         });
     }
 
 
-    Map<String, String> load(final LoaderCompanion companion);
+    Map<String, String> load(final Companion companion);
 }

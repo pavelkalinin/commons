@@ -13,7 +13,7 @@ import java.util.StringTokenizer;
  * @author <a href="mailto:pavel13kalinin@gmail.com">Pavel Kalinin</a>
  *         18.08.2016
  */
-public class StringLoader implements ParametersLoader {
+public class StringLoader implements Loader {
 
     private final Map<String, String> map = new HashMap<>();
     private final String content;
@@ -28,16 +28,16 @@ public class StringLoader implements ParametersLoader {
 
     @Override
     public Map<String, String> load() {
-        return load(new LoaderCompanion() {
+        return load(new Companion() {
         });
     }
 
 
     @Override
-    public Map<String, String> load(final LoaderCompanion companion) {
+    public Map<String, String> load(final Companion companion) {
         map.clear();
 
-        LoaderCompanion processor = Validate.defaultIfNull(companion, new LoaderCompanion() {
+        Companion processor = Validate.defaultIfNull(companion, new Companion() {
         });
 
         StringTokenizer tokenizer = new StringTokenizer(content, splitter, false);
@@ -49,7 +49,7 @@ public class StringLoader implements ParametersLoader {
     }
 
 
-    private void processEntry(final String string, final LoaderCompanion companion) {
+    private void processEntry(final String string, final Companion companion) {
         StringPair pair = StringPair.create(string, Parameter.SEPARATOR);
 
         String key = companion.preProcessKey(pair.leading());

@@ -1,11 +1,10 @@
 package xyz.enhorse.commons.parameters;
 
 import org.junit.Test;
-import xyz.enhorse.commons.parameters.schemas.PureTypes;
+import xyz.enhorse.commons.PureTypes;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static xyz.enhorse.commons.parameters.schemas.PureTypes.*;
+import static org.junit.Assert.*;
+import static xyz.enhorse.commons.PureTypes.*;
 
 /**
  * @author <a href="mailto:pavel13kalinin@gmail.com">Pavel Kalinin</a>

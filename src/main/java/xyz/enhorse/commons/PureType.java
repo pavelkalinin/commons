@@ -1,4 +1,4 @@
-package xyz.enhorse.commons.parameters.schemas;
+package xyz.enhorse.commons;
 
 /**
  * @author <a href="mailto:pavel13kalinin@gmail.com">Pavel Kalinin</a>
@@ -7,6 +7,4 @@ package xyz.enhorse.commons.parameters.schemas;
 public interface PureType<T> {
 
     T cast(final String string);
-
-    Class<T> type();
 }

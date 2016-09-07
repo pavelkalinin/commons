@@ -1,4 +1,4 @@
-package xyz.enhorse.commons.parameters.schemas;
+package xyz.enhorse.commons;
 
 /**
  * @author <a href="mailto:pavel13kalinin@gmail.com">Pavel Kalinin</a>
@@ -69,12 +69,6 @@ public enum PureTypes {
             public String cast(final String string) {
                 return null;
             }
-
-
-            @Override
-            public Class<Object> type() {
-                return null;
-            }
         }
     }
 
@@ -83,12 +77,6 @@ public enum PureTypes {
             @Override
             public Boolean cast(final String string) {
                 return Boolean.parseBoolean(string.trim());
-            }
-
-
-            @Override
-            public Class<Boolean> type() {
-                return boolean.class;
             }
         }
     }
@@ -104,12 +92,6 @@ public enum PureTypes {
                     return null;
                 }
             }
-
-
-            @Override
-            public Class<Integer> type() {
-                return Integer.class;
-            }
         }
     }
 
@@ -123,12 +105,6 @@ public enum PureTypes {
                 } catch (NumberFormatException ex) {
                     return null;
                 }
-            }
-
-
-            @Override
-            public Class<Long> type() {
-                return Long.class;
             }
         }
     }
@@ -144,12 +120,6 @@ public enum PureTypes {
                     return null;
                 }
             }
-
-
-            @Override
-            public Class<Double> type() {
-                return Double.class;
-            }
         }
     }
 
@@ -160,12 +130,6 @@ public enum PureTypes {
             public Character cast(final String string) {
                 return string.charAt(0);
             }
-
-
-            @Override
-            public Class<Character> type() {
-                return Character.class;
-            }
         }
     }
 
@@ -175,12 +139,6 @@ public enum PureTypes {
             @Override
             public String cast(final String string) {
                 return string;
-            }
-
-
-            @Override
-            public Class<String> type() {
-                return String.class;
             }
         }
     }
