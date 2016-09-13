@@ -1,9 +1,9 @@
-package xyz.enhorse.commons.parameters;
+package xyz.enhorse.commons;
 
 import org.junit.Test;
-import xyz.enhorse.commons.PureTypes;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static xyz.enhorse.commons.PureTypes.*;
 
 /**

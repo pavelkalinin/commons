@@ -1,4 +1,4 @@
-package xyz.enhorse.commons.parameters;
+package xyz.enhorse.commons;
 
 import org.junit.Assert;
 import org.junit.Test;
