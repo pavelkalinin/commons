@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <metadata>
   <groupId>xyz.enhorse</groupId>
-  <artifactId>commons</artifactId>
+  <artifactId>parameters</artifactId>
   <versioning>
     <versions>
       <version>1.0-SNAPSHOT</version>
     </versions>
-    <lastUpdated>20160913084246</lastUpdated>
+    <lastUpdated>20160913091238</lastUpdated>
   </versioning>
 </metadata>
