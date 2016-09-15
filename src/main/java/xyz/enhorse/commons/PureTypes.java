@@ -15,8 +15,8 @@ public enum PureTypes {
     public static final PureType<Boolean> BOOLEAN = BooleanType.BOOLEAN;
 
 
-    public static Object convert(final String string) {
-        return (identify(string)).cast(string);
+    public static Object convert(final Object object) {
+        return (identify(object)).cast(String.valueOf(object));
     }
 
 
