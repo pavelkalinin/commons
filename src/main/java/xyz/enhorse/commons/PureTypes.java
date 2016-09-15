@@ -25,14 +25,7 @@ public enum PureTypes {
             return NULL;
         }
 
-        return identify(String.valueOf(object));
-    }
-
-
-    public static PureType<?> identify(final String string) {
-        if (string == null) {
-            return NULL;
-        }
+        String string = String.valueOf(object);
 
         if (isChar(string)) {
             return CHAR;
