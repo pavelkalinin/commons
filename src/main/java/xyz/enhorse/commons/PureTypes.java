@@ -20,6 +20,15 @@ public enum PureTypes {
     }
 
 
+    public static PureType<?> identify(final Object object) {
+        if (object == null) {
+            return NULL;
+        }
+
+        return identify(String.valueOf(object));
+    }
+
+
     public static PureType<?> identify(final String string) {
         if (string == null) {
             return NULL;
