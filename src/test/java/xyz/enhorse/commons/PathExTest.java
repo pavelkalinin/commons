@@ -11,8 +11,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import static org.junit.Assert.*;
-import static xyz.enhorse.commons.PathEx.EXTENSION_SEPARATOR;
-import static xyz.enhorse.commons.PathEx.PATH_SEPARATOR;
+import static xyz.enhorse.commons.PathEx.*;
 
 /**
  * @author <a href="mailto:pavel13kalinin@gmail.com">Pavel Kalinin</a>
@@ -279,6 +278,15 @@ public class PathExTest {
 
 
     @Test
+    public void changeName_currentDirectory() throws Exception {
+        PathEx original = new PathEx(new File(filename));
+        String newName = "new" + name;
+
+        assertEquals(newName, original.changeName(newName).name());
+    }
+
+
+    @Test
     public void changeName_immutable() throws Exception {
         PathEx original = new PathEx(existingFile());
         String newName = "new" + name;
@@ -328,6 +336,15 @@ public class PathExTest {
     }
 
 
+    @Test
+    public void changeExtension_currentDirectory() throws Exception {
+        PathEx original = new PathEx(new File(filename));
+        String newExtension = "new" + extension;
+
+        assertEquals(EXTENSION_SEPARATOR + newExtension, original.changeExtension(newExtension).extension());
+    }
+
+
 /*
     changePathname()
 */
@@ -366,6 +383,14 @@ public class PathExTest {
         String newPathname = existingDirectory() + "new";
 
         assertNotEquals(original.changePathname(newPathname + PATH_SEPARATOR).pathname(), original.pathname());
+    }
+
+
+    @Test
+    public void changePathname_toEmpty() throws Exception {
+        PathEx original = new PathEx(existingFile());
+
+        assertEquals(CURRENT_DIRECTORY + PATH_SEPARATOR, original.changePathname("").pathname());
     }
 
 
@@ -679,6 +704,17 @@ public class PathExTest {
     private File absentFile() {
         try {
             File result = new File(existingDirectory().toString() + PATH_SEPARATOR + filename);
+            Files.deleteIfExists(result.toPath());
+            return result;
+        } catch (IOException ex) {
+            throw new IllegalStateException(ex);
+        }
+    }
+
+
+    private File absentFileInCurrentDirectory() {
+        try {
+            File result = new File(filename);
             Files.deleteIfExists(result.toPath());
             return result;
         } catch (IOException ex) {
