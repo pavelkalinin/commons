@@ -10,20 +10,20 @@ import java.nio.file.Paths;
  * 09.12.2015.
  */
 public class PathEx extends AbstractPathEx {
+    private static final String CURRENT = ".";
 
     public static final char EXTENSION_SEPARATOR = '.';
     public static final char PATH_SEPARATOR = File.separatorChar;
-
-    private static final Path DEFAULT_PATH = Paths.get(".").toAbsolutePath().normalize();
+    public static final Path CURRENT_DIRECTORY = Paths.get(CURRENT).toAbsolutePath().normalize();
 
 
     public PathEx() {
-        this(DEFAULT_PATH);
+        this(CURRENT_DIRECTORY);
     }
 
 
     public PathEx(final Path path) {
-        super(Validate.defaultIfNull(path, DEFAULT_PATH));
+        super(Validate.defaultIfNull(path, CURRENT_DIRECTORY));
     }
 
 
@@ -169,23 +169,23 @@ public class PathEx extends AbstractPathEx {
         try {
             return Paths.get(string).toAbsolutePath().normalize();
         } catch (Exception ex) {
-            return DEFAULT_PATH;
+            return CURRENT_DIRECTORY;
         }
     }
 
 
     private static Path fileToPath(final File file) {
         try {
-            return file.toPath();
+            return file.getAbsoluteFile().toPath();
         } catch (Exception ex) {
-            return DEFAULT_PATH;
+            return CURRENT_DIRECTORY;
         }
     }
 
 
     private static String validate(final String string) {
         try {
-            return Paths.get(string).toString();
+            return Paths.get(Validate.defaultIfNullOrEmpty(string, CURRENT)).toString();
         } catch (Exception ex) {
             throw new IllegalArgumentException("Illegal value \'" + string + '\'');
         }
