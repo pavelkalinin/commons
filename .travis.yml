@@ -1,0 +1,11 @@
+language: java
+jdk:
+  - oraclejdk8
+branches:
+  only:
+  - master
+script: mvn clean deploy
+notifications:
+  email:
+    - pavel13kalinin@gmail.com
+  email: true
