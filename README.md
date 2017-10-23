@@ -1,8 +1,8 @@
 # commons
 Well-known bike
 
-###Usage with Maven
-####pom.xml
+### Usage with Maven
+#### pom.xml
 ```xml
     <repositories>
         <repository>
