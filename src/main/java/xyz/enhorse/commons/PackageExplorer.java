@@ -1,5 +1,8 @@
 package xyz.enhorse.commons;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Modifier;
@@ -28,6 +31,7 @@ import java.util.zip.ZipEntry;
  */
 public class PackageExplorer<T> {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(PackageExplorer.class);
     /**
      * The package to explore
      */
@@ -45,6 +49,7 @@ public class PackageExplorer<T> {
     public PackageExplorer(final Class<T> type) {
         this.type = Validate.notNull("type to explore", type);
         basePackage = type.getPackage().getName();
+        LOGGER.debug("Base package was defined to \'{}\'", basePackage);
     }
 
 
@@ -57,6 +62,7 @@ public class PackageExplorer<T> {
         return findAllAssignableClasses().stream()
                 .filter(clazz -> !clazz.isInterface())
                 .filter(clazz -> !Modifier.isAbstract(clazz.getModifiers()))
+                .peek(clazz -> LOGGER.debug("Found the applicable class:\'{}\'", clazz.getCanonicalName()))
                 .collect(Collectors.toSet());
     }
 
@@ -111,12 +117,14 @@ public class PackageExplorer<T> {
      */
     private Set<FileEntity> findAllInJar(final String root) {
         final String filename = root.substring("jar:".length() + 1, root.indexOf("!"));
+        LOGGER.debug("Start to explore the jar file \'{}\'", filename);
 
         return getJarContent(filename).stream()
                 .map(ZipEntry::getName)
                 .map(File::new)
                 .map(FileEntity::new)
                 .filter(FileEntity::isClass)
+                .peek(fileEntity -> LOGGER.debug("Added the candidate:\'{}\'", fileEntity.pack()))
                 .collect(Collectors.toSet());
     }
 
@@ -129,6 +137,7 @@ public class PackageExplorer<T> {
      */
     private Set<FileEntity> findAllInDirectory(final File directory, final String basePackage) {
         final Set<FileEntity> result = new HashSet<>();
+        LOGGER.debug("Start to explore the directory \'{}\' as the package \'{}\'", directory, basePackage);
 
         Optional.ofNullable(directory)
                 .filter(dir -> dir.exists() && dir.canRead() && dir.isDirectory())
@@ -141,6 +150,7 @@ public class PackageExplorer<T> {
                                 result.addAll(findAllInDirectory(file, fileEntity.pack()));
                             } else {
                                 if (fileEntity.isClass()) {
+                                    LOGGER.debug("Added the candidate:\'{}\'", fileEntity.pack());
                                     result.add(fileEntity);
                                 }
                             }
@@ -158,6 +168,7 @@ public class PackageExplorer<T> {
         try {
             return Collections.list(new JarFile(filename).entries());
         } catch (IOException ex) {
+            LOGGER.debug("Cannot get a content of the jar \'{}\'", filename);
             return Collections.emptyList();
         }
     }
@@ -173,6 +184,7 @@ public class PackageExplorer<T> {
         try {
             return Optional.of((Class<T>) Class.forName(fileEntity.pack()));
         } catch (ClassNotFoundException ex) {
+            LOGGER.debug("Cannot get the class \'{}\'", fileEntity.pack());
             return Optional.empty();
         }
     }
@@ -239,6 +251,7 @@ public class PackageExplorer<T> {
 
         private String evaluatePackageName(final String file) {
             final int lastSlash = file.lastIndexOf(File.separator);
+
             return file.substring(0, lastSlash > 0 ? lastSlash : 0).replace(File.separator, ".");
         }
     }
