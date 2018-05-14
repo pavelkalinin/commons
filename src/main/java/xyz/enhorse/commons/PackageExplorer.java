@@ -1,4 +1,4 @@
-package xyz.enhorse.commons.convert;
+package xyz.enhorse.commons;
 
 import java.io.File;
 import java.io.IOException;
@@ -8,7 +8,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.jar.JarEntry;
@@ -27,7 +26,7 @@ import java.util.zip.ZipEntry;
  * @param <T> the type to search
  * @author Pavel Kalinin on 06.04.2018
  */
-class PackageExplorer<T> {
+public class PackageExplorer<T> {
 
     /**
      * The package to explore
@@ -43,8 +42,8 @@ class PackageExplorer<T> {
      * Create an instance
      * @param type the type to scan for
      */
-    PackageExplorer(final Class<T> type) {
-        this.type = Objects.requireNonNull(type, "type");
+    public PackageExplorer(final Class<T> type) {
+        this.type = Validate.notNull("type to explore", type);
         basePackage = type.getPackage().getName();
     }
 
@@ -53,7 +52,7 @@ class PackageExplorer<T> {
      * Scans all instantiable classes accessible from the context class loader which have the superclass {@link T}.
      * @return The found classes
      */
-    Set<Class<T>> findAllInstantiableClasses() {
+    public Set<Class<T>> findAllInstantiableClasses() {
 
         return findAllAssignableClasses().stream()
                 .filter(clazz -> !clazz.isInterface())
@@ -123,20 +122,6 @@ class PackageExplorer<T> {
 
 
     /**
-     * Returns contents of the given jar.
-     * @param filename name of jar file
-     * @return jar contents
-     */
-    private List<JarEntry> getJarContent(final String filename) {
-        try {
-            return Collections.list(new JarFile(filename).entries());
-        } catch (IOException ex) {
-            return Collections.emptyList();
-        }
-    }
-
-
-    /**
      * Recursive method used to find all classes in a given directory and its subdirectories.
      * @param directory   a base directory
      * @param basePackage a base package
@@ -152,7 +137,6 @@ class PackageExplorer<T> {
                         .filter(File::exists)
                         .forEach(file -> {
                             final FileEntity fileEntity = new FileEntity(file, basePackage);
-
                             if (file.isDirectory()) {
                                 result.addAll(findAllInDirectory(file, fileEntity.pack()));
                             } else {
@@ -162,6 +146,20 @@ class PackageExplorer<T> {
                             }
                         }));
         return result;
+    }
+
+
+    /**
+     * Returns contents of the given jar.
+     * @param filename name of jar file
+     * @return jar contents
+     */
+    private List<JarEntry> getJarContent(final String filename) {
+        try {
+            return Collections.list(new JarFile(filename).entries());
+        } catch (IOException ex) {
+            return Collections.emptyList();
+        }
     }
 
 
@@ -187,13 +185,9 @@ class PackageExplorer<T> {
 
         private static final char DELIMITER = '.';
         private static final String CLASS_EXTENSION = ".class";
-        /**
-         * The file
-         */
+        /** The file */
         private final String file;
-        /**
-         * The package of the file
-         */
+        /** The package of the file */
         private final String basePackage;
 
 
@@ -209,27 +203,21 @@ class PackageExplorer<T> {
         }
 
 
-        /**
-         * Returns the file name without extension
-         */
+        /** Returns the file name without extension */
         String name() {
             return getLastDotPosition()
                     .map(index -> file.substring(0, index)).orElse(file);
         }
 
 
-        /**
-         * Returns the file extension if it exists or an empty string otherwise
-         */
+        /** Returns the file extension if it exists or an empty string otherwise */
         String extension() {
             return getLastDotPosition()
                     .map(index -> file.substring(index, file.length())).orElse("");
         }
 
 
-        /**
-         * Adds the package part to the file name
-         */
+        /** Adds the package part to the file name */
         String pack() {
             return basePackage + DELIMITER + name();
         }
