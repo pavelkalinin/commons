@@ -20,8 +20,8 @@ import java.util.stream.Stream;
 import java.util.zip.ZipEntry;
 
 /**
- * The class to perform the scanning of the context class loader for the classes that have the certain superclass {@link
- * T}.
+ * The class to perform the scanning of the context class loader for the classes
+ * that have the certain superclass {@link T}.
  * <p>
  * Note the fact that the class performs classpath searching only from the package of the type {@link T} that is
  * belonged to and deeper. That gives a capability to narrow a scope for searching and makes the process be more
@@ -31,19 +31,16 @@ import java.util.zip.ZipEntry;
  */
 public class PackageExplorer<T> {
 
+    /** Logger */
     private static final Logger LOGGER = LoggerFactory.getLogger(PackageExplorer.class);
-    /**
-     * The package to explore
-     */
+    /** The package to explore */
     private final String basePackage;
-    /**
-     * The type to scan for
-     */
+    /** The type to scan for */
     private final Class<T> type;
 
 
     /**
-     * Create an instance
+     * Create an instance of the class
      * @param type the type to scan for
      */
     public PackageExplorer(final Class<T> type) {
@@ -58,7 +55,6 @@ public class PackageExplorer<T> {
      * @return The found classes
      */
     public Set<Class<T>> findAllInstantiableClasses() {
-
         return findAllAssignableClasses().stream()
                 .filter(clazz -> !clazz.isInterface())
                 .filter(clazz -> !Modifier.isAbstract(clazz.getModifiers()))
@@ -72,7 +68,6 @@ public class PackageExplorer<T> {
      * @return The found classes
      */
     private Set<Class<T>> findAllAssignableClasses() {
-
         return getAvailableClasses().stream()
                 .filter(type::isAssignableFrom)
                 .collect(Collectors.toSet());
@@ -101,10 +96,12 @@ public class PackageExplorer<T> {
      * @return enumeration of all resources
      */
     private List<URL> getResources() {
+        final String packageAsPath = basePackage.replace('.', '/');
         try {
             final ClassLoader context = Thread.currentThread().getContextClassLoader();
-            return Collections.list(context.getResources(basePackage.replace('.', '/')));
-        } catch (IOException e) {
+            return Collections.list(context.getResources(packageAsPath));
+        } catch (IOException ex) {
+            LOGGER.warn("Cannot get resources by the path:\'{}\'", packageAsPath, ex);
             return Collections.emptyList();
         }
     }
@@ -166,9 +163,9 @@ public class PackageExplorer<T> {
      */
     private List<JarEntry> getJarContent(final String filename) {
         try {
-            return Collections.list(new JarFile(filename).entries());
+            return Collections.list(new JarFile(filename, false).entries());
         } catch (IOException ex) {
-            LOGGER.debug("Cannot get a content of the jar \'{}\'", filename);
+            LOGGER.warn("Cannot get a content of the jar \'{}\'", filename, ex);
             return Collections.emptyList();
         }
     }
@@ -184,19 +181,20 @@ public class PackageExplorer<T> {
         try {
             return Optional.of((Class<T>) Class.forName(fileEntity.pack()));
         } catch (ClassNotFoundException ex) {
-            LOGGER.debug("Cannot get the class \'{}\'", fileEntity.pack());
+            LOGGER.warn("Cannot get Class object associated with the name \'{}\'", fileEntity.pack(), ex);
             return Optional.empty();
         }
     }
 
 
-    /**
-     * The class to instrument working with the {@link File} that represents ".class/java class"-file
-     */
+    /** The class to instrument working with the {@link File} */
     private class FileEntity {
 
+        /** The filename parts delimiter */
         private static final char DELIMITER = '.';
+        /** The compiled java class file extension */
         private static final String CLASS_EXTENSION = ".class";
+
         /** The file */
         private final String file;
         /** The package of the file */
@@ -218,26 +216,28 @@ public class PackageExplorer<T> {
         /** Returns the file name without extension */
         String name() {
             return getLastDotPosition()
-                    .map(index -> file.substring(0, index)).orElse(file);
+                    .map(index -> file.substring(0, index))
+                    .orElse(file);
         }
 
 
         /** Returns the file extension if it exists or an empty string otherwise */
         String extension() {
             return getLastDotPosition()
-                    .map(index -> file.substring(index, file.length())).orElse("");
+                    .map(index -> file.substring(index, file.length()))
+                    .orElse("");
         }
 
 
-        /** Adds the package part to the file name */
+        /** Adds the package part to the filename */
         String pack() {
             return basePackage + DELIMITER + name();
         }
 
 
         /**
-         * Returns {@code true} if the file has a proper extension for ".class/java class"-file or {@code false}
-         * otherwise
+         * Returns {@code true} if the file has a proper extension for ".class/java class"-file
+         * or {@code false} otherwise
          */
         boolean isClass() {
             return CLASS_EXTENSION.equals(extension());
@@ -245,14 +245,16 @@ public class PackageExplorer<T> {
 
 
         private Optional<Integer> getLastDotPosition() {
-            return Optional.of(file.lastIndexOf(DELIMITER)).filter(r -> r >= 0);
+            return Optional.of(file.lastIndexOf(DELIMITER))
+                    .filter(r -> r >= 0);
         }
 
 
         private String evaluatePackageName(final String file) {
             final int lastSlash = file.lastIndexOf(File.separator);
 
-            return file.substring(0, lastSlash > 0 ? lastSlash : 0).replace(File.separator, ".");
+            return file.substring(0, lastSlash > 0 ? lastSlash : 0)
+                    .replace(File.separator, ".");
         }
     }
 }
