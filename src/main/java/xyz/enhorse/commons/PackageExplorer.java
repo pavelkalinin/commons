@@ -6,7 +6,9 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Modifier;
+import java.net.JarURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
@@ -81,7 +83,7 @@ public class PackageExplorer<T> {
     private Set<Class<T>> getAvailableClasses() {
         return getResources().stream()
                 .map(root -> "jar".equals(root.getProtocol())
-                        ? findAllInJar(root.getFile())
+                        ? findAllInJar(root)
                         : findAllInDirectory(new File(root.getFile()), basePackage))
                 .flatMap(Collection::stream)
                 .map(this::tryToGetClassFor)
@@ -112,11 +114,11 @@ public class PackageExplorer<T> {
      * @param root a base path
      * @return the found classes
      */
-    private Set<FileEntity> findAllInJar(final String root) {
-        final String filename = root.substring("jar:".length() + 1, root.indexOf("!"));
-        LOGGER.debug("Start to explore the jar file \'{}\'", filename);
+    private Set<FileEntity> findAllInJar(final URL root) {
+        LOGGER.debug("Start to explore the .jar file over \'{}\'", root);
 
-        return getJarContent(filename).stream()
+        return getJarContent(root)
+                .stream()
                 .map(ZipEntry::getName)
                 .map(File::new)
                 .map(FileEntity::new)
@@ -157,17 +159,41 @@ public class PackageExplorer<T> {
 
 
     /**
-     * Returns contents of the given jar.
-     * @param filename name of jar file
-     * @return jar contents
+     * Returns contents of a .jar file over its given URL.
+     * @param url url of a .jar file
+     * @return .jar file contents
      */
-    private List<JarEntry> getJarContent(final String filename) {
-        try {
-            return Collections.list(new JarFile(filename, false).entries());
-        } catch (IOException ex) {
-            LOGGER.warn("Cannot get a content of the jar \'{}\'", filename, ex);
-            return Collections.emptyList();
-        }
+    private List<JarEntry> getJarContent(final URL url) {
+        return Optional.ofNullable(url)
+                .map(this::from)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .map(JarFile::entries)
+                .map(Collections::list)
+                .orElse(new ArrayList<>());
+    }
+
+
+    private Optional<JarFile> from(final URL jarUrl) {
+        return Optional.ofNullable(jarUrl)
+                .map(url -> {
+                    try {
+                        return url.openConnection();
+                    } catch (IOException ex) {
+                        LOGGER.warn("Opening connection to {} failed.", url, ex);
+                        return null;
+                    }
+                })
+                .filter(connection -> connection instanceof JarURLConnection)
+                .map(connection -> {
+                    try {
+                        connection.setUseCaches(false);
+                        return ((JarURLConnection) connection).getJarFile();
+                    } catch (IOException ex) {
+                        LOGGER.warn("Getting .jar file over a connection {} failed.", connection.getURL(), ex);
+                        return null;
+                    }
+                });
     }
 
 
