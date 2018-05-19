@@ -165,7 +165,7 @@ public class PackageExplorer<T> {
      */
     private List<JarEntry> getJarContent(final URL url) {
         return Optional.ofNullable(url)
-                .map(this::from)
+                .map(this::jarFrom)
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .map(JarFile::entries)
@@ -174,7 +174,12 @@ public class PackageExplorer<T> {
     }
 
 
-    private Optional<JarFile> from(final URL jarUrl) {
+    /**
+     * Returns .jar file from the given URL
+     * @param jarUrl url
+     * @return .jar file
+     */
+    private Optional<JarFile> jarFrom(final URL jarUrl) {
         return Optional.ofNullable(jarUrl)
                 .map(url -> {
                     try {
